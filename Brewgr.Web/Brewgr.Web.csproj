@@ -2326,9 +2326,7 @@
   <ItemGroup>
     <Content Include="Views\Content\Calculators.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\User\_PersonalInfo.cshtml" />
   </ItemGroup>
@@ -2540,6 +2538,7 @@
     <Content Include="Views\Root\OpenSourceSoftware.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\test.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
