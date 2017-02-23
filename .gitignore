@@ -28,9 +28,6 @@ bld/
 # Publish
 WebPublish
 
-# Web.Release.Config
-Web.Release.config
-
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
