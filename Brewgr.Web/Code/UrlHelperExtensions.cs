@@ -16,7 +16,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string UserProfileUrl(this UrlHelper urlHelper, string userName)
 		{
-			var adjustedUserName = userName.Replace(" ", "-");
+			var adjustedUserName = userName?.Replace(" ", "-");
 			return urlHelper.Action("UserProfile", "User", new { userName = adjustedUserName }, urlHelper.Https());
 		}
 

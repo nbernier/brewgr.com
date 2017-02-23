@@ -48,7 +48,7 @@ namespace Brewgr.Web
 			Database.SetInitializer<BrewgrContext>(null);
 
 			// Setup Exception Error Store
-			ErrorStore.Setup("Brewgr.com", new SQLErrorStore(Environment.GetEnvironmentVariable("Brewgr_ConnectionString")));
+			ErrorStore.Setup("Brewgr.com", new SQLErrorStore(ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString));
 		}
 
 		/// <summary>

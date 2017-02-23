@@ -123,6 +123,11 @@
     <Compile Include="Data\IBrewgrBlogConnection.cs" />
     <Compile Include="Data\IBrewgrBlogRepository.cs" />
     <Compile Include="Data\IBrewgrRepository.cs" />
+    <Compile Include="Migrations\201702231854204_InitialCreate.cs" />
+    <Compile Include="Migrations\201702231854204_InitialCreate.Designer.cs">
+      <DependentUpon>201702231854204_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Adjunct.cs" />
     <Compile Include="Model\AdjunctAffiliateProduct.cs" />
     <Compile Include="Model\Affiliate.cs" />
@@ -311,6 +316,11 @@
       <Project>{c3f8db29-d16e-4a35-843f-001d2047dae2}</Project>
       <Name>Brewgr.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702231854204_InitialCreate.resx">
+      <DependentUpon>201702231854204_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />

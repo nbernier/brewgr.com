@@ -1,7 +1,7 @@
 ﻿@using Brewgr.Web
 @using Brewgr.Web.Core.Model
 
-<div id="header"><a href="@Url.Action("Index", "Root", null, "http")" id="logo"><img src="@Url.Image("~/img/logo.png")" alt="" width="198" height="41" /></a>
+<div id="header"><a href="@Url.Action("Index", "Root", null)" id="logo"><img src="@Url.Image("~/img/logo.png")" alt="" width="198" height="41" /></a>
 	@*  Main Navigartion *@
 			
 	@if (ViewBag.ActiveUser != null)
@@ -17,14 +17,14 @@
 	}
 	<div id="primary-nav" class="sf-menu-wrapper">
 		<ul class="sf-menu sf-js-enabled">
-			<li><a href="@Url.Action("Index", "Root", null, "http")">Home</a></li>
+			<li><a href="@Url.Action("Index", "Root", null)">Home</a></li>
             <li class="sf-with-ul">
                 <a href="#">Tools <span class="sf-sub-indicator"> »</span>
                 </a>
 				<ul class="sub-menu">
-					<li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null, Url.Https())"><span>Homebrew Recipe Calculator</span></a> </li>
-					<li><a href="@Url.Action("CalculatorsHydrometerTemp", "content", null, "http")"><span>Hydrometer Correction Calculator</span></a> </li>
-					<li><a href="@Url.Action("CalculatorsMashSpargeWater", "content", null, "http")"><span>Mash/Sparge Water Infusion Calculator</span></a> </li>
+					<li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null)"><span>Homebrew Recipe Calculator</span></a> </li>
+					<li><a href="@Url.Action("CalculatorsHydrometerTemp", "content", null)"><span>Hydrometer Correction Calculator</span></a> </li>
+					<li><a href="@Url.Action("CalculatorsMashSpargeWater", "content", null)"><span>Mash/Sparge Water Infusion Calculator</span></a> </li>
 				</ul>
 			</li>
 			<li class="sf-with-ul">
@@ -32,10 +32,10 @@
                     <span class="sf-sub-indicator"> »</span>
 			    </a>
 			    <ul class="sub-menu">
-			        <li><a href="@Url.Action("homebrew-recipes", "recipe", null, "http")"><span>Browse Recipes</span></a> </li>
-			        <li><a href="@Url.Action("dashboard", "dashboard", null, "http")/#recipes"><span>My Recipes</span></a> </li>
-			        <li><a href="@Url.Action("dashboard", "dashboard", null, "http")/#brewsessions"><span>My Brew Sessions</span></a> </li>
-			        <li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null, Url.Https())"><span>Create a New Recipe</span></a></li>
+			        <li><a href="@Url.Action("homebrew-recipes", "recipe", null)"><span>Browse Recipes</span></a> </li>
+			        <li><a href="@Url.Action("dashboard", "dashboard", null)/#recipes"><span>My Recipes</span></a> </li>
+			        <li><a href="@Url.Action("dashboard", "dashboard", null)/#brewsessions"><span>My Brew Sessions</span></a> </li>
+			        <li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null)"><span>Create a New Recipe</span></a></li>
 			        <li><a href="#" class="recipe-import" rel="nofollow"><span>Import Beer Xml</span></a></li>
 			    </ul>
 			</li>
@@ -50,7 +50,7 @@
 			        <li><a href="@Url.Action("features","root")">Features</a></li>
 			    </ul>
 			</li>
-			<li><a href="http://brewgr.com/blog">Blog</a></li>
+			<li><a href="/blog">Blog</a></li>
 		</ul>
 	</div>
 </div>

@@ -12,11 +12,11 @@
         </div>
         <div class="footer-details" id="other-stuff">
             <h4>Other Stuff</h4>
-            <a href="@Url.Action("about", "root", null, "http")">About</a>
-            <a href="@Url.Action("Features", "Root", null, "http")">New Features</a>
-            <a href="@Url.Action("terms", "root", null, "http")">Terms of Use</a>
-            <a href="@Url.Action("privacy", "root", null, "http")">Privacy Policy</a>	
-            <a href="@Url.Action("contact", "root", null, "http")">Contact</a>	
+            <a href="@Url.Action("about", "root", null)">About</a>
+            <a href="@Url.Action("Features", "Root", null)">New Features</a>
+            <a href="@Url.Action("terms", "root", null)">Terms of Use</a>
+            <a href="@Url.Action("privacy", "root", null)">Privacy Policy</a>	
+            <a href="@Url.Action("contact", "root", null)">Contact</a>	
         </div>
         <div class="footer-details" id="photo-stream">
             <h4>Photo Stream</h4>
@@ -30,7 +30,7 @@
             <p>
                 Brewgr periodically sends out updates, tips and other announcements.  Sign up to receive for our free email newsletter.
             </p>
-            <form id="emailSignUp" action="@Url.Action("EmailSignUp", "Marketing", null, "https")">
+            <form id="emailSignUp" action="@Url.Action("EmailSignUp", "Marketing", null)">
                 <input type="text" name="EmailAddress" onblur="if(this.value=='')this.value='Enter your email adress';" onfocus="if(this.value=='Enter your email adress')this.value='';" value="Enter your email adress" class="newsletter" />
             </form>
         </div>

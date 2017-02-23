@@ -1,0 +1,3 @@
+enable-migrations -ProjectName Brewgr.Web.Core -StartUpProjectName Brewgr.Web -Force
+
+Add-Migration InitialCreate -ProjectName Brewgr.Web.Core -StartUpProjectName Brewgr.Web -Force

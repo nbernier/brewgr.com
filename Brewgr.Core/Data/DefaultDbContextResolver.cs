@@ -6,7 +6,7 @@ namespace ctorx.Core.Data
 {
 	public class DefaultDbContextResolver<TDbContext> : IDbContextResolver<TDbContext> where TDbContext : DbContext
 	{
-		IDbContextFactory<TDbContext> DbContextFactory;
+        IDbContextFactory<TDbContext> DbContextFactory;
 		TDbContext Context;
 		
 		bool IsDisposed;

@@ -11,7 +11,7 @@ namespace Brewgr.Web
 		{
 		    get
 		    {
-		        return Environment.GetEnvironmentVariable("Brewgr_ConnectionString");
+		        return ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString;
 		    }
 		}
 	}

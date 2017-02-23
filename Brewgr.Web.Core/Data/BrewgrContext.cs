@@ -10,7 +10,17 @@ namespace Brewgr.Web.Core.Data
 {
 	public class BrewgrContext : AbstractDbContext, IDataContext
 	{
-		IDbSet<User> Users { get; set; }
+        private const string CNN_KEY = "Brewgr_ConnectionString";
+
+        public BrewgrContext() : base(CNN_KEY)
+        {
+        }
+
+        public BrewgrContext(string todo) : base(CNN_KEY)
+	    {
+	    }
+
+	    IDbSet<User> Users { get; set; }
 		IDbSet<UserSummary> UserSummaries { get; set; }
 		IDbSet<MiniUserSummary> MiniUserSummaries { get; set; }
 		IDbSet<UserAdmin> UserAdmins { get; set; }
@@ -55,14 +65,6 @@ namespace Brewgr.Web.Core.Data
 		IDbSet<SendToShopOrder> SendToShopOrders { get; set; }
 		IDbSet<SendToShopOrderItem> SendToShopOrderItems { get; set; }
 		IDbSet<TastingNoteSummary> TastingNoteSummaries { get; set; }
-
-		/// <summary>
-		/// ctor the Mighty
-		/// </summary>
-		public BrewgrContext(string connectionString) : base(connectionString)
-		{
-			this.Configuration.LazyLoadingEnabled = true;
-		}
 
 		/// <summary>
 		/// Fires on Model Creating

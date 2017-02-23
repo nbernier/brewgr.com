@@ -570,7 +570,7 @@ namespace Brewgr.Web.Controllers
 			this.SignIn(userSummary, persistLogin);
 
 			// Redirect
-			var redirectUrl = (Session["OAuthReturnUrl"] ?? Request["ReturnUrl"]) != null ? string.Format("/{1}", Session["OAuthReturnUrl"].ToString()) 
+			var redirectUrl = (Session["OAuthReturnUrl"] ?? Request["ReturnUrl"]) != null ? string.Format("/{0}", Session["OAuthReturnUrl"].ToString()) 
 				: "/"; 
 
 			Session.Remove("OAuthReturnUrl");

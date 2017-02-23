@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 
 namespace Brewgr.Web.Core.Data
 {
@@ -11,7 +12,7 @@ namespace Brewgr.Web.Core.Data
         {
             get
             {
-                return Environment.GetEnvironmentVariable("BrewgrBlog_ConnectionString");
+                return ConfigurationManager.ConnectionStrings["BrewgrBlog_ConnectionString"].ConnectionString;
             }
         }
     }

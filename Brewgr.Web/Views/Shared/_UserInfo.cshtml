@@ -12,7 +12,7 @@
                     @* Admin Tools *@
                     @if (Model.IsAdmin)
                     {
-                        <li><a href="@Url.Action("tools", "admin", null, Url.Https())"><span>Admin Tools</span></a>
+                        <li><a href="@Url.Action("tools", "admin", null)"><span>Admin Tools</span></a>
                             <ul class="sf-menu sf-js-enabled">
                                 <li><a href="@Url.Action("Affiliates", "Admin")" target="_blank">Affiliates</a></li>
                                 <li><a href="@Url.Action("Exceptions", "Admin")" target="_blank">View Exception Log</a></li>
@@ -23,14 +23,14 @@
                     @* Partner Tools *@
                     @if (Model.IsPartner)
                     {
-                        <li><a href="@Url.Action("tools", "partner", null, Url.Https())"><span>Partner Tools</span></a></li>
+                        <li><a href="@Url.Action("tools", "partner", null)"><span>Partner Tools</span></a></li>
                     }
 
                     <li><a href="@Url.UserProfileUrl(Model.Username)"><span>Profile</span></a></li>
-                    <li><a href="@Url.Action("dashboard", "dashboard", null, "http")/#recipes"><span>My Recipes</span></a></li>
-                    <li><a href="@Url.Action("dashboard", "dashboard", null, "http")/#brewsessions"><span>My Brew Sessions</span></a></li>
-                    <li><a href="@Url.Action("settings", "User", null, Url.Https())"><span>Settings</span></a></li>
-                    <li><a href="@Url.Action("logout", "auth", null, Url.Https())" data-returnurl="@Server.UrlEncode(Request.Url.PathAndQuery)" class="sign-out-link">Sign Out</a></li>
+                    <li><a href="@Url.Action("dashboard", "dashboard", null )/#recipes"><span>My Recipes</span></a></li>
+                    <li><a href="@Url.Action("dashboard", "dashboard", null )/#brewsessions"><span>My Brew Sessions</span></a></li>
+                    <li><a href="@Url.Action("settings", "User", null)"><span>Settings</span></a></li>
+                    <li><a href="@Url.Action("logout", "auth", null)" data-returnurl="@Server.UrlEncode(Request.Url.PathAndQuery)" class="sign-out-link">Sign Out</a></li>
                 </ul>
             </li>
         </ul>

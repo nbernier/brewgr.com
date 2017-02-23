@@ -87,7 +87,7 @@ namespace Brewgr.Web.Controllers
 			}
 
 			return View("UnCategorized", new UnCategorizedRecipesViewModel { Recipes = recipes, Pager = pager, 
-				BaseUrl = Url.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null }, "http")});
+				BaseUrl = Url.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null })});
 		}
 
 		/// <summary>
