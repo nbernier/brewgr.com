@@ -45,7 +45,7 @@ namespace Brewgr.Web.Core.Model
 				new XElement("NAME", recipe.RecipeName + " (exported from brewgr.com)"),
 				new XElement("VERSION", "1"),
 				new XElement("TYPE", HumanReadableFormatter.AddSpacesToPascalCaseString(((RecipeType)recipe.RecipeTypeId).ToString())),
-				new XElement("BREWER", recipe.User.CalculatedUsername + string.Format(" ({0}/!/{1})", this.WebSettings.RootPath, recipe.User.CalculatedUsername)),
+				new XElement("BREWER", recipe.User.CalculatedUsername + string.Format(" /!/{0})", recipe.User.CalculatedUsername)),
 				new XElement("BATCH_SIZE", recipe.GetUnitType() == UnitType.Metric ? recipe.BatchSize : this.RecipeUnitConverter.ConvertGallonsToLiters(recipe.BatchSize)),
 				new XElement("BOIL_SIZE", recipe.GetUnitType() == UnitType.Metric ? recipe.BoilSize : this.RecipeUnitConverter.ConvertGallonsToLiters(recipe.BoilSize)),
 				new XElement("BOIL_TIME", recipe.BoilTime),

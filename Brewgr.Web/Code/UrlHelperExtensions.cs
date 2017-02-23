@@ -250,17 +250,7 @@ namespace Brewgr.Web
 		public static string Https(this UrlHelper urlHelper)
 		{
 			var webSettings = GetWebSettings();
-			return (webSettings is ProdWebSettings) ? "https" : "http";
-		}
-
-		/// <summary>
-		/// Gets the Root Url
-		/// </summary>
-		public static string RootUrl(this UrlHelper urlHelper, bool https = false)
-		{
-			var webSettings = GetWebSettings();
-			var rootPath = webSettings.RootPath.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).FirstOrDefault().TrimEnd('/');
-			return string.Concat("http", https ? "s" : "", "://", rootPath);
+			return (webSettings.IsProduction()) ? "https" : "http";
 		}
 
 		/// <summary>

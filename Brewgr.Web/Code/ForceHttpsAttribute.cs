@@ -17,18 +17,6 @@ namespace Brewgr.Web
 				throw new ArgumentNullException("filterContext");
 			}
 
-			if(filterContext.HttpContext != null)
-			{
-				var kernel = KernelPersister.Get();
-				var settings = kernel.GetService(typeof(IWebSettings)) as IWebSettings;
-
-				// Disable RequireHttps if not PROD
-				if (!(settings is ProdWebSettings))
-				{
-					return;
-				}
-			}
-
 			base.OnAuthorization(filterContext);
 		}
 	}

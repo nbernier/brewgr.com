@@ -235,7 +235,7 @@ namespace Brewgr.Web.Controllers
 
 			if (!string.IsNullOrWhiteSpace(Request["ReturnUrl"]))
 			{
-				return Redirect(string.Concat(this.WebSettings.RootPath, Server.UrlDecode(Request["ReturnUrl"])));
+				return Redirect(string.Concat("/", Server.UrlDecode(Request["ReturnUrl"])));
 			}
 
 			return RedirectToAction("Login");
@@ -570,8 +570,8 @@ namespace Brewgr.Web.Controllers
 			this.SignIn(userSummary, persistLogin);
 
 			// Redirect
-			var redirectUrl = (Session["OAuthReturnUrl"] ?? Request["ReturnUrl"]) != null ? string.Format("{0}{1}", this.WebSettings.RootPath, Session["OAuthReturnUrl"].ToString()) 
-				: this.WebSettings.RootPath; 
+			var redirectUrl = (Session["OAuthReturnUrl"] ?? Request["ReturnUrl"]) != null ? string.Format("/{1}", Session["OAuthReturnUrl"].ToString()) 
+				: "/"; 
 
 			Session.Remove("OAuthReturnUrl");
 

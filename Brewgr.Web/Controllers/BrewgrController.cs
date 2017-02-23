@@ -91,7 +91,7 @@ namespace Brewgr.Web.Controllers
 			}
 
 			// Set View Bag Values for Client
-			ViewBag.StaticRoot = Request.Url.Scheme == "https" ? this.WebSettings.StaticRootPathSecure : this.WebSettings.StaticRootPath;
+			ViewBag.StaticRoot = this.WebSettings.StaticRootPathSecure;
 
 			base.OnActionExecuting(filterContext);
 		}

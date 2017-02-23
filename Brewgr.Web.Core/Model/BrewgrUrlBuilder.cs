@@ -34,7 +34,7 @@ namespace Brewgr.Web.Core.Model
 				recipeNameForUrl += "-recipe";
 			}
 
-			return string.Format("{0}/recipe/{1}/{2}", this.WebSettings.RootPath, recipeSummary.RecipeId, recipeNameForUrl);
+			return string.Format("/recipe/{0}/{1}", recipeSummary.RecipeId, recipeNameForUrl);
 		}
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Brewgr.Web.Core.Model
         {
             var brewSessionNameForUrl = StringCleaner.CleanForUrl(brewSession.RecipeSummary.RecipeName);
             brewSessionNameForUrl += "-brew-session";
-            return string.Format("{0}/brew/{1}/{2}", this.WebSettings.RootPath, brewSession.BrewSessionId, brewSessionNameForUrl);
+            return string.Format("/brew/{0}/{1}", brewSession.BrewSessionId, brewSessionNameForUrl);
         }
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace Brewgr.Web.Core.Model
 		public string BuildUserProfileUrl(string username)
 		{
 			// NOTE: This Code Duplicated in Brewgr.Web UrlHelperExtensions
-			return string.Format("{0}/!/{1}", this.WebSettings.RootPath,  StringCleaner.CleanForUrl(username));
+			return string.Format("/!/{1}",  StringCleaner.CleanForUrl(username));
 		}
 	}
 }

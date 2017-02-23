@@ -21,12 +21,8 @@ namespace Brewgr.Web
 	{
 		public override void Load()
 		{
-			// Get Environment for Conditional Binding
-			var configEnvironment = ConfigurationManager.AppSettings["Environment"];
-
             // Settings
-            this.Bind<IWebSettings>().To<DevWebSettings>().When(_ => configEnvironment == "dev");
-            this.Bind<IWebSettings>().To<ProdWebSettings>().When(_ => configEnvironment == "prod");
+            this.Bind<IWebSettings>().To<AppSettings>().InTransientScope();
 
             // EF/UOW Setup
             this.Bind<IUnitOfWorkFactory<BrewgrContext>>().To<DefaultUnitOfWorkFactory<BrewgrContext>>().InTransientScope();

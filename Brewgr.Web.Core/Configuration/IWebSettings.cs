@@ -5,20 +5,17 @@ namespace Brewgr.Web.Core.Configuration
 {
 	public interface IWebSettings
 	{
-		/// <summary>
-		/// Gets the RootPath
-		/// </summary>
-		string RootPath { get; }
+        /// <summary>
+        /// Get the runnning env
+        /// </summary>
+        string Environment { get; }
+
+	    bool IsProduction();
 
 		/// <summary>
 		/// Gets the RootPathSecure
 		/// </summary>
 		string RootPathSecure { get; }
-
-		/// <summary>
-		/// Gets the static root path
-		/// </summary>
-		string StaticRootPath { get; }
 
 		/// <summary>
 		/// Gets the secure static root path

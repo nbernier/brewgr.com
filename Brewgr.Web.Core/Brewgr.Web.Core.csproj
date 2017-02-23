@@ -100,6 +100,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -112,9 +113,8 @@
   <ItemGroup>
     <Compile Include="Configuration\AbstractWebSettings.cs" />
     <Compile Include="Configuration\BrewgrSMTPConfiguration.cs" />
-    <Compile Include="Configuration\DevWebSettings.cs" />
+    <Compile Include="Configuration\AppSettings.cs" />
     <Compile Include="Configuration\IWebSettings.cs" />
-    <Compile Include="Configuration\ProdWebSettings.cs" />
     <Compile Include="Data\BrewgrContext.cs" />
     <Compile Include="Data\BrewgrReadOnlyRepository.cs" />
     <Compile Include="Data\DefaultBrewgrBlogConnection.cs" />

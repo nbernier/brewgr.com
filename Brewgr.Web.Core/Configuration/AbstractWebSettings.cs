@@ -5,6 +5,10 @@ namespace Brewgr.Web.Core.Configuration
 {
 	public abstract class AbstractWebSettings : IWebSettings
 	{
+	    public bool IsProduction()
+	    {
+	        return "prod".Equals(Environment, StringComparison.InvariantCultureIgnoreCase);
+	    }
 		/// <summary>
 		/// Gets the RootPath
 		/// </summary>
@@ -90,5 +94,7 @@ namespace Brewgr.Web.Core.Configuration
 		{
 			get { return "/img/mug/"; }
 		}
+
+	    public abstract string Environment { get; }
 	}
 }
