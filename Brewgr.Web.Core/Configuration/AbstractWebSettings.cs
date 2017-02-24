@@ -45,7 +45,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public string MediaUrlRoot 
 		{ 
-			get { return this.RootPath + "/Media"; }
+			get { return MediaUrlRootSecure; }
 		}
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public string MediaUrlRootSecure
 		{
-			get { return this.RootPathSecure + "/Media"; }
+			get { return "https://brewgr.com/Media"; }
 		}
 
 		/// <summary>
