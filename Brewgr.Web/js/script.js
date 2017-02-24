@@ -315,7 +315,7 @@ function home_onReady() {
             if (d.getElementById(id)) return;
             js = d.createElement(s);
             js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=324420670945545";
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=250006512125165";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     }
