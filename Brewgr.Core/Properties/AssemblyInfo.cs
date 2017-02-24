@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Brewgr.Core")]
-[assembly: AssemblyDescription("https://github.com/ctorx/brewgr.com")]
+[assembly: AssemblyDescription("https://github.com/nbernier/brewgr.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Brewgr.Core")]

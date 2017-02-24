@@ -8,7 +8,7 @@ namespace Brewgr.Web.Core.Model
 {
 	public abstract class BrewgrEmailMessage : AbstractEmailMessage
 	{
-		readonly IWebSettings WebSettings;
+		private readonly IWebSettings WebSettings;
 
 		/// <summary>
 		/// ctor the Mighty

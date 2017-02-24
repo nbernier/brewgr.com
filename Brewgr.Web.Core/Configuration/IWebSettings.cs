@@ -42,10 +42,12 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		string MediaUrlRootSecure { get; }
 
-		/// <summary>
-		/// Gets or sets the SenderName
-		/// </summary>
-		string SenderDisplayName { get; }
+        string ShopEmail { get; }
+
+        /// <summary>
+        /// Gets or sets the SenderName
+        /// </summary>
+        string SenderDisplayName { get; }
 
 		/// <summary>
 		/// Gets or sets the SenderAddress

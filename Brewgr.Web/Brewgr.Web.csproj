@@ -275,6 +275,11 @@
     <Compile Include="Models\PartnerServiceStatusViewModel.cs" />
     <Compile Include="Models\SendToShopOrderViewModel.cs" />
     <Compile Include="Models\SimpleAsyncViewModel.cs" />
+    <Compile Include="Ressources\Global.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
     <Compile Include="Validators\CommentAddViewModelValidator.cs" />
     <Compile Include="Validators\PartnerSendToShopSettingsValidator.cs" />
     <Compile Include="Validators\PartnerSettingsViewModelValidator.cs" />
@@ -2326,7 +2331,12 @@
   <ItemGroup>
     <Content Include="Views\Content\Calculators.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Ressources\Global.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\User\_PersonalInfo.cshtml" />
   </ItemGroup>

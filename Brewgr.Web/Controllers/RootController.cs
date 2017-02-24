@@ -149,7 +149,7 @@ namespace Brewgr.Web.Controllers
 		{
 			if(this.ActiveUser != null)
 			{
-				return View(new ContactViewModel { Name = this.ActiveUser.FullName, EmailAddress = this.ActiveUser.EmailAddress });	
+				return View(new ContactViewModel { Name = this.ActiveUser.FullName, EmailAddress = this.ActiveUser.EmailAddress, ShopEmail = this.WebSettings.ShopEmail});	
 			}
 
 			return View();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace Brewgr.Web.Core.Configuration
 {
@@ -68,7 +69,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public virtual string SenderAddress
 		{
-			get { return "no-reply@brewgr.com"; }
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
 		}
 
 		/// <summary>
@@ -76,13 +77,18 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public virtual IList<string> ContactFormEmailAddress
 		{
-			get { return new[] { "brewgr@brewgr.com" }; }
+			get { return new[] { this.ShopEmail }; }
 		}
 
-		/// <summary>
-		/// Gets the default number of Recipes per page
-		/// </summary>
-		public int DefaultRecipesPerPage
+        public virtual string ShopEmail
+        {
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+        }
+
+        /// <summary>
+        /// Gets the default number of Recipes per page
+        /// </summary>
+        public int DefaultRecipesPerPage
 		{
 			get { return 10; }
 		}

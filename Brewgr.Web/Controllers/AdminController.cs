@@ -13,6 +13,7 @@ using ctorx.Core.Data;
 using System.Web;
 using System.Xml;
 using System.Collections.Generic;
+using Brewgr.Web.Core.Configuration;
 using ctorx.Core.Messaging;
 using ctorx.Core.Security;
 
@@ -22,22 +23,22 @@ namespace Brewgr.Web.Controllers
 	[Authorize]
 	public class AdminController : BrewgrController
 	{
-		readonly IUnitOfWorkFactory<BrewgrContext> UnitOfWorkFactory;
-		readonly IUserService UserService;
-		readonly IAdminService AdminService;
-		readonly IMarketingService MarketingService;
-		readonly IRecipeDataService BrewDataService;
-        readonly IBeerStyleService BeerStyleService;
-		readonly IAffiliateService AffiliateService;
-		readonly IAuthenticationService AuthenticationService;
-		readonly ISendToShopService SendToShopService;
-
-		/// <summary>
-		/// ctor the Mighty
-		/// </summary>
-		public AdminController(IUnitOfWorkFactory<BrewgrContext> unitOfWorkFactory, IUserService userService, IAdminService adminService, 
+        private readonly IUnitOfWorkFactory<BrewgrContext> UnitOfWorkFactory;
+        private readonly IUserService UserService;
+        private readonly IAdminService AdminService;
+        private readonly IMarketingService MarketingService;
+        private readonly IRecipeDataService BrewDataService;
+        private readonly IBeerStyleService BeerStyleService;
+        private readonly IAffiliateService AffiliateService;
+        private readonly IAuthenticationService AuthenticationService;
+        private readonly ISendToShopService SendToShopService;
+        private readonly IWebSettings WebSettings;
+        /// <summary>
+        /// ctor the Mighty
+        /// </summary>
+        public AdminController(IUnitOfWorkFactory<BrewgrContext> unitOfWorkFactory, IUserService userService, IAdminService adminService, 
 			IMarketingService marketingService, IRecipeDataService brewDataService, IBeerStyleService beerStyleService,
-			IAffiliateService affiliateService, IAuthenticationService authenticationService, ISendToShopService sendToShopService)
+			IAffiliateService affiliateService, IAuthenticationService authenticationService, ISendToShopService sendToShopService, IWebSettings webSettings)
 		{
 			this.UnitOfWorkFactory = unitOfWorkFactory;
 			this.UserService = userService;
@@ -48,6 +49,7 @@ namespace Brewgr.Web.Controllers
 			this.AffiliateService = affiliateService;
 			this.AuthenticationService = authenticationService;
 			this.SendToShopService = sendToShopService;
+		    WebSettings = webSettings;
 		}
 
 		/// <summary>
@@ -187,7 +189,7 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		public ActionResult ResendSendToShopOrder(int sendToShopId)
 		{
-			this.SendToShopService.Notify(sendToShopId, "brewgr@brewgr.com");
+			this.SendToShopService.Notify(sendToShopId, this.WebSettings.ShopEmail);
 			return Content("200 OK");
 		}
 
