@@ -4,14 +4,14 @@ namespace Brewgr.Web.Core.Configuration
 {
 	public class DefaultFacebookConnectSettings : IFacebookConnectSettings
 	{
-		readonly IWebSettings WebSettings;
+		readonly IWebSettings _WebSettings;
 
 		/// <summary>
 		/// ctor the Mighty
 		/// </summary>
 		public DefaultFacebookConnectSettings(IWebSettings webSettings)
 		{
-			this.WebSettings = webSettings;
+			this._WebSettings = webSettings;
 		}
 
 		/// <summary>
@@ -19,7 +19,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public string ApplicationKey
 		{
-			get { return Environment.GetEnvironmentVariable("FB_ApplicationKey") ?? "ThisIsTheDevFBKeyAndShouldNotChange"; }
+			get { return _WebSettings.FB_ApplicationKey ?? "ThisIsTheDevFBKeyAndShouldNotChange"; }
 		}
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public string ApplicationSecret
 		{
-			get { return Environment.GetEnvironmentVariable("FB_ApplicationSecret") ?? "ThisIsTheDevFBSecretAndShouldNotChange"; }
+			get { return _WebSettings.FB_ApplicationSecret ?? "ThisIsTheDevFBSecretAndShouldNotChange"; }
 		}
 	}
 }

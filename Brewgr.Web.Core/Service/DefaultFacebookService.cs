@@ -10,7 +10,7 @@ namespace Brewgr.Web.Core.Service
 {
 	public class DefaultFacebookService : IFacebookConnectService
 	{
-		readonly IFacebookConnectSettings FacebookConnectSettings;
+		private readonly IFacebookConnectSettings FacebookConnectSettings;
 
 		/// <summary>
 		/// ctor the Mighty

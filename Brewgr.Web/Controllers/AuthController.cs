@@ -22,15 +22,15 @@ namespace Brewgr.Web.Controllers
 	[ForceHttps]
 	public class AuthController : BrewgrController
 	{
-		readonly IUnitOfWorkFactory<BrewgrContext> UnitOfWorkFactory;
-		readonly IUserLoginService UserLoginService;
-		readonly IAuthenticationService AuthenticationService;
-		readonly IUserResolver UserResolver;
-		readonly IOAuthService OAuthService;
-		readonly IFacebookConnectSettings FacebookConnectSettings;
-		readonly IEmailSender EmailSender;
-		readonly IEmailMessageFactory EmailMessageFactory;
-		readonly IUserService UserService;
+		private readonly IUnitOfWorkFactory<BrewgrContext> _unitOfWorkFactory;
+        private readonly IUserLoginService _userLoginService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserResolver _userResolver;
+        private readonly IOAuthService _oAuthService;
+        private readonly IFacebookConnectSettings _facebookConnectSettings;
+        private readonly IEmailSender _emailSender;
+        private readonly IEmailMessageFactory _emailMessageFactory;
+        private readonly IUserService _userService;
 
 		/// <summary>
 		/// ctor the Mighty
@@ -40,15 +40,15 @@ namespace Brewgr.Web.Controllers
 			IFacebookConnectSettings facebookConnectSettings, IEmailSender emailSender,
 			IEmailMessageFactory emailMessageFactory)
 		{
-			this.UnitOfWorkFactory = unitOfWorkFactory;
-			this.UserLoginService = userLoginService;
-			this.AuthenticationService = authService;
-			this.UserResolver = userResolver;
-			this.OAuthService = oAuthService;
-			this.UserService = userService;
-			this.FacebookConnectSettings = facebookConnectSettings;
-			this.EmailSender = emailSender;
-			this.EmailMessageFactory = emailMessageFactory;
+			this._unitOfWorkFactory = unitOfWorkFactory;
+			this._userLoginService = userLoginService;
+			this._authenticationService = authService;
+			this._userResolver = userResolver;
+			this._oAuthService = oAuthService;
+			this._userService = userService;
+			this._facebookConnectSettings = facebookConnectSettings;
+			this._emailSender = emailSender;
+			this._emailMessageFactory = emailMessageFactory;
 		}
 
 		#region SIGN UP
@@ -66,7 +66,7 @@ namespace Brewgr.Web.Controllers
 				return View("Login");
 			}
 
-			if(this.UserService.EmailAddressIsInUse(signUpViewModel.NewUserEmailAddress))
+			if(this._userService.EmailAddressIsInUse(signUpViewModel.NewUserEmailAddress))
 			{
 				this.AppendMessage(new ErrorMessage { Text = "The email address you entered is already registered" });
 				return View("Login");
@@ -102,7 +102,7 @@ namespace Brewgr.Web.Controllers
 				return View("LoginViaDialog");
 			}
 
-			if (this.UserService.EmailAddressIsInUse(signUpViewModel.NewUserEmailAddress))
+			if (this._userService.EmailAddressIsInUse(signUpViewModel.NewUserEmailAddress))
 			{
 				ViewBag.LoginViaDialogSuccess = false;
 				this.AppendMessage(new ErrorMessage { Text = "The email address you entered is already registered" });
@@ -131,16 +131,16 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		UserSummary CreateAccount(SignUpViewModel signUpViewModel)
 		{
-			using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+			using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 			{
-				var user = this.UserService.RegisterNewUser(signUpViewModel.NewUserFullName, signUpViewModel.NewUserEmailAddress, signUpViewModel.NewUserPassword);
+				var user = this._userService.RegisterNewUser(signUpViewModel.NewUserFullName, signUpViewModel.NewUserEmailAddress, signUpViewModel.NewUserPassword);
 				unitOfWork.Commit();
 
                 // Send the Email Message
-                var newAccountEmailMessage = (NewAccountEmailMessage)this.EmailMessageFactory.Make(EmailMessageType.NewAccount);
+                var newAccountEmailMessage = (NewAccountEmailMessage)this._emailMessageFactory.Make(EmailMessageType.NewAccount);
 
                 newAccountEmailMessage.ToRecipients.Add(signUpViewModel.NewUserEmailAddress);
-                this.EmailSender.Send(newAccountEmailMessage);
+                this._emailSender.Send(newAccountEmailMessage);
 
                 return Mapper.Map(user, new UserSummary());				
 			}
@@ -230,7 +230,7 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		public ActionResult Logout()
 		{
-			this.AuthenticationService.SignOut();
+			this._authenticationService.SignOut();
 			Session.Abandon();
 
 			if (!string.IsNullOrWhiteSpace(Request["ReturnUrl"]))
@@ -248,10 +248,10 @@ namespace Brewgr.Web.Controllers
 		{
 			UserSummary userSummary = null;
 
-			using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+			using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 			{
 				// Perform Login
-				if (!this.UserLoginService.Login(loginViewModel.EmailAddress, loginViewModel.Password, out userSummary))
+				if (!this._userLoginService.Login(loginViewModel.EmailAddress, loginViewModel.Password, out userSummary))
 				{
 					return null;
 				}
@@ -287,10 +287,10 @@ namespace Brewgr.Web.Controllers
 			}
 			
 			string token = null;
-			using(var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+			using(var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 			{
 				// Generate Token
-				token = this.UserLoginService.CreateUserAuthToken(passwordResetViewModel.EmailAddress);
+				token = this._userLoginService.CreateUserAuthToken(passwordResetViewModel.EmailAddress);
 
 				if(token == null)
 				{
@@ -302,11 +302,11 @@ namespace Brewgr.Web.Controllers
 			}
 
 			// Send the Email Message
-			var passwordResetEmailMessage = (PasswordResetEmailMessage)this.EmailMessageFactory.Make(EmailMessageType.PasswordReset);
+			var passwordResetEmailMessage = (PasswordResetEmailMessage)this._emailMessageFactory.Make(EmailMessageType.PasswordReset);
 			passwordResetEmailMessage.SetAuthToken(token);
 			
 			passwordResetEmailMessage.ToRecipients.Add(passwordResetViewModel.EmailAddress);
-			this.EmailSender.Send(passwordResetEmailMessage);
+			this._emailSender.Send(passwordResetEmailMessage);
 
 			if (!string.IsNullOrWhiteSpace(Request.Form["LoginViaDialog"]))
 			{
@@ -332,7 +332,7 @@ namespace Brewgr.Web.Controllers
 			}
 
 			// Check if Auth Token is Expired
-			if(this.UserLoginService.AuthTokenIsExired(authToken))
+			if(this._userLoginService.AuthTokenIsExired(authToken))
 			{
 				return this.Issue404();
 			}
@@ -353,16 +353,16 @@ namespace Brewgr.Web.Controllers
 			}
 
 			// Check if Auth Token is Expired
-			if (this.UserLoginService.AuthTokenIsExired(setPasswordViewModel.AuthToken))
+			if (this._userLoginService.AuthTokenIsExired(setPasswordViewModel.AuthToken))
 			{
 				return this.Issue404();
 			}
 
-			using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+			using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 			{
 				try
 				{
-					this.UserLoginService.SetPasswordUsingAuthToken(setPasswordViewModel.AuthToken, setPasswordViewModel.Password);
+					this._userLoginService.SetPasswordUsingAuthToken(setPasswordViewModel.AuthToken, setPasswordViewModel.Password);
 					unitOfWork.Commit();
 
 					this.ForwardMessage(new SuccessMessage { Text = "Your password has been reset.  You may now login using your new password." });
@@ -396,16 +396,16 @@ namespace Brewgr.Web.Controllers
 				return RedirectToAction("settings", "user");
 			}
 
-			using(var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+			using(var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 			{
 				try
 				{
-					if(!this.UserLoginService.VerifyUserPassword(this.ActiveUser.UserId, changePasswordViewModel.CurrentPassword))
+					if(!this._userLoginService.VerifyUserPassword(this.ActiveUser.UserId, changePasswordViewModel.CurrentPassword))
 					{
                         return Json(new { Success = false, Message = "The current password you provided is not correct" });
 					}
 
-					this.UserLoginService.SetUserPassword(this.ActiveUser.UserId, changePasswordViewModel.NewPassword);
+					this._userLoginService.SetUserPassword(this.ActiveUser.UserId, changePasswordViewModel.NewPassword);
 					unitOfWork.Commit();
 				}
 				catch (Exception ex)
@@ -467,9 +467,10 @@ namespace Brewgr.Web.Controllers
 			}
 
 			ViewBag.FacebookAuthRedirectUrl = fbRedirectUrl.ToLower();
+		    ViewBag.FacebookApplicationKey = _facebookConnectSettings.ApplicationKey;
 
-			// Set Facebook Auth State Token
-			var oauthStateToken = Guid.NewGuid().ToString().Replace("-", "");
+            // Set Facebook Auth State Token
+            var oauthStateToken = Guid.NewGuid().ToString().Replace("-", "");
 			Session["OAuthStateToken"] = "fb-" + oauthStateToken;
 		}
 
@@ -486,21 +487,21 @@ namespace Brewgr.Web.Controllers
 				throw new SecurityException("OAuth State does not match last generated state - [" + state + "] VS. [" + (Session["OAuthStateToken"] as string) + "]");
 			}
 
-			var oAuthUserInfo = this.OAuthService.GetUserInfoFromAuthCode(state, code, loginUrl);
+			var oAuthUserInfo = this._oAuthService.GetUserInfoFromAuthCode(state, code, loginUrl);
 
-			var userId = this.OAuthService.GetLocalUserIdFromOAuthUserInfo(oAuthUserInfo);
+			var userId = this._oAuthService.GetLocalUserIdFromOAuthUserInfo(oAuthUserInfo);
 
 			if (userId == null)
 			{
 				// LOCATE Existing Users
-				userId = this.OAuthService.GetLocalUserIdFromEmailAddress(oAuthUserInfo.EmailAddress);
+				userId = this._oAuthService.GetLocalUserIdFromEmailAddress(oAuthUserInfo.EmailAddress);
 
 				// CONNECT Existing Users
 				if (userId != null)
 				{
-					using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+					using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 					{
-						this.OAuthService.ConnectLocalUserToOAuthProvider(userId.Value, oAuthUserInfo);
+						this._oAuthService.ConnectLocalUserToOAuthProvider(userId.Value, oAuthUserInfo);
 						unitOfWork.Commit();
 					}
 				}
@@ -509,32 +510,32 @@ namespace Brewgr.Web.Controllers
 				if (userId == null)
 				{
 					User newUser;
-					using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+					using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 					{
 						// Register the User
-						newUser = this.OAuthService.RegisterNewUser(oAuthUserInfo);
+						newUser = this._oAuthService.RegisterNewUser(oAuthUserInfo);
 						unitOfWork.Commit();
 					}
 
 					userId = newUser.UserId;
 
                     // Send the Email Message
-                    var newAccountEmailMessage = (NewAccountEmailMessage)this.EmailMessageFactory.Make(EmailMessageType.NewAccount);
+                    var newAccountEmailMessage = (NewAccountEmailMessage)this._emailMessageFactory.Make(EmailMessageType.NewAccount);
 
                     newAccountEmailMessage.ToRecipients.Add(oAuthUserInfo.EmailAddress);
-                    this.EmailSender.Send(newAccountEmailMessage);
+                    this._emailSender.Send(newAccountEmailMessage);
 
                     // Track the Login
-                    using (var unitOfWork = this.UnitOfWorkFactory.NewUnitOfWork())
+                    using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
 					{
-						this.UserLoginService.TrackLogin(userId.Value);
+						this._userLoginService.TrackLogin(userId.Value);
 						unitOfWork.Commit();
 					}
 				}
 			}
 
 			// Get the User Summary
-			var userSummary = this.UserService.GetUserSummaryById(userId.Value);
+			var userSummary = this._userService.GetUserSummaryById(userId.Value);
 
 			Session.Remove("OAuthStateToken");
 
@@ -557,8 +558,8 @@ namespace Brewgr.Web.Controllers
 		void SignIn(UserSummary userSummary, bool persistLogin)
 		{
 			// Sign User In
-			this.AuthenticationService.SignIn(userSummary.UserId.ToString(), persistLogin);
-			this.UserResolver.Persist(userSummary);
+			this._authenticationService.SignIn(userSummary.UserId.ToString(), persistLogin);
+			this._userResolver.Persist(userSummary);
 		}
 
 		/// <summary>

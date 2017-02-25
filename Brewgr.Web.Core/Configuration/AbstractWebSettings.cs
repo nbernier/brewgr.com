@@ -85,6 +85,15 @@ namespace Brewgr.Web.Core.Configuration
             get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
         }
 
+	    public virtual string FB_ApplicationKey
+	    {
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+        }
+
+        public virtual string FB_ApplicationSecret
+        {
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+        }
         /// <summary>
         /// Gets the default number of Recipes per page
         /// </summary>

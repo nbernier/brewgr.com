@@ -58,5 +58,6 @@ namespace Brewgr.Web.Core.Configuration
             get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
         }
 
+
     }
 }

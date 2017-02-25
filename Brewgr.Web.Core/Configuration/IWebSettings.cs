@@ -68,5 +68,10 @@ namespace Brewgr.Web.Core.Configuration
 		/// Gets the default image root
 		/// </summary>
 		string DefaultRecipeImageRoot { get; }
-	}
+
+        string FB_ApplicationSecret { get; }
+        string FB_ApplicationKey { get; }
+
+
+    }
 }
