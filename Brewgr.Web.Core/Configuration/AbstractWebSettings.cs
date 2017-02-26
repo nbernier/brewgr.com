@@ -69,7 +69,7 @@ namespace Brewgr.Web.Core.Configuration
 		/// </summary>
 		public virtual string SenderAddress
 		{
-            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("get_", "")]; }
 		}
 
 		/// <summary>
@@ -82,17 +82,17 @@ namespace Brewgr.Web.Core.Configuration
 
         public virtual string ShopEmail
         {
-            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("get_", "")]; }
         }
 
 	    public virtual string FB_ApplicationKey
 	    {
-            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("get_", "")]; }
         }
 
         public virtual string FB_ApplicationSecret
         {
-            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name]; }
+            get { return ConfigurationManager.AppSettings[System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("get_", "")]; }
         }
         /// <summary>
         /// Gets the default number of Recipes per page

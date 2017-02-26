@@ -31,6 +31,7 @@ namespace Brewgr.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IEmailMessageFactory _emailMessageFactory;
         private readonly IUserService _userService;
+	    private readonly IWebSettings _webSettings;
 
 		/// <summary>
 		/// ctor the Mighty
@@ -38,7 +39,7 @@ namespace Brewgr.Web.Controllers
 		public AuthController(IUnitOfWorkFactory<BrewgrContext> unitOfWorkFactory, IUserLoginService userLoginService, 
 			IAuthenticationService authService, IUserResolver userResolver, IOAuthService oAuthService, IUserService userService,
 			IFacebookConnectSettings facebookConnectSettings, IEmailSender emailSender,
-			IEmailMessageFactory emailMessageFactory)
+			IEmailMessageFactory emailMessageFactory, IWebSettings webSettings)
 		{
 			this._unitOfWorkFactory = unitOfWorkFactory;
 			this._userLoginService = userLoginService;
@@ -49,6 +50,7 @@ namespace Brewgr.Web.Controllers
 			this._facebookConnectSettings = facebookConnectSettings;
 			this._emailSender = emailSender;
 			this._emailMessageFactory = emailMessageFactory;
+		    _webSettings = webSettings;
 		}
 
 		#region SIGN UP
@@ -235,7 +237,7 @@ namespace Brewgr.Web.Controllers
 
 			if (!string.IsNullOrWhiteSpace(Request["ReturnUrl"]))
 			{
-				return Redirect(string.Concat("/", Server.UrlDecode(Request["ReturnUrl"])));
+				return Redirect(string.Concat($"{_webSettings.RootPathSecure}/", Server.UrlDecode(Request["ReturnUrl"])));
 			}
 
 			return RedirectToAction("Login");
@@ -576,7 +578,7 @@ namespace Brewgr.Web.Controllers
 
 			Session.Remove("OAuthReturnUrl");
 
-			return RedirectPermanent(redirectUrl);
+			return RedirectPermanent(_webSettings.RootPathSecure + redirectUrl);
 		}
 	}
 }
