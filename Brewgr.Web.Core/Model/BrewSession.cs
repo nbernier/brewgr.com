@@ -196,10 +196,10 @@ namespace Brewgr.Web.Core.Model
 		/// </summary>
 		public DateTime? ConditionDate { get; set; }
 
-		/// <summary>
-		/// Gets or sets the ConditionTypeId
-		/// </summary>
-		public int? ConditionTypeId { get; set; }
+        /// <summary>
+        /// Gets or sets the ConditionTypeId
+        /// </summary>
+        public int? ConditionTypeId { get; set; }
 
 		/// <summary>
 		/// Gets or sets the PrimingSugarType
@@ -241,7 +241,9 @@ namespace Brewgr.Web.Core.Model
 		/// </summary>
 		public IList<TastingNote> TastingNotes { get; set; }
 
-		/// <summary>
+	    public DateTime? RackingDate { get; set; }
+
+	    /// <summary>
 		/// Determines if a recipe was brewed by a specific user 
 		/// </summary>
 		public bool WasBrewedBy(int userId)

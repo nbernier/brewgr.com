@@ -3,11 +3,13 @@
 @model BrewSessionViewModel
 
 <style type="text/css">
-    .working-dialog { min-width: 225px; }
+    .working-dialog {
+        min-width: 225px;
+    }
 </style>
 
 <div class="brewsession@(@Model.IsNewBrewSession() ? " newbrewsession" : "")">
-    
+
     <input type="hidden" name="s_BrewSessionId" data-name="s_BrewSessionId" value="@Model.BrewSessionId" />
     <input type="hidden" name="s_RecipeId" data-name="s_RecipeId" value="@Model.RecipeId" />
 
@@ -47,23 +49,23 @@
                 }
                 @if (Model.BrewSessionId > 0)
                 {
-                    if(Model.RecipeSummary.BrewSessionCount > 1)
+                    if (Model.RecipeSummary.BrewSessionCount > 1)
                     {
                         <a href="@Url.RecipeBrewSessionsUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name)" class="button button_small button_black">Other Brew Sessions</a>
                     }
                     <a href="@Url.RecipeEditUrl(Model.RecipeId)" class="button button_small button_gray floatright"><img src="~/img/icons/calculator.png" alt="edit" class="valignmiddle marginright10" /> <span class="valignmiddle">Go To Recipe</span></a>
-                }                
+                }
             </div>
         </div>
     </div>
-    
+
     @* Water Infusion *@
     @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
     {
         <div class="groupbox">
             <span><h3 class="floatleft">Water Infusion</h3></span>
             @Html.Partial("_WaterInfusionCalculator", Model)
-        </div>        
+        </div>
     }
 
     @* Mash / Boil *@
@@ -200,7 +202,7 @@
                         <span data-unit="s"></span>
                         <span data-unit="m"></span>
                         <span class="predicted">(@string.Format("{0:0.000}", Model.RecipeSummary.Og) predicted)</span>
-                    </span>                    
+                    </span>
                 </div>
                 <div class="item">
                     <label>
@@ -217,7 +219,32 @@
             </div>
         </div>
     </div>
-
+    @* Racking *@
+    <div class="groupbox">
+        <span><h3 class="floatleft">Racking Date</h3></span>
+        <div class="padding18">
+            <div class="summary">
+                <div class="item">
+                    <label>
+                        Racking Date
+                        <span class="helptip" original-title="The date that you transferred the fermented wort from your primary fermenter to the second fermenter">&nbsp;</span>
+                    </label>
+                    <span>
+                        <input type="text" data-name="s_RackingDate" value="@(Model.RackingDate.HasValue ? Model.RackingDate.Value.ToShortDateString() : "")" class="datepicker" />
+                    </span>
+                </div>
+                <div class="item">
+                    <label>
+                        Estimated Final Date
+                        <span class="helptip" original-title="The date that your beer should be ready for bottling.">&nbsp;</span>
+                    </label>
+                    <span>
+                        <input type="text" data-name="s_RackingnDate" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : DateTime.Now.AddMonths(1).ToShortDateString())" class="datepicker" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
     @* Conditioning *@
     <div class="groupbox">
         <span><h3 class="floatleft">Conditioning</h3></span>

@@ -11,7 +11,7 @@
 }
 
 <div id="brewsessiondetail-view" class="content builder-wrapper">
-    
+
     <div class="primary builder">
         <div class="intro">
             <a href="@Url.UserProfileUrl(Model.BrewedByUsername)"><img src="@UserAvatar.GetAvatar(50, Model.BrewedByUser.EmailAddress)" width="50" height="50" alt="@Model.BrewedByUsername" /></a>
@@ -144,53 +144,53 @@
         }
 
         @* Mash / Boil *@
-    <div class="groupbox">
-        <span><h3 class="floatleft">@(Model.RecipeSummary.GetRecipeType() == RecipeType.Extract ? "Boil" : "Mash / Boil")</h3></span>
-        <div class="padding18">
+        <div class="groupbox">
+            <span><h3 class="floatleft">@(Model.RecipeSummary.GetRecipeType() == RecipeType.Extract ? "Boil" : "Mash / Boil")</h3></span>
+            <div class="padding18">
 
-            @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
+                @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
             {
-                <div class="summary marginbottom20">
-                    <h3>Mash</h3>
+                    <div class="summary marginbottom20">
+                        <h3>Mash</h3>
+                        <div class="item">
+                            <label>Mash PH</label>
+                            <span>@Model.ShowValue(Model.MashPH, Model.MashPH.ToString())</span>
+                        </div>
+                        <div class="item">
+                            <label>Mash Start Temp</label>
+                            <span>@Html.Raw(Model.ShowValue(Model.MashStartTemp, Model.MashStartTemp + "&deg;" + Model.UnitLabel("F", "C")))</span>
+                        </div>
+                        <div class="item">
+                            <label>Mash End Temp</label>
+                            <span>@Html.Raw(Model.ShowValue(Model.MashEndTemp, Model.MashEndTemp + "&deg;" + Model.UnitLabel("F", "C")))</span>
+                        </div>
+                        <div class="item">
+                            <label>Mash Time</label>
+                            <span>@Model.ShowValue(Model.MashTime, Model.MashTime + " minutes")</span>
+                        </div>
+                    </div>
+                }
+                <div class="summary">
+                    <h3>Boil</h3>
                     <div class="item">
-                        <label>Mash PH</label>
-                        <span>@Model.ShowValue(Model.MashPH, Model.MashPH.ToString())</span>
+                        <label>Pre-Boil Gravity</label>
+                        <span>@Model.ShowValue(Model.PreBoilGravity, string.Format("{0:0.000}", Model.PreBoilGravity))</span>
                     </div>
                     <div class="item">
-                        <label>Mash Start Temp</label>
-                        <span>@Html.Raw(Model.ShowValue(Model.MashStartTemp, Model.MashStartTemp + "&deg;" + Model.UnitLabel("F", "C")))</span>
+                        <label>Boil Volume</label>
+                        <span>@Model.ShowValue(Model.BoilVolumeActual, Model.BoilVolumeActual + Model.UnitLabel(" gallons", " liters"))</span>
                     </div>
                     <div class="item">
-                        <label>Mash End Temp</label>
-                        <span>@Html.Raw(Model.ShowValue(Model.MashEndTemp, Model.MashEndTemp + "&deg;" + Model.UnitLabel("F", "C")))</span>
+                        <label>Boil Time</label>
+                        <span>@Model.ShowValue(Model.BoilTimeActual, Model.BoilTimeActual + " minutes")</span>
                     </div>
                     <div class="item">
-                        <label>Mash Time</label>
-                        <span>@Model.ShowValue(Model.MashTime, Model.MashTime + " minutes")</span>
+                        <label>Post-Boil Volume</label>
+                        <span>@Model.ShowValue(Model.PostBoilVolume, Model.PostBoilVolume + Model.UnitLabel(" gallons", " liters"))</span>
                     </div>
-                </div>
-            }
-            <div class="summary">
-                <h3>Boil</h3>
-                <div class="item">
-                    <label>Pre-Boil Gravity</label>
-                    <span>@Model.ShowValue(Model.PreBoilGravity, string.Format("{0:0.000}", Model.PreBoilGravity))</span>
-                </div>
-                <div class="item">
-                    <label>Boil Volume</label>
-                    <span>@Model.ShowValue(Model.BoilVolumeActual, Model.BoilVolumeActual + Model.UnitLabel(" gallons", " liters"))</span>
-                </div>
-                <div class="item">
-                    <label>Boil Time</label>
-                    <span>@Model.ShowValue(Model.BoilTimeActual, Model.BoilTimeActual + " minutes")</span>
-                </div>
-                <div class="item">
-                    <label>Post-Boil Volume</label>
-                    <span>@Model.ShowValue(Model.PostBoilVolume, Model.PostBoilVolume + Model.UnitLabel(" gallons", " liters"))</span>
                 </div>
             </div>
         </div>
-    </div>
 
         @* Fermentation *@
         <div class="groupbox">
@@ -212,7 +212,22 @@
                 </div>
             </div>
         </div>
-
+        @*Racking*@
+        <div class="groupbox">
+            <span><h3 class="floatleft">Racking</h3></span>
+            <div class="padding18">
+                <div class="summary">
+                    <div class="item">
+                        <label>Racking Date</label>
+                        <span>@Model.ShowValue(Model.RackingDate, Model.RackingDate.HasValue ? Model.RackingDate.Value.ToShortDateString() : null)</span>
+                    </div>
+                    <div class="item">
+                        <label>Estimated Kegging/Botteling Date</label>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
         @* Conditioning *@
         <div class="groupbox">
             <span><h3 class="floatleft">Conditioning</h3></span>
@@ -234,10 +249,10 @@
                                 <label>Priming Sugar Type</label>
                                 <span>@Model.ShowValue(Model.PrimingSugarType, Model.PrimingSugarType)</span>
                             </div>
-                            <div class="item">
-                                <label>Priming Sugar Amount</label>
-                                <span>@Model.ShowValue(Model.PrimingSugarAmount, Model.PrimingSugarAmount + Model.UnitLabel("oz", "g"))</span>
-                            </div>
+                                        <div class="item">
+                                            <label>Priming Sugar Amount</label>
+                                            <span>@Model.ShowValue(Model.PrimingSugarAmount, Model.PrimingSugarAmount + Model.UnitLabel("oz", "g"))</span>
+                                        </div>
                         }
                         else
                         {
@@ -269,7 +284,7 @@
         }
 
         <a href="@Url.RecipeDetailUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name, Model.RecipeSummary.StyleName)" class="button button_black margintop10 widebutton">Go To Recipe</a>
-        
+
         @* Advertisement *@
         @if (ViewBag.ActiveUser == null)
         {

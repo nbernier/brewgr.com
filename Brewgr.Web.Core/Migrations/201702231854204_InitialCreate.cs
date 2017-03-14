@@ -30,8 +30,8 @@ namespace Brewgr.Web.Core.Migrations
                 c => new
                     {
                         UserId = c.Int(nullable: false, identity: true),
-                        Username = c.String(),
-                        EmailAddress = c.String(),
+                        Username = c.String(maxLength:50),
+                        EmailAddress = c.String(maxLength:255),
                         Password = c.Binary(),
                         FirstName = c.String(),
                         LastName = c.String(),
@@ -42,7 +42,9 @@ namespace Brewgr.Web.Core.Migrations
                         CalculatedUsername = c.String(),
                         DateModified = c.DateTime(),
                     })
-                .PrimaryKey(t => t.UserId);
+                .PrimaryKey(t => t.UserId)
+                .Index(i => i.Username, unique: true)
+                .Index(i=>i.EmailAddress,unique:true);
             
             CreateTable(
                 "dbo.Badge",
@@ -109,49 +111,8 @@ namespace Brewgr.Web.Core.Migrations
                 .PrimaryKey(t => t.BrewSessionId)
                 .ForeignKey("dbo.User", t => t.UserId, cascadeDelete: true)
                 .ForeignKey("dbo.Recipe", t => t.RecipeId, cascadeDelete: true)
-                .ForeignKey("dbo.RecipeSummary", t => t.RecipeId, cascadeDelete: true)
                 .Index(t => t.RecipeId)
                 .Index(t => t.UserId);
-            
-            CreateTable(
-                "dbo.RecipeSummary",
-                c => new
-                    {
-                        RecipeId = c.Int(nullable: false),
-                        RecipeTypeId = c.Int(nullable: false),
-                        OriginalRecipeId = c.Int(),
-                        OriginalRecipeName = c.String(),
-                        UnitTypeId = c.Int(nullable: false),
-                        IbuFormulaId = c.Int(nullable: false),
-                        RecipeName = c.String(),
-                        ImageUrlRoot = c.String(),
-                        Description = c.String(),
-                        CreatedBy = c.Int(nullable: false),
-                        CreatedByUserName = c.String(),
-                        CreatedByUserEmail = c.String(),
-                        BjcpStyleSubCategoryId = c.String(),
-                        BJCPStyleName = c.String(),
-                        BatchSize = c.Double(nullable: false),
-                        BoilSize = c.Double(nullable: false),
-                        BoilTime = c.Int(nullable: false),
-                        Efficiency = c.Double(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
-                        IsPublic = c.Boolean(nullable: false),
-                        DateCreated = c.DateTime(nullable: false),
-                        DateModified = c.DateTime(),
-                        Og = c.Double(nullable: false),
-                        Fg = c.Double(nullable: false),
-                        Srm = c.Double(nullable: false),
-                        Ibu = c.Double(nullable: false),
-                        BgGu = c.Double(nullable: false),
-                        Abv = c.Double(nullable: false),
-                        Calories = c.Int(nullable: false),
-                        UserIsAdmin = c.Boolean(nullable: false),
-                        BrewSessionCount = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.RecipeId)
-                .ForeignKey("dbo.Recipe", t => t.RecipeId)
-                .Index(t => t.RecipeId);
             
             CreateTable(
                 "dbo.RecipeComment",
@@ -167,7 +128,6 @@ namespace Brewgr.Web.Core.Migrations
                 .PrimaryKey(t => t.RecipeCommentId)
                 .ForeignKey("dbo.Recipe", t => t.RecipeId, cascadeDelete: true)
                 .ForeignKey("dbo.User", t => t.UserId, cascadeDelete: true)
-                .ForeignKey("dbo.RecipeSummary", t => t.RecipeId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RecipeId);
             
@@ -203,7 +163,6 @@ namespace Brewgr.Web.Core.Migrations
                     })
                 .PrimaryKey(t => t.RecipeId)
                 .ForeignKey("dbo.BjcpStyle", t => t.BjcpStyleSubCategoryId)
-                .ForeignKey("dbo.BjcpStyleSummary", t => t.BjcpStyleSubCategoryId)
                 .ForeignKey("dbo.User", t => t.CreatedBy, cascadeDelete: false)
                 .Index(t => t.CreatedBy)
                 .Index(t => t.BjcpStyleSubCategoryId);
@@ -264,21 +223,7 @@ namespace Brewgr.Web.Core.Migrations
                         UrlFriendlyName = c.String(),
                     })
                 .PrimaryKey(t => t.SubCategoryId)
-                .ForeignKey("dbo.BjcpStyle", t => t.SubCategoryId)
                 .Index(t => t.SubCategoryId);
-            
-            CreateTable(
-                "dbo.BjcpStyleSummary",
-                c => new
-                    {
-                        SubCategoryId = c.String(nullable: false, maxLength: 128),
-                        CategoryId = c.Int(nullable: false),
-                        CategoryName = c.String(),
-                        SubCategoryName = c.String(),
-                        UrlFriendlyName = c.String(),
-                        RecipeCount = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.SubCategoryId);
             
             CreateTable(
                 "dbo.RecipeFermentable",
@@ -601,17 +546,7 @@ namespace Brewgr.Web.Core.Migrations
                 .ForeignKey("dbo.Partner", t => t.PartnerId, cascadeDelete: true)
                 .Index(t => t.PartnerId);
             
-            CreateTable(
-                "dbo.PartnerSummary",
-                c => new
-                    {
-                        PartnerId = c.Int(nullable: false),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.PartnerId)
-                .ForeignKey("dbo.Partner", t => t.PartnerId)
-                .Index(t => t.PartnerId);
-            
+           
             CreateTable(
                 "dbo.PartnerSendToShopIngredient",
                 c => new
@@ -657,28 +592,6 @@ namespace Brewgr.Web.Core.Migrations
                 .ForeignKey("dbo.User", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
-            CreateTable(
-                "dbo.UserSummary",
-                c => new
-                    {
-                        UserId = c.Int(nullable: false),
-                        Username = c.String(),
-                        EmailAddress = c.String(),
-                        FirstName = c.String(),
-                        LastName = c.String(),
-                        DateCreated = c.DateTime(nullable: false),
-                        RecipeCount = c.Int(nullable: false),
-                        BrewSessionCount = c.Int(nullable: false),
-                        CommentCount = c.Int(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
-                        IsAdmin = c.Boolean(nullable: false),
-                        IsPartner = c.Boolean(nullable: false),
-                        Bio = c.String(),
-                        HasCustomUsername = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.User", t => t.UserId)
-                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AffiliateProduct",
@@ -726,47 +639,18 @@ namespace Brewgr.Web.Core.Migrations
                     })
                 .PrimaryKey(t => t.BrewSessionCommentId)
                 .ForeignKey("dbo.User", t => t.UserId, cascadeDelete: true)
-                .ForeignKey("dbo.BrewSessionSummary", t => t.BrewSessionId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.BrewSessionId);
             
-            CreateTable(
-                "dbo.BrewSessionSummary",
-                c => new
-                    {
-                        BrewSessionId = c.Int(nullable: false, identity: true),
-                        RecipeId = c.Int(nullable: false),
-                        RecipeTypeId = c.Int(nullable: false),
-                        RecipeName = c.String(),
-                        RecipeBjcpStyleSubCategoryId = c.String(),
-                        RecipeBjcpStyleName = c.String(),
-                        BrewedBy = c.Int(nullable: false),
-                        BrewedByUsername = c.String(),
-                        BrewedByUserEmail = c.String(),
-                        BrewDate = c.DateTime(nullable: false),
-                        Summary = c.String(),
-                        RecipeImageUrlRoot = c.String(),
-                        IsActive = c.Boolean(nullable: false),
-                        IsPublic = c.Boolean(nullable: false),
-                        HasMashBoil = c.Boolean(nullable: false),
-                        HasWaterInfusion = c.Boolean(nullable: false),
-                        HasFermentation = c.Boolean(nullable: false),
-                        HasConditioning = c.Boolean(nullable: false),
-                        HasTastingNotes = c.Boolean(nullable: false),
-                        DateCreated = c.DateTime(nullable: false),
-                        DateModified = c.DateTime(),
-                        RecipeSrm = c.Double(),
-                    })
-                .PrimaryKey(t => t.BrewSessionId);
-            
+           
             CreateTable(
                 "dbo.Content",
                 c => new
                     {
                         ContentId = c.Int(nullable: false, identity: true),
                         ContentTypeId = c.Int(nullable: false),
-                        Name = c.String(),
-                        ShortName = c.String(),
+                        Name = c.String(maxLength:100),
+                        ShortName = c.String(maxLength:25),
                         Text = c.String(),
                         IsActive = c.Boolean(nullable: false),
                         IsPublic = c.Boolean(nullable: false),
@@ -775,7 +659,9 @@ namespace Brewgr.Web.Core.Migrations
                         DateCreated = c.DateTime(nullable: false),
                         DateModified = c.DateTime(),
                     })
-                .PrimaryKey(t => t.ContentId);
+                .PrimaryKey(t => t.ContentId)
+                .Index(i=>i.Name, unique:true)
+                .Index(i => i.ShortName, unique: true);
             
             CreateTable(
                 "dbo.FermentableAffiliateProduct",
@@ -806,16 +692,6 @@ namespace Brewgr.Web.Core.Migrations
                 .PrimaryKey(t => new { t.IngredientTypeId, t.Category });
             
             CreateTable(
-                "dbo.MiniUserSummary",
-                c => new
-                    {
-                        UserId = c.Int(nullable: false, identity: true),
-                        Username = c.String(),
-                        EmailAddress = c.String(),
-                    })
-                .PrimaryKey(t => t.UserId);
-            
-            CreateTable(
                 "dbo.NewsletterSignup",
                 c => new
                     {
@@ -827,22 +703,6 @@ namespace Brewgr.Web.Core.Migrations
                     })
                 .PrimaryKey(t => t.NewsletterSignupId);
             
-            CreateTable(
-                "dbo.RecipeCommentSummary",
-                c => new
-                    {
-                        RecipeCommentId = c.Int(nullable: false, identity: true),
-                        UserId = c.Int(nullable: false),
-                        RecipeId = c.Int(nullable: false),
-                        UserName = c.String(),
-                        EmailAddress = c.String(),
-                        CommentText = c.String(),
-                        DateCreated = c.DateTime(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.RecipeCommentId)
-                .ForeignKey("dbo.Recipe", t => t.RecipeId, cascadeDelete: true)
-                .Index(t => t.RecipeId);
             
             CreateTable(
                 "dbo.SendToShopOrderItem",
@@ -879,27 +739,7 @@ namespace Brewgr.Web.Core.Migrations
                     })
                 .PrimaryKey(t => t.SendToShopOrderId);
             
-            CreateTable(
-                "dbo.TastingNoteSummary",
-                c => new
-                    {
-                        TastingNoteId = c.Int(nullable: false, identity: true),
-                        BrewSessionId = c.Int(),
-                        RecipeId = c.Int(nullable: false),
-                        RecipeName = c.String(),
-                        RecipeStyleName = c.String(),
-                        RecipeImage = c.String(),
-                        RecipeSrm = c.Double(nullable: false),
-                        UserId = c.Int(nullable: false),
-                        TastingUsername = c.String(),
-                        TastingUserEmailAddress = c.String(),
-                        TasteDate = c.DateTime(nullable: false),
-                        Rating = c.Double(nullable: false),
-                        Notes = c.String(),
-                        DateCreated = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.TastingNoteId);
-            
+         
             CreateTable(
                 "dbo.UserAuthToken",
                 c => new
@@ -965,20 +805,16 @@ namespace Brewgr.Web.Core.Migrations
             DropForeignKey("dbo.UserFeedback", "UserId", "dbo.User");
             DropForeignKey("dbo.UserAuthToken", "UserId", "dbo.User");
             DropForeignKey("dbo.SendToShopOrderItem", "SendToShopOrderId", "dbo.SendToShopOrder");
-            DropForeignKey("dbo.RecipeCommentSummary", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.FermentableAffiliateProduct", "FermentableId", "dbo.Fermentable");
             DropForeignKey("dbo.FermentableAffiliateProduct", "AffiliateProductId", "dbo.AffiliateProduct");
-            DropForeignKey("dbo.BrewSessionComment", "BrewSessionId", "dbo.BrewSessionSummary");
             DropForeignKey("dbo.BrewSessionComment", "UserId", "dbo.User");
             DropForeignKey("dbo.AffiliateProduct", "AffiliateId", "dbo.Affiliate");
             DropForeignKey("dbo.Adjunct", "CreatedByUserId", "dbo.User");
-            DropForeignKey("dbo.UserSummary", "UserId", "dbo.User");
             DropForeignKey("dbo.UserReputationAward", "UserId", "dbo.User");
             DropForeignKey("dbo.UserPartnerAdmin", "UserId", "dbo.User");
             DropForeignKey("dbo.UserPartnerAdmin", "PartnerId", "dbo.Partner");
             DropForeignKey("dbo.PartnerSendToShopSettings", "PartnerId", "dbo.Partner");
             DropForeignKey("dbo.PartnerSendToShopIngredient", "PartnerId", "dbo.Partner");
-            DropForeignKey("dbo.PartnerSummary", "PartnerId", "dbo.Partner");
             DropForeignKey("dbo.PartnerService", "PartnerId", "dbo.Partner");
             DropForeignKey("dbo.UserOAuthUserId", "UserId", "dbo.User");
             DropForeignKey("dbo.UserNotificationType", "UserId", "dbo.User");
@@ -988,15 +824,12 @@ namespace Brewgr.Web.Core.Migrations
             DropForeignKey("dbo.TastingNote", "UserId", "dbo.User");
             DropForeignKey("dbo.TastingNote", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.TastingNote", "BrewSessionId", "dbo.BrewSession");
-            DropForeignKey("dbo.BrewSession", "RecipeId", "dbo.RecipeSummary");
-            DropForeignKey("dbo.RecipeComment", "RecipeId", "dbo.RecipeSummary");
             DropForeignKey("dbo.RecipeComment", "UserId", "dbo.User");
             DropForeignKey("dbo.RecipeYeast", "IngredientId", "dbo.Yeast");
             DropForeignKey("dbo.Yeast", "CreatedByUserId", "dbo.User");
             DropForeignKey("dbo.RecipeYeast", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.Recipe", "CreatedBy", "dbo.User");
             DropForeignKey("dbo.RecipeStep", "RecipeId", "dbo.Recipe");
-            DropForeignKey("dbo.RecipeSummary", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeMetaData", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeComment", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeMashStep", "RecipeId", "dbo.Recipe");
@@ -1009,7 +842,6 @@ namespace Brewgr.Web.Core.Migrations
             DropForeignKey("dbo.RecipeFermentable", "IngredientId", "dbo.Fermentable");
             DropForeignKey("dbo.Fermentable", "CreatedByUserId", "dbo.User");
             DropForeignKey("dbo.BrewSession", "RecipeId", "dbo.Recipe");
-            DropForeignKey("dbo.Recipe", "BjcpStyleSubCategoryId", "dbo.BjcpStyleSummary");
             DropForeignKey("dbo.Recipe", "BjcpStyleSubCategoryId", "dbo.BjcpStyle");
             DropForeignKey("dbo.BjcpStyleUrlFriendlyName", "SubCategoryId", "dbo.BjcpStyle");
             DropForeignKey("dbo.RecipeAdjunct", "RecipeId", "dbo.Recipe");
@@ -1022,17 +854,14 @@ namespace Brewgr.Web.Core.Migrations
             DropIndex("dbo.UserFeedback", new[] { "UserId" });
             DropIndex("dbo.UserAuthToken", new[] { "UserId" });
             DropIndex("dbo.SendToShopOrderItem", new[] { "SendToShopOrderId" });
-            DropIndex("dbo.RecipeCommentSummary", new[] { "RecipeId" });
             DropIndex("dbo.FermentableAffiliateProduct", new[] { "FermentableId" });
             DropIndex("dbo.FermentableAffiliateProduct", new[] { "AffiliateProductId" });
             DropIndex("dbo.BrewSessionComment", new[] { "BrewSessionId" });
             DropIndex("dbo.BrewSessionComment", new[] { "UserId" });
             DropIndex("dbo.AffiliateProduct", new[] { "AffiliateId" });
-            DropIndex("dbo.UserSummary", new[] { "UserId" });
             DropIndex("dbo.UserReputationAward", new[] { "UserId" });
             DropIndex("dbo.PartnerSendToShopSettings", new[] { "PartnerId" });
             DropIndex("dbo.PartnerSendToShopIngredient", new[] { "PartnerId" });
-            DropIndex("dbo.PartnerSummary", new[] { "PartnerId" });
             DropIndex("dbo.PartnerService", new[] { "PartnerId" });
             DropIndex("dbo.UserPartnerAdmin", new[] { "PartnerId" });
             DropIndex("dbo.UserPartnerAdmin", new[] { "UserId" });
@@ -1065,7 +894,6 @@ namespace Brewgr.Web.Core.Migrations
             DropIndex("dbo.Recipe", new[] { "CreatedBy" });
             DropIndex("dbo.RecipeComment", new[] { "RecipeId" });
             DropIndex("dbo.RecipeComment", new[] { "UserId" });
-            DropIndex("dbo.RecipeSummary", new[] { "RecipeId" });
             DropIndex("dbo.BrewSession", new[] { "UserId" });
             DropIndex("dbo.BrewSession", new[] { "RecipeId" });
             DropIndex("dbo.Adjunct", new[] { "CreatedByUserId" });
@@ -1073,24 +901,18 @@ namespace Brewgr.Web.Core.Migrations
             DropTable("dbo.UserReputationSummary");
             DropTable("dbo.UserFeedback");
             DropTable("dbo.UserAuthToken");
-            DropTable("dbo.TastingNoteSummary");
             DropTable("dbo.SendToShopOrder");
             DropTable("dbo.SendToShopOrderItem");
-            DropTable("dbo.RecipeCommentSummary");
             DropTable("dbo.NewsletterSignup");
-            DropTable("dbo.MiniUserSummary");
             DropTable("dbo.IngredientCategory");
             DropTable("dbo.FermentableAffiliateProduct");
             DropTable("dbo.Content");
-            DropTable("dbo.BrewSessionSummary");
             DropTable("dbo.BrewSessionComment");
             DropTable("dbo.Affiliate");
             DropTable("dbo.AffiliateProduct");
-            DropTable("dbo.UserSummary");
             DropTable("dbo.UserReputationAward");
             DropTable("dbo.PartnerSendToShopSettings");
             DropTable("dbo.PartnerSendToShopIngredient");
-            DropTable("dbo.PartnerSummary");
             DropTable("dbo.PartnerService");
             DropTable("dbo.Partner");
             DropTable("dbo.UserPartnerAdmin");
@@ -1110,17 +932,16 @@ namespace Brewgr.Web.Core.Migrations
             DropTable("dbo.RecipeHop");
             DropTable("dbo.Fermentable");
             DropTable("dbo.RecipeFermentable");
-            DropTable("dbo.BjcpStyleSummary");
             DropTable("dbo.BjcpStyleUrlFriendlyName");
             DropTable("dbo.BjcpStyle");
             DropTable("dbo.RecipeAdjunct");
             DropTable("dbo.Recipe");
             DropTable("dbo.RecipeComment");
-            DropTable("dbo.RecipeSummary");
             DropTable("dbo.BrewSession");
             DropTable("dbo.Badge");
             DropTable("dbo.User");
             DropTable("dbo.Adjunct");
+            DropTable("dbo.BjcpStyleSummary");
         }
     }
 }

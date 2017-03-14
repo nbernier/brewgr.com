@@ -127,6 +127,10 @@
     <Compile Include="Migrations\201702231854204_InitialCreate.Designer.cs">
       <DependentUpon>201702231854204_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703140305134_rackingdate.cs" />
+    <Compile Include="Migrations\201703140305134_rackingdate.Designer.cs">
+      <DependentUpon>201703140305134_rackingdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Adjunct.cs" />
     <Compile Include="Model\AdjunctAffiliateProduct.cs" />
@@ -261,6 +265,7 @@
     <Compile Include="Model\UserReputationSummary.cs" />
     <Compile Include="Model\UserFeedback.cs" />
     <Compile Include="Model\UserStat.cs" />
+    <Compile Include="Model\UserSuggestion.cs" />
     <Compile Include="Model\UserSummary.cs" />
     <Compile Include="Model\RecipeYeast.cs" />
     <Compile Include="Model\WortCoolingMethod.cs" />
@@ -321,6 +326,50 @@
     <EmbeddedResource Include="Migrations\201702231854204_InitialCreate.resx">
       <DependentUpon>201702231854204_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703140305134_rackingdate.resx">
+      <DependentUpon>201703140305134_rackingdate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\Initial\201702231854204_1_BjcpStyleSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_BrewSessionSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_MiniUserSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_PartnerSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_RecipeCommentSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_2_RecipeMetaData.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_RecipeSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_3_GetObjectIdsForDashboard.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_3_GetObjectIdsForDashboardNewest.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_TastingNoteSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_UserSummary.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_1_vw_UserActivityReport.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\Initial\201702231854204_4_zDataLoad.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
