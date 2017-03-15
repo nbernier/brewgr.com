@@ -131,6 +131,14 @@
     <Compile Include="Migrations\201703140305134_rackingdate.Designer.cs">
       <DependentUpon>201703140305134_rackingdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703142250243_usersuggestion.cs" />
+    <Compile Include="Migrations\201703142250243_usersuggestion.Designer.cs">
+      <DependentUpon>201703142250243_usersuggestion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703142350405_hopcountry.cs" />
+    <Compile Include="Migrations\201703142350405_hopcountry.Designer.cs">
+      <DependentUpon>201703142350405_hopcountry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Adjunct.cs" />
     <Compile Include="Model\AdjunctAffiliateProduct.cs" />
@@ -328,6 +336,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703140305134_rackingdate.resx">
       <DependentUpon>201703140305134_rackingdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703142250243_usersuggestion.resx">
+      <DependentUpon>201703142250243_usersuggestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703142350405_hopcountry.resx">
+      <DependentUpon>201703142350405_hopcountry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

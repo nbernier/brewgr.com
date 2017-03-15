@@ -1,14 +1,14 @@
 /* ===================================================== */
 /* TYPE DATA, STATUS DATA, ETC.  */
 /* ===================================================== */
-INSERT [dbo].[ContentType] ([ContentTypeId], [ContentTypeName]) VALUES (10, N'Web');
-INSERT [dbo].[ContentType] ([ContentTypeId], [ContentTypeName]) VALUES (20, N'Email');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (10, N'Mash');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (20, N'Boil');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (25, N'FlameOut');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (30, N'Primary');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (40, N'Secondary');
-INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (50, N'Bottle');
+--INSERT [dbo].[ContentType] ([ContentTypeId], [ContentTypeName]) VALUES (10, N'Web');
+--INSERT [dbo].[ContentType] ([ContentTypeId], [ContentTypeName]) VALUES (20, N'Email');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (10, N'Mash');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (20, N'Boil');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (25, N'FlameOut');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (30, N'Primary');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (40, N'Secondary');
+--INSERT [dbo].[AdjunctUsageType] ([AdjunctUsageTypeId], [AdjunctUsageTypeName]) VALUES (50, N'Bottle');
 INSERT [dbo].[BjcpStyle] ([Class], [CategoryID], [CategoryName], [SubCategoryID], [SubCategoryName], [aroma], [appearance], [flavor], [mouthfeel], [impression], [comments], [ingredients], [og_low], [og_high], [fg_low], [fg_high], [ibu_low], [ibu_high], [srm_low], [srm_high], [abv_low], [abv_high], [examples]) VALUES (N'beer', 10, N'American Ale', N'10A', N'American Pale Ale', N'Usually moderate to strong hop aroma from dry hopping or late kettle additions of American hop varieties.  A citrusy hop character is very common, but not required. Low to moderate maltiness supports the hop presentation, and may optionally show small amounts of specialty malt character (bready, toasty, biscuity).  Fruity esters vary from moderate to none.  No diacetyl.  Dry hopping (if used) may add grassy notes, although this character should not be excessive.', N'Pale golden to deep amber.  Moderately large white to off-white head with good retention.  Generally quite clear, although dry-hopped versions may be slightly hazy.', N'Usually a moderate to high hop flavor, often showing a citrusy American hop character (although other hop varieties may be used).  Low to moderately high clean malt character supports the hop presentation, and may optionally show small amounts of specialty malt character (bready, toasty, biscuity).  The balance is typically towards the late hops and bitterness, but the malt presence can be substantial.  Caramel flavors are usually restrained or absent.  Fruity esters can be moderate to none.  Moderate to high hop bitterness with a medium to dry finish.  Hop flavor and bitterness often lingers into the finish.  No diacetyl. Dry hopping (if used) may add grassy notes, although this character should not be excessive.', N'Medium-light to medium body.  Carbonation moderate to high.  Overall smooth finish without astringency often associated with high hopping rates.', N'Refreshing and hoppy, yet with sufficient supporting malt.', N'There is some overlap in color between American pale ale and American amber ale.  The American pale ale will generally be cleaner, have a less caramelly malt profile, less body, and often more finishing hops.', N'Pale ale malt, typically American two-row.  American hops, often but not always ones with a citrusy character.  American ale yeast.  Water can vary in sulfate content, but carbonate content should be relatively low.  Specialty grains may add character and complexity, but generally make up a relatively small portion of the grist.  Grains that add malt flavor and richness, light sweetness, and toasty or bready notes are often used (along with late hops) to differentiate brands.', 1.045, 1.06, 1.01, 1.015, 30, 45, 5, 14, 4.5, 6.2, N'Sierra Nevada Pale Ale, Stone Pale Ale, Great Lakes Burning River Pale Ale, Bear Republic XP Pale Ale, Anderson Valley Poleeko Gold Pale Ale, Deschutes Mirror Pond, Full Sail Pale Ale, Three Floyds X-Tra Pale Ale, Firestone Pale Ale, Left Hand Brewing Jackman''s Pale Ale');
 INSERT [dbo].[BjcpStyle] ([Class], [CategoryID], [CategoryName], [SubCategoryID], [SubCategoryName], [aroma], [appearance], [flavor], [mouthfeel], [impression], [comments], [ingredients], [og_low], [og_high], [fg_low], [fg_high], [ibu_low], [ibu_high], [srm_low], [srm_high], [abv_low], [abv_high], [examples]) VALUES (N'beer', 10, N'American Ale', N'10B', N'American Amber Ale', N'Low to moderate hop aroma from dry hopping or late kettle additions of American hop varieties.  A citrusy hop character is common, but not required.  Moderately low to moderately high maltiness balances and sometimes masks the hop presentation, and usually shows a moderate caramel character. Esters vary from moderate to none.  No diacetyl.', N'Amber to coppery brown in color.  Moderately large off-white head with good retention.  Generally quite clear, although dry-hopped versions may be slightly hazy.', N'Moderate to high hop flavor from American hop varieties, which often but not always has a citrusy quality.  Malt flavors are moderate to strong, and usually show an initial malty sweetness followed by a moderate caramel flavor (and sometimes other character malts in lesser amounts).  Malt and hop bitterness are usually balanced and mutually supportive.  Fruity esters can be moderate to none.  Caramel sweetness and hop flavor/bitterness can linger somewhat into the medium to full finish.  No diacetyl.', N'Medium to medium-full body.  Carbonation moderate to high.  Overall smooth finish without astringency often associated with high hopping rates.  Stronger versions may have a slight alcohol warmth.', N'Like an American pale ale with more body, more caramel richness, and a balance more towards malt than hops (although hop rates can be significant).', N'Can overlap in color with American pale ales.  However, American amber ales differ from American pale ales not only by being usually darker in color, but also by having more caramel flavor, more body, and usually being balanced more evenly between malt and bitterness.  Should not have a strong chocolate or roast character that might suggest an American brown ale (although small amounts are OK).', N'Pale ale malt, typically American two-row.  Medium to dark crystal malts.  May also contain specialty grains which add additional character and uniqueness.  American hops, often with citrusy flavors, are common but others may also be used. Water can vary in sulfate and carbonate content.', 1.045, 1.06, 1.01, 1.015, 25, 40, 10, 17, 4.5, 6.2, N'North Coast Red Seal Ale, Tröegs HopBack Amber Ale, Deschutes Cinder Cone Red, Pyramid Broken Rake, St. Rogue Red Ale, Anderson Valley Boont Amber Ale, Lagunitas Censored Ale, Avery Redpoint Ale, McNeill''s Firehouse Amber Ale, Mendocino Red Tail Ale, Bell''s Amber');
 INSERT [dbo].[BjcpStyle] ([Class], [CategoryID], [CategoryName], [SubCategoryID], [SubCategoryName], [aroma], [appearance], [flavor], [mouthfeel], [impression], [comments], [ingredients], [og_low], [og_high], [fg_low], [fg_high], [ibu_low], [ibu_high], [srm_low], [srm_high], [abv_low], [abv_high], [examples]) VALUES (N'beer', 10, N'American Ale', N'10C', N'American Brown Ale', N'Malty, sweet and rich, which often has a chocolate, caramel, nutty and/or toasty quality.  Hop aroma is typically low to moderate.  Some interpretations of the style may feature a stronger hop aroma, a citrusy American hop character, and/or a fresh dry-hopped aroma (all are optional).  Fruity esters are moderate to very low.  The dark malt character is more robust than other brown ales, yet stops short of being overly porter-like.  The malt and hops are generally balanced.  Moderately low to no diacetyl.', N'Light to very dark brown color.  Clear.  Low to moderate off-white to light tan head.', N'Medium to high malty flavor (often with caramel, toasty and/or chocolate flavors), with medium to medium-high bitterness.  The medium to medium-dry finish provides an aftertaste having both malt and hops.  Hop flavor can be light to moderate, and may optionally have a citrusy character.  Very low to moderate fruity esters.  Moderately low to no diacetyl.', N'Medium to medium-full body.  More bitter versions may have a dry, resiny impression.  Moderate to moderately high carbonation.  Stronger versions may have some alcohol warmth in the finish.', N'Can be considered a bigger, maltier, hoppier interpretation of Northern English brown ale or a hoppier, less malty Brown Porter, often including the citrus-accented hop presence that is characteristic of American hop varieties.', N'A strongly flavored, hoppy brown beer, originated by American home brewers.  Related to American Pale and American Amber Ales, although with more of a caramel and chocolate character, which tends to balance the hop bitterness and finish.  Most commercial American Browns are not as aggressive as the original homebrewed versions, and some modern craft brewed examples.  IPA-strength brown ales should be entered in the Specialty Beer category (23).', N'Well-modified pale malt, either American or Continental, plus crystal and darker malts should complete the malt bill.  American hops are typical, but UK or noble hops can also be used. Moderate carbonate water would appropriately balance the dark malt acidity.', 1.045, 1.06, 1.01, 1.016, 20, 40, 18, 35, 4.3, 6.2, N'Bell''s Best Brown, Smuttynose Old Brown Dog Ale, Big Sky Moose Drool Brown Ale, North Coast Acme Brown, Brooklyn Brown Ale, Lost Coast Downtown Brown, Left Hand Deep Cover Brown Ale');
@@ -173,23 +173,23 @@ INSERT [dbo].[BjcpStyleUrlFriendlyName] ([SubCategoryId], [UrlFriendlyName]) VAL
 INSERT [dbo].[BjcpStyleUrlFriendlyName] ([SubCategoryId], [UrlFriendlyName]) VALUES (N'9C', N'scottish-export-80');
 INSERT [dbo].[BjcpStyleUrlFriendlyName] ([SubCategoryId], [UrlFriendlyName]) VALUES (N'9D', N'irish-red-ale');
 INSERT [dbo].[BjcpStyleUrlFriendlyName] ([SubCategoryId], [UrlFriendlyName]) VALUES (N'9E', N'strong-scotch-ale');
-INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (10, N'Mash');
-INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (20, N'Extract');
-INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (30, N'Steep');
-INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (40, N'Late Addition');
-INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (10, N'Leaf');
-INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (20, N'Pellet');
-INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (30, N'Plug');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (5, N'FirstWort');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (10, N'Mash');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (20, N'Boil');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (30, N'Primary');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (40, N'Secondary');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (50, N'FlameOut');
-INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (60, N'DryHop');
-INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (10, N'Tinseth');
-INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (20, N'Rager');
-INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (30, N'Brewgr');
+--INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (10, N'Mash');
+--INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (20, N'Extract');
+--INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (30, N'Steep');
+--INSERT [dbo].[FermentableUsageType] ([FermentableUsageTypeId], [FermentableUsageTypeName]) VALUES (40, N'Late Addition');
+--INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (10, N'Leaf');
+--INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (20, N'Pellet');
+--INSERT [dbo].[HopType] ([HopTypeId], [HopTypeName]) VALUES (30, N'Plug');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (5, N'FirstWort');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (10, N'Mash');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (20, N'Boil');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (30, N'Primary');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (40, N'Secondary');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (50, N'FlameOut');
+--INSERT [dbo].[HopUsageType] ([HopUsageTypeId], [HopUsageTypeName]) VALUES (60, N'DryHop');
+--INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (10, N'Tinseth');
+--INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (20, N'Rager');
+--INSERT [dbo].[IbuFormula] ([IbuFormulaId], [IbuFormulaName]) VALUES (30, N'Brewgr');
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (10, N'Adjuncts', 60);
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (10, N'Base Malts', 30);
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (10, N'Caramel Malts', 40);
@@ -206,10 +206,10 @@ INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUE
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (30, N'Other', 1000);
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (30, N'White Labs', 10);
 INSERT [dbo].[IngredientCategory] ([IngredientTypeId], [Category], [Rank]) VALUES (30, N'Wyeast', 20);
-INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (10, N'Fermentable');
-INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (20, N'Hop');
-INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (30, N'Yeast');
-INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (40, N'Adjunct');
+--INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (10, N'Fermentable');
+--INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (20, N'Hop');
+--INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (30, N'Yeast');
+--INSERT [dbo].[IngredientType] ([IngredientTypeId], [IngredientTypeName]) VALUES (40, N'Adjunct');
 SET IDENTITY_INSERT [dbo].[MashStep] ON 
 ;
 INSERT [dbo].[MashStep] ([MashStepId], [CreatedByUserId], [Name], [Description], [IsActive], [IsPublic], [DateCreated], [DatePromoted], [Category]) VALUES (2, NULL, N'Acid Rest', NULL, 1, 1, CAST(N'2014-02-04 14:57:46.980' AS DateTime), NULL, NULL);
@@ -221,27 +221,18 @@ INSERT [dbo].[MashStep] ([MashStepId], [CreatedByUserId], [Name], [Description],
 INSERT [dbo].[MashStep] ([MashStepId], [CreatedByUserId], [Name], [Description], [IsActive], [IsPublic], [DateCreated], [DatePromoted], [Category]) VALUES (9, NULL, N'Saccharification Rest', NULL, 1, 1, CAST(N'2014-02-04 14:59:52.410' AS DateTime), NULL, NULL);
 SET IDENTITY_INSERT [dbo].[MashStep] OFF
 ;
-INSERT [dbo].[NotificationType] ([NotificationTypeId], [NotificationTypeName]) VALUES (10, N'Recipe Comment');
-INSERT [dbo].[NotificationType] ([NotificationTypeId], [NotificationTypeName]) VALUES (20, N'Site Features');
-INSERT [dbo].[NotificationType] ([NotificationTypeId], [NotificationTypeName]) VALUES (30, N'Site Outages');
-INSERT [dbo].[NotificationType] ([NotificationTypeId], [NotificationTypeName]) VALUES (40, N'Brewer Follow');
-INSERT [dbo].[NotificationType] ([NotificationTypeId], [NotificationTypeName]) VALUES (50, N'RecipeBrewComment');
-INSERT [dbo].[OAuthProvider] ([OAuthProviderId], [OAuthProviderName], [IsActive]) VALUES (10, N'Facebook', 1);
-INSERT [dbo].[PartnerServiceType] ([PartnerServiceTypeId], [PartnerServiceTypeName]) VALUES (10, N'SendToShop');
-INSERT [dbo].[RecipeType] ([RecipeTypeId], [RecipeTypeName]) VALUES (10, N'All Grain');
-INSERT [dbo].[RecipeType] ([RecipeTypeId], [RecipeTypeName]) VALUES (20, N'Extract');
-INSERT [dbo].[RecipeType] ([RecipeTypeId], [RecipeTypeName]) VALUES (30, N'Partial Mash');
-INSERT [dbo].[SendToShopFormat] ([SendToShopFormatTypeId], [SendToShopFormatName]) VALUES (10, N'Email');
-INSERT [dbo].[SendToShopMethod] ([SendToShopMethodTypeId], [SendToShopMethodName]) VALUES (10, N'Email');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (-100, N'Cancelled');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (0, N'Created');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (10, N'Sent To Shop');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (20, N'In Progress');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (30, N'On Hold');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (90, N'Ready For Pickup');
-INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (100, N'Picked Up');
-INSERT [dbo].[UnitType] ([UnitTypeId], [UnitTypeName]) VALUES (10, N'US Standard');
-INSERT [dbo].[UnitType] ([UnitTypeId], [UnitTypeName]) VALUES (20, N'Metric');
+--INSERT [dbo].[PartnerServiceType] ([PartnerServiceTypeId], [PartnerServiceTypeName]) VALUES (10, N'SendToShop');
+--INSERT [dbo].[SendToShopFormat] ([SendToShopFormatTypeId], [SendToShopFormatName]) VALUES (10, N'Email');
+--INSERT [dbo].[SendToShopMethod] ([SendToShopMethodTypeId], [SendToShopMethodName]) VALUES (10, N'Email');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (-100, N'Cancelled');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (0, N'Created');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (10, N'Sent To Shop');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (20, N'In Progress');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (30, N'On Hold');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (90, N'Ready For Pickup');
+--INSERT [dbo].[SendToShopOrderStatus] ([SendToShopOrderStatusId], [SendToShopOrderStatusName]) VALUES (100, N'Picked Up');
+--INSERT [dbo].[UnitType] ([UnitTypeId], [UnitTypeName]) VALUES (10, N'US Standard');
+--INSERT [dbo].[UnitType] ([UnitTypeId], [UnitTypeName]) VALUES (20, N'Metric');
 
 /* ===================================================== */
 /* BASE INGREDIENT DATA  */

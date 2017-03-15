@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Brewgr.Web.Core.Model
@@ -65,5 +66,8 @@ namespace Brewgr.Web.Core.Model
         /// Gets or sets the Category
         /// </summary>
         public string Category { get; set; }
-	}
+
+        [MaxLength(50)]
+        public string Country { get; set; }
+    }
 }

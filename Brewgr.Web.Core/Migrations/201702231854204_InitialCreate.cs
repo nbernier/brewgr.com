@@ -282,7 +282,6 @@ namespace Brewgr.Web.Core.Migrations
                     })
                 .PrimaryKey(t => t.RecipeHopId)
                 .ForeignKey("dbo.Hop", t => t.IngredientId, cascadeDelete: true)
-                .ForeignKey("dbo.Recipe", t => t.RecipeId, cascadeDelete: true)
                 .Index(t => t.RecipeId)
                 .Index(t => t.IngredientId);
             
@@ -340,21 +339,6 @@ namespace Brewgr.Web.Core.Migrations
                 .PrimaryKey(t => t.MashStepId)
                 .ForeignKey("dbo.User", t => t.CreatedByUserId)
                 .Index(t => t.CreatedByUserId);
-            
-            CreateTable(
-                "dbo.RecipeMetaData",
-                c => new
-                    {
-                        RecipeId = c.Int(nullable: false),
-                        AverageRating = c.Double(nullable: false),
-                        TastingNoteCount = c.Int(nullable: false),
-                        BrewSessionCount = c.Int(nullable: false),
-                        CommentCount = c.Int(nullable: false),
-                        CloneCount = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.RecipeId)
-                .ForeignKey("dbo.Recipe", t => t.RecipeId)
-                .Index(t => t.RecipeId);
             
             CreateTable(
                 "dbo.RecipeStep",
@@ -830,7 +814,6 @@ namespace Brewgr.Web.Core.Migrations
             DropForeignKey("dbo.RecipeYeast", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.Recipe", "CreatedBy", "dbo.User");
             DropForeignKey("dbo.RecipeStep", "RecipeId", "dbo.Recipe");
-            DropForeignKey("dbo.RecipeMetaData", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeComment", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeMashStep", "RecipeId", "dbo.Recipe");
             DropForeignKey("dbo.RecipeMashStep", "IngredientId", "dbo.MashStep");
@@ -877,7 +860,6 @@ namespace Brewgr.Web.Core.Migrations
             DropIndex("dbo.RecipeYeast", new[] { "IngredientId" });
             DropIndex("dbo.RecipeYeast", new[] { "RecipeId" });
             DropIndex("dbo.RecipeStep", new[] { "RecipeId" });
-            DropIndex("dbo.RecipeMetaData", new[] { "RecipeId" });
             DropIndex("dbo.MashStep", new[] { "CreatedByUserId" });
             DropIndex("dbo.RecipeMashStep", new[] { "IngredientId" });
             DropIndex("dbo.RecipeMashStep", new[] { "RecipeId" });
@@ -925,7 +907,6 @@ namespace Brewgr.Web.Core.Migrations
             DropTable("dbo.Yeast");
             DropTable("dbo.RecipeYeast");
             DropTable("dbo.RecipeStep");
-            DropTable("dbo.RecipeMetaData");
             DropTable("dbo.MashStep");
             DropTable("dbo.RecipeMashStep");
             DropTable("dbo.Hop");
@@ -941,7 +922,6 @@ namespace Brewgr.Web.Core.Migrations
             DropTable("dbo.Badge");
             DropTable("dbo.User");
             DropTable("dbo.Adjunct");
-            DropTable("dbo.BjcpStyleSummary");
         }
     }
 }

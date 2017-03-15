@@ -65,11 +65,12 @@ namespace Brewgr.Web.Core.Data
 		IDbSet<SendToShopOrder> SendToShopOrders { get; set; }
 		IDbSet<SendToShopOrderItem> SendToShopOrderItems { get; set; }
 		IDbSet<TastingNoteSummary> TastingNoteSummaries { get; set; }
+        IDbSet<UserSuggestion> UserSuggestions { get; set; }
 
-		/// <summary>
-		/// Fires on Model Creating
-		/// </summary>
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        /// <summary>
+        /// Fires on Model Creating
+        /// </summary>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Fermentable>().Property(x => x.IngredientId).HasColumnName("FermentableId");
 			modelBuilder.Entity<Hop>().Property(x => x.IngredientId).HasColumnName("HopId");

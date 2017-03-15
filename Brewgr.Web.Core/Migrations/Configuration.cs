@@ -17,7 +17,6 @@ namespace Brewgr.Web.Core.Migrations
 
         protected override void Seed(Brewgr.Web.Core.Data.BrewgrContext context)
         {
-            Debugger.Launch();
             DirectoryInfo baseDir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Migrations\\Initial"));
             foreach (var file in baseDir.GetFiles().ToList().OrderBy(x=>x.Name))
             {
