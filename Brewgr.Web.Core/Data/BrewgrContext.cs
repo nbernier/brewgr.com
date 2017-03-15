@@ -20,52 +20,52 @@ namespace Brewgr.Web.Core.Data
 	    {
 	    }
 
-	    IDbSet<User> Users { get; set; }
-		IDbSet<UserSummary> UserSummaries { get; set; }
-		IDbSet<MiniUserSummary> MiniUserSummaries { get; set; }
-		IDbSet<UserAdmin> UserAdmins { get; set; }
-		IDbSet<UserConnection> UserConnections { get; set; }
-		IDbSet<UserReputationAward> UserReputationAwards { get; set; }
-		IDbSet<UserReputationSummary> UserReputationSummaries { get; set; }
-		IDbSet<UserNotificationType> UserNotificationTypes { get; set; }
-		IDbSet<Badge> Badges { get; set; }
-		IDbSet<UserOAuthUserId> UserOAuthUserIds { get; set; }
-		IDbSet<UserLogin> UserLogins { get; set; }
-		IDbSet<UserAuthToken> UserAuthTokens { get; set; }
-		IDbSet<Recipe> Recipes { get; set; }
-		IDbSet<RecipeMetaData> RecipeMetaDatas { get; set; }
-		IDbSet<RecipeSummary> RecipeSummaries { get; set; }
-		IDbSet<Fermentable> Fermentables{ get; set; }
-		IDbSet<Hop> Hops{ get; set; }
-		IDbSet<Yeast> Yeasts { get; set; }
-		IDbSet<Adjunct> Adjuncts { get; set; }
-        IDbSet<MashStep> MashSteps { get; set; }
-		IDbSet<NewsletterSignup> NewsletterSignups { get; set; }
-        IDbSet<BjcpStyle> BJCPStyles { get; set; }
-		IDbSet<BjcpStyleSummary> BjcpStyleSummaries { get; set; }
-		IDbSet<BjcpStyleUrlFriendlyName> BjcpStyleUrlFriendlyNames { get; set; }
-		IDbSet<UserFeedback> UserFeedbacks { get; set; }
-        IDbSet<RecipeComment> RecipeComments { get; set; }
-        IDbSet<BrewSessionComment> BrewSessionComments { get; set; }
-        IDbSet<TastingNote> TastingNotes { get; set; }
-        IDbSet<RecipeCommentSummary> RecipeCommentSummaries { get; set; }
-		IDbSet<BrewSession> BrewSessions { get; set; }
-		IDbSet<BrewSessionSummary> BrewSessionSummaries { get; set; }        //IDbSet<BrewSessionConditioning> BrewConditionings { get; set; }
-		IDbSet<IngredientCategory> IngredientCategories { get; set; }
-		IDbSet<Affiliate> Affiliates { get; set; }
-		IDbSet<AffiliateProduct> AffiliateProducts { get; set; }
-		IDbSet<FermentableAffiliateProduct> FermentableAffiliateProducts { get; set; }
-		IDbSet<Content> Contents { get; set; }
-		IDbSet<Partner> Partners { get; set; }
-		IDbSet<PartnerSummary> PartnerSummaries { get; set; }
-		IDbSet<PartnerService> PartnerServices { get; set; }
-		IDbSet<UserPartnerAdmin> UserPartnerAdmins { get; set; }
-		IDbSet<PartnerSendToShopSettings> PartnerSendToShopSettingses { get; set; }
-		IDbSet<PartnerSendToShopIngredient> PartnerSendToShopIngredients { get; set; }
-		IDbSet<SendToShopOrder> SendToShopOrders { get; set; }
-		IDbSet<SendToShopOrderItem> SendToShopOrderItems { get; set; }
-		IDbSet<TastingNoteSummary> TastingNoteSummaries { get; set; }
-        IDbSet<UserSuggestion> UserSuggestions { get; set; }
+	    internal IDbSet<User> Users { get; set; }
+		internal IDbSet<UserSummary> UserSummaries { get; set; }
+		internal IDbSet<MiniUserSummary> MiniUserSummaries { get; set; }
+		internal IDbSet<UserAdmin> UserAdmins { get; set; }
+		internal IDbSet<UserConnection> UserConnections { get; set; }
+		internal IDbSet<UserReputationAward> UserReputationAwards { get; set; }
+		internal IDbSet<UserReputationSummary> UserReputationSummaries { get; set; }
+		internal IDbSet<UserNotificationType> UserNotificationTypes { get; set; }
+		internal IDbSet<Badge> Badges { get; set; }
+		internal IDbSet<UserOAuthUserId> UserOAuthUserIds { get; set; }
+		internal IDbSet<UserLogin> UserLogins { get; set; }
+		internal IDbSet<UserAuthToken> UserAuthTokens { get; set; }
+		internal IDbSet<Recipe> Recipes { get; set; }
+		internal IDbSet<RecipeMetaData> RecipeMetaDatas { get; set; }
+		internal IDbSet<RecipeSummary> RecipeSummaries { get; set; }
+		internal IDbSet<Fermentable> Fermentables{ get; set; }
+		internal IDbSet<Hop> Hops{ get; set; }
+		internal IDbSet<Yeast> Yeasts { get; set; }
+		internal IDbSet<Adjunct> Adjuncts { get; set; }
+        internal IDbSet<MashStep> MashSteps { get; set; }
+		internal IDbSet<NewsletterSignup> NewsletterSignups { get; set; }
+        internal IDbSet<BjcpStyle> BJCPStyles { get; set; }
+		internal IDbSet<BjcpStyleSummary> BjcpStyleSummaries { get; set; }
+		internal IDbSet<BjcpStyleUrlFriendlyName> BjcpStyleUrlFriendlyNames { get; set; }
+		internal IDbSet<UserFeedback> UserFeedbacks { get; set; }
+        internal IDbSet<RecipeComment> RecipeComments { get; set; }
+        internal IDbSet<BrewSessionComment> BrewSessionComments { get; set; }
+        internal IDbSet<TastingNote> TastingNotes { get; set; }
+        internal IDbSet<RecipeCommentSummary> RecipeCommentSummaries { get; set; }
+		internal IDbSet<BrewSession> BrewSessions { get; set; }
+		internal IDbSet<BrewSessionSummary> BrewSessionSummaries { get; set; }        //internal IDbSet<BrewSessionConditioning> BrewConditionings { get; set; }
+		internal IDbSet<IngredientCategory> IngredientCategories { get; set; }
+		internal IDbSet<Affiliate> Affiliates { get; set; }
+		internal IDbSet<AffiliateProduct> AffiliateProducts { get; set; }
+		internal IDbSet<FermentableAffiliateProduct> FermentableAffiliateProducts { get; set; }
+		internal IDbSet<Content> Contents { get; set; }
+		internal IDbSet<Partner> Partners { get; set; }
+		internal IDbSet<PartnerSummary> PartnerSummaries { get; set; }
+		internal IDbSet<PartnerService> PartnerServices { get; set; }
+		internal IDbSet<UserPartnerAdmin> UserPartnerAdmins { get; set; }
+		internal IDbSet<PartnerSendToShopSettings> PartnerSendToShopSettingses { get; set; }
+		internal IDbSet<PartnerSendToShopIngredient> PartnerSendToShopIngredients { get; set; }
+		internal IDbSet<SendToShopOrder> SendToShopOrders { get; set; }
+		internal IDbSet<SendToShopOrderItem> SendToShopOrderItems { get; set; }
+		internal IDbSet<TastingNoteSummary> TastingNoteSummaries { get; set; }
+        internal IDbSet<UserSuggestion> UserSuggestions { get; set; }
 
         /// <summary>
         /// Fires on Model Creating
