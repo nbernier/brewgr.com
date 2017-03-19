@@ -243,10 +243,11 @@ namespace Brewgr.Web.Core.Model
 
 	    public DateTime? RackingDate { get; set; }
 
-	    /// <summary>
-		/// Determines if a recipe was brewed by a specific user 
-		/// </summary>
-		public bool WasBrewedBy(int userId)
+        public double? RackingGravity { get; set; }
+        /// <summary>
+        /// Determines if a recipe was brewed by a specific user 
+        /// </summary>
+        public bool WasBrewedBy(int userId)
 		{
 			return this.UserId == userId;
 		}

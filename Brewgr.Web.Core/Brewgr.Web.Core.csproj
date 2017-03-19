@@ -139,6 +139,10 @@
     <Compile Include="Migrations\201703142350405_hopcountry.Designer.cs">
       <DependentUpon>201703142350405_hopcountry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703192235322_RackingGravity.cs" />
+    <Compile Include="Migrations\201703192235322_RackingGravity.Designer.cs">
+      <DependentUpon>201703192235322_RackingGravity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Adjunct.cs" />
     <Compile Include="Model\AdjunctAffiliateProduct.cs" />
@@ -342,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703142350405_hopcountry.resx">
       <DependentUpon>201703142350405_hopcountry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703192235322_RackingGravity.resx">
+      <DependentUpon>201703192235322_RackingGravity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

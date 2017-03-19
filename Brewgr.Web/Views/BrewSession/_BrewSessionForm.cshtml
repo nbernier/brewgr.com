@@ -235,6 +235,15 @@
                 </div>
                 <div class="item">
                     <label>
+                        Racking Gravity
+                        <span class="helptip" original-title="The gravity taken when transferred the fermented wort from your primary fermenter to the second fermenter">&nbsp;</span>
+                    </label>
+                    <span>
+                        <input type="text" data-name="s_RackingGravity" value="@(Model.RackingGravity != null ? string.Format("{0:0.000}", Model.RackingGravity) : "")" data-filter="positiveFloat" />
+                    </span>
+                </div>
+                <div class="item">
+                    <label>
                         Estimated Final Date
                         <span class="helptip" original-title="The date that your beer should be ready for bottling.">&nbsp;</span>
                     </label>

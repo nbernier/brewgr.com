@@ -1036,6 +1036,7 @@ var SessionBuilder =
             FinalGravity: SessionBuilder.getValue('[data-name=s_FinalGravity]'),
             ConditionDate: SessionBuilder.getValue('[data-name=s_ConditionDate]'),
             RackingDate: SessionBuilder.getValue('[data-name=s_RackingDate]'),
+            RackingGravity: SessionBuilder.getValue('[data-name=s_RackingGravity]'),
             ConditionTypeId: SessionBuilder.getValue('[data-name=s_ConditionType]'),
             PrimingSugarType: SessionBuilder.getValue('[data-name=s_PrimingSugarType]'),
             PrimingSugarAmount: SessionBuilder.getValue('[data-name=s_PrimingSugarAmount]'),

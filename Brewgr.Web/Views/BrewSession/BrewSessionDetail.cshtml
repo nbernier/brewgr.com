@@ -222,6 +222,10 @@
                         <span>@Model.ShowValue(Model.RackingDate, Model.RackingDate.HasValue ? Model.RackingDate.Value.ToShortDateString() : null)</span>
                     </div>
                     <div class="item">
+                        <label>Racking Gravity</label>
+                        <span>>@Model.ShowValue(Model.RackingGravity, string.Format("{0:0.000}", Model.RackingGravity))</span>
+                    </div>
+                    <div class="item">
                         <label>Estimated Kegging/Botteling Date</label>
                         <span></span>
                     </div>
