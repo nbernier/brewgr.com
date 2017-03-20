@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Web.Mvc;
@@ -17,12 +18,17 @@ using ctorx.Core.Web;
 using Brewgr.Web.Core.Configuration;
 using Brewgr.Web.Core.Model;
 using Brewgr.Web.Core.Service;
+using Common.Logging;
+using NLog;
+using LogManager = Common.Logging.LogManager;
 
 namespace Brewgr.Web.Controllers
 {
 	public abstract class BrewgrController : Controller
 	{
-		readonly IMessageStore ForwardedMessageStore;
+	    protected static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly IMessageStore ForwardedMessageStore;
 		readonly IUserResolver UserResolver;
 		readonly IUserService UserService;
 		readonly IAuthenticationService AuthenticationService;

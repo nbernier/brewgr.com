@@ -164,27 +164,39 @@ namespace Brewgr.Web.Controllers
 		[Authorize]
 		public ActionResult BrewSessionEdit(int brewSessionId)
 		{
-			var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
+		    try
+		    {
+		        var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
 
-			if (!this.VerifyBrewSessionAccess(brewSession))
-			{
-				return this.Issue404();
-			}
+		        if (!this.VerifyBrewSessionAccess(brewSession))
+		        {
+		            return this.Issue404();
+		        }
 
-			// Ensure only Active Tasting Notes
-			brewSession.TastingNotes = brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
+		        // Ensure only Active Tasting Notes
+		        brewSession.TastingNotes =
+		            brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
 
-			var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
-			brewSessionViewModel.RecipeSummary = Mapper.Map(this.RecipeService.GetRecipeSummaryById(brewSessionViewModel.RecipeId), new RecipeSummaryViewModel());
+		        var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
+		        brewSessionViewModel.RecipeSummary =
+		            Mapper.Map(this.RecipeService.GetRecipeSummaryById(brewSessionViewModel.RecipeId),
+		                new RecipeSummaryViewModel());
 
-			// TODO: Encapsulate into Service and Mapper
-			var commentWrapperViewModel = new CommentWrapperViewModel();
-			commentWrapperViewModel.CommentViewModels = Mapper.Map(this.RecipeService.GetBrewSessionComments(brewSessionId), new List<CommentViewModel>());
-			commentWrapperViewModel.GenericId = brewSessionId;
-			commentWrapperViewModel.CommentType = CommentType.Session;
-			brewSessionViewModel.CommentWrapperViewModel = commentWrapperViewModel;
+		        // TODO: Encapsulate into Service and Mapper
+		        var commentWrapperViewModel = new CommentWrapperViewModel();
+		        commentWrapperViewModel.CommentViewModels =
+		            Mapper.Map(this.RecipeService.GetBrewSessionComments(brewSessionId), new List<CommentViewModel>());
+		        commentWrapperViewModel.GenericId = brewSessionId;
+		        commentWrapperViewModel.CommentType = CommentType.Session;
+		        brewSessionViewModel.CommentWrapperViewModel = commentWrapperViewModel;
 
-			return View(brewSessionViewModel);
+		        return View(brewSessionViewModel);
+		    }
+		    catch (Exception ex)
+		    {
+		        logger.Fatal(ex.Message,ex);
+		        throw ex;
+		    }
 		}
 
 		[HttpPost]
