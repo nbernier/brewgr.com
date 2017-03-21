@@ -35,6 +35,13 @@
                     </div>
                     <input type="text" name="BrewDate" data-name="s_BrewDate" class="datepicker" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : "")" />
                 </div>
+                <div>
+                    <div class="title">
+                        <label for="unit">Est. Final Date</label>
+                    </div>
+                    <input type="text" data-name="s_EstimatedFinalDate" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.AddMonths(1).ToShortDateString() : DateTime.Now.AddMonths(1).ToShortDateString())" class="datepicker" />
+                </div>
+
             </div>
 
             <div class="clearall marginbottom20"> </div>
@@ -240,15 +247,6 @@
                     </label>
                     <span>
                         <input type="text" data-name="s_RackingGravity" value="@(Model.RackingGravity != null ? string.Format("{0:0.000}", Model.RackingGravity) : "")" data-filter="positiveFloat" />
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Estimated Final Date
-                        <span class="helptip" original-title="The date that your beer should be ready for bottling.">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_RackingnDate" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : DateTime.Now.AddMonths(1).ToShortDateString())" class="datepicker" />
                     </span>
                 </div>
             </div>
