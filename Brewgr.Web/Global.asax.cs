@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,7 @@ using StackExchange.Exceptional.Stores;
 using ctorx.Core.Ninject;
 using Brewgr.Web.Controllers;
 using Brewgr.Web.Core.Service;
+using Common.Logging;
 using Ninject;
 using FluentValidation.Mvc;
 
@@ -25,7 +27,9 @@ namespace Brewgr.Web
 
 	public class MvcApplication : System.Web.HttpApplication
 	{
-		static readonly Regex WwwRegex = new Regex("(http|https)://www\\.", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        protected static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        static readonly Regex WwwRegex = new Regex("(http|https)://www\\.", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		/// <summary>
 		/// Fires on Application Start
