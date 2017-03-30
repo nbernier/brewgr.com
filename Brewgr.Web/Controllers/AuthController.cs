@@ -502,56 +502,64 @@ namespace Brewgr.Web.Controllers
 
             if (state != Session["OAuthStateToken"] as string)
             {
+                logger.Fatal("Throw security exception OAuth State does not match last generated state - [" + state + "] VS. [" + (Session["OAuthStateToken"] as string) + "]");
                 throw new SecurityException("OAuth State does not match last generated state - [" + state + "] VS. [" + (Session["OAuthStateToken"] as string) + "]");
             }
-
-            var oAuthUserInfo = this._oAuthService.GetUserInfoFromAuthCode(state, code, loginUrl);
-
-            var userId = this._oAuthService.GetLocalUserIdFromOAuthUserInfo(oAuthUserInfo);
-
-            if (userId == null)
+            int? userId = null;
+            try
             {
-                // LOCATE Existing Users
-                userId = this._oAuthService.GetLocalUserIdFromEmailAddress(oAuthUserInfo.EmailAddress);
+                var oAuthUserInfo = this._oAuthService.GetUserInfoFromAuthCode(state, code, loginUrl);
 
-                // CONNECT Existing Users
-                if (userId != null)
-                {
-                    using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
-                    {
-                        this._oAuthService.ConnectLocalUserToOAuthProvider(userId.Value, oAuthUserInfo);
-                        unitOfWork.Commit();
-                    }
-                }
+                userId = this._oAuthService.GetLocalUserIdFromOAuthUserInfo(oAuthUserInfo);
 
-                // REGISTER New Users
                 if (userId == null)
                 {
-                    User newUser;
-                    using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
+                    // LOCATE Existing Users
+                    userId = this._oAuthService.GetLocalUserIdFromEmailAddress(oAuthUserInfo.EmailAddress);
+
+                    // CONNECT Existing Users
+                    if (userId != null)
                     {
-                        // Register the User
-                        newUser = this._oAuthService.RegisterNewUser(oAuthUserInfo);
-                        unitOfWork.Commit();
+                        using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
+                        {
+                            this._oAuthService.ConnectLocalUserToOAuthProvider(userId.Value, oAuthUserInfo);
+                            unitOfWork.Commit();
+                        }
                     }
 
-                    userId = newUser.UserId;
-
-                    // Send the Email Message
-                    var newAccountEmailMessage = (NewAccountEmailMessage)this._emailMessageFactory.Make(EmailMessageType.NewAccount);
-
-                    newAccountEmailMessage.ToRecipients.Add(oAuthUserInfo.EmailAddress);
-                    this._emailSender.Send(newAccountEmailMessage);
-
-                    // Track the Login
-                    using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
+                    // REGISTER New Users
+                    if (userId == null)
                     {
-                        this._userLoginService.TrackLogin(userId.Value);
-                        unitOfWork.Commit();
+                        User newUser;
+                        using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
+                        {
+                            // Register the User
+                            newUser = this._oAuthService.RegisterNewUser(oAuthUserInfo);
+                            unitOfWork.Commit();
+                        }
+
+                        userId = newUser.UserId;
+
+                        // Send the Email Message
+                        var newAccountEmailMessage =
+                            (NewAccountEmailMessage) this._emailMessageFactory.Make(EmailMessageType.NewAccount);
+
+                        newAccountEmailMessage.ToRecipients.Add(oAuthUserInfo.EmailAddress);
+                        this._emailSender.Send(newAccountEmailMessage);
+
+                        // Track the Login
+                        using (var unitOfWork = this._unitOfWorkFactory.NewUnitOfWork())
+                        {
+                            this._userLoginService.TrackLogin(userId.Value);
+                            unitOfWork.Commit();
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                logger.Fatal("Error ProcessOAuthResponse", ex);
+            }
             // Get the User Summary
             var userSummary = this._userService.GetUserSummaryById(userId.Value);
 
@@ -591,6 +599,7 @@ namespace Brewgr.Web.Controllers
             // Redirect
             var redirectUrl = (Session["OAuthReturnUrl"] ?? Request["ReturnUrl"]) != null ? string.Format("/{0}", Session["OAuthReturnUrl"].ToString())
                 : "/";
+            logger.Debug(redirectUrl);
 
             Session.Remove("OAuthReturnUrl");
 
