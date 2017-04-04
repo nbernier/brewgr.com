@@ -17,11 +17,12 @@ namespace Brewgr.Web.Core.Migrations
 
         protected override void Seed(Brewgr.Web.Core.Data.BrewgrContext context)
         {
+            context.Configuration.LazyLoadingEnabled = true;
             //check if db is already seeded
-            if (!context.Fermentables.Any())
+            if (context.Fermentables == null || !context.Fermentables.Any())
             {
                 DirectoryInfo baseDir =
-                    new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Migrations\\Initial"));
+                    new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin\\Migrations\\Initial"));
                 foreach (var file in baseDir.GetFiles().ToList().OrderBy(x => x.Name))
                 {
                     Console.WriteLine(file.Name);
