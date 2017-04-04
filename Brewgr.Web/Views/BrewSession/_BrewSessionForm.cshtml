@@ -33,7 +33,7 @@
                     <div class="title">
                         <label for="unit">Brew Date</label>
                     </div>
-                    <input type="text" name="BrewDate" data-name="s_BrewDate" class="datepicker" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : "")" />
+                    <input type="text" name="BrewDate" data-name="s_BrewDate" disabled="disabled" class="wc_runoff" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : "")" />
                 </div>
                 <div>
                     <div class="title">
