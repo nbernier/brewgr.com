@@ -17,10 +17,6 @@ namespace Brewgr.Web.Core.Data
             Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(CNN_KEY));
         }
 
-        public BrewgrContext(string todo) : base(CNN_KEY)
-        {
-        }
-
         public IDbSet<User> Users { get; set; }
 		public IDbSet<UserSummary> UserSummaries { get; set; }
 		public IDbSet<MiniUserSummary> MiniUserSummaries { get; set; }

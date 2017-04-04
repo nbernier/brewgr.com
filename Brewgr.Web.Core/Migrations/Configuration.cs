@@ -18,7 +18,7 @@ namespace Brewgr.Web.Core.Migrations
         protected override void Seed(Brewgr.Web.Core.Data.BrewgrContext context)
         {
             //check if db is already seeded
-            if (context.Fermentables == null || !context.Fermentables.Any())
+            if (!context.Fermentables.Any())
             {
                 DirectoryInfo baseDir =
                     new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin\\Migrations\\Initial"));
