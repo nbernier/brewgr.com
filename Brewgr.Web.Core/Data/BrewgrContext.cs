@@ -14,7 +14,7 @@ namespace Brewgr.Web.Core.Data
 
         public BrewgrContext() : base(CNN_KEY)
         {
-            Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(CNN_KEY));
+//            Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(CNN_KEY));
         }
 
         public virtual IDbSet<User> Users { get; set; }
