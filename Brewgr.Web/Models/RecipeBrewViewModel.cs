@@ -33,7 +33,12 @@ namespace Brewgr.Web.Models
         [ScriptIgnore]
         public CommentWrapperViewModel CommentWrapperViewModel { get; set; }
 
-		/// <summary>
+	    public DateTime EstimateFinalDate
+	    {
+	        get { return BrewDate != DateTime.MinValue ? BrewDate.AddDays(42) : DateTime.Now.AddDays(42); }
+	    }
+
+	    /// <summary>
 		/// Determines if the brew session is a new session
 		/// </summary>
 		public bool IsNewBrewSession()

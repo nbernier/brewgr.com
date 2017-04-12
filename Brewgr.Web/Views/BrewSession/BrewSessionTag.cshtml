@@ -1,0 +1,150 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@model BrewSessionViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoShell.cshtml";
+
+    ViewBag.Title = "Brew Tag for " + Model.RecipeSummary.Name;
+}
+
+<div id="brewsessiondetail-view" class="content center builder-wrapper">
+    <div class="circleBase carboyhole"></div>
+    <div id="title" class="title">
+        <h1>
+            @ViewBag.Title
+            @if (!string.IsNullOrWhiteSpace(ViewBag.Subtitle))
+            {
+                <span> / @ViewBag.Subtitle</span>
+            }
+        </h1>
+    </div>
+    <div class="primary builder">
+        <div class="intro">
+            <a href="@Url.UserProfileUrl(Model.BrewedByUsername)"><img src="@UserAvatar.GetAvatar(50, Model.BrewedByUser.EmailAddress)" width="50" height="50" alt="@Model.BrewedByUsername" /></a>
+            <h3>
+                Brewed by
+                <a href="@Url.UserProfileUrl(Model.BrewedByUsername)">@Model.BrewedByUsername</a><br />
+                <span>@Model.BrewDate.ToLongDateString()</span>
+            </h3>
+        </div>
+
+        @* Brewing Notes *@
+        <div class="groupbox" id="brew-log">
+            <span><h3 class="floatleft">Brew Log</h3></span>
+            <div class="padding18">
+                @if (!string.IsNullOrWhiteSpace(Model.Notes))
+            {
+                foreach (var note in Model.NotesByLineBreak())
+                {
+                        @(Html.Raw(note == "<br />" ? "<br />" : Html.Encode(note)))
+                    }
+                }
+                else
+                {
+                    <text>No notes have been logged for this brew session.</text>
+                }
+            </div>
+        </div>
+
+        @* Water Infusion *@
+        @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
+        {
+            <div class="groupbox">
+                <span><h3 class="floatleft">Water Infusion</h3></span>
+                <div class="padding18">
+                    <div class="summary marginbottom20">
+                        <h3>Brew Session Specific</h3>
+                        <div class="item">
+                            <label>Grain</label>
+                            <span>
+                                @Html.Raw(Model.ShowValue(Model.GrainWeight, Model.GrainWeight + Model.UnitLabel(" lb", " kg") + " @ " + Model.GrainTemp + Html.Raw("&deg;") + Model.UnitLabel("F", "C")))
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Total Boil Time</label>
+                            <span>
+                                @Model.ShowValue(Model.BoilTime, Model.BoilTime + " minuites")
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Wort Into Fermenter</label>
+                            <span>
+                                @Model.ShowValue(Model.FermentVolumeEst, Model.FermentVolumeEst + @Model.UnitLabel(" gallons", " liters"))
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Target Mash Temperature</label>
+                            <span>
+                                @Html.Raw(Model.ShowValue(Model.TargetMashTemp, Model.TargetMashTemp + @Model.UnitLabel("&deg;F", "&deg;C")))
+                            </span>
+                        </div>
+                        <div class="item">
+                            <label>Mash Thickness</label>
+                            <span>
+                                @Model.ShowValue(Model.MashThickness, Model.MashThickness + @Model.UnitLabel(" qt/lb", " l/kg"))
+                            </span>
+                        </div>
+                    </div>
+                    <div class="summary marginbottom20">
+                        <h3>Equipment Profile</h3>
+                        <div class="item">
+                            <label>Brew Kettle Trub Loss</label>
+                            <span>@Model.ShowValue(Model.BrewKettleLoss, Model.BrewKettleLoss + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Wort Shrinkage</label>
+                            <span>@Model.ShowValue(Model.WortShrinkage, Model.WortShrinkage + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Mash Tun Equipment Loss</label>
+                            <span>@Model.ShowValue(Model.MashTunLoss, Model.MashTunLoss + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Boil Loss</label>
+                            <span>@Model.ShowValue(Model.BoilLoss, Model.BoilLoss + @Model.UnitLabel(" gallons", " liters") + "/hour")</span>
+                        </div>
+                        <div class="item">
+                            <label>Grain Absorption</label>
+                            <span>@Model.ShowValue(Model.MashGrainAbsorption, Model.MashGrainAbsorption + @Model.UnitLabel(" gallons", " liters") + Model.UnitLabel("/lb", "/kg"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Sparge Grain Absorption</label>
+                            <span>@Model.ShowValue(Model.SpargeGrainAbsorption, Model.SpargeGrainAbsorption + @Model.UnitLabel(" gallons", " liters") + Model.UnitLabel("/lb", "/kg"))</span>
+                        </div>
+                    </div>
+                    <div class="summary marginbottom20">
+                        <h3>Calculated Totals</h3>
+                        <div class="item">
+                            <label>Runoff Volume</label>
+                            <span>@Model.ShowValue(Model.BoilVolumeEst, Model.BoilVolumeEst + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Total Water Needed</label>
+                            <span>@Model.ShowValue(Model.TotalWaterNeeded, Model.TotalWaterNeeded + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Mash/Strike Volume</label>
+                            <span>@Model.ShowValue(Model.StrikeWaterVolume, Model.StrikeWaterVolume + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>1st Runnings</label>
+                            <span>@Model.ShowValue(Model.FirstRunningsVolume, Model.FirstRunningsVolume + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Sparge Volume</label>
+                            <span>@Model.ShowValue(Model.SpargeWaterVolume, Model.SpargeWaterVolume + @Model.UnitLabel(" gallons", " liters"))</span>
+                        </div>
+                        <div class="item">
+                            <label>Strike Temperature</label>
+                            <span>
+                                @Html.Raw(Model.ShowValue(Model.StrikeWaterTemp, @Model.StrikeWaterTemp + "&deg;" + @Model.UnitLabel("F", "C")))
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div><h2><span>Estimate Final @Model.EstimateFinalDate.ToLongDateString()</span></h2></div>
+    </div>
+</div>

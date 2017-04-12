@@ -2567,6 +2567,7 @@
     <None Include="Properties\PublishProfiles\brewgr - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\brewgr - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
+    <Content Include="Views\BrewSession\BrewSessionTag.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

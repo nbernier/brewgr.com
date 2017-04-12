@@ -39,7 +39,7 @@
                     <div class="title">
                         <label for="unit">Est. Final Date</label>
                     </div>
-                    <input type="text" data-name="s_EstimatedFinalDate" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.AddDays(42).ToShortDateString() : DateTime.Now.AddDays(42).ToShortDateString())" class="datepicker" />
+                    <input type="text" data-name="s_EstimatedFinalDate" value="@Model.EstimateFinalDate" class="datepicker" />
                 </div>
 
             </div>
@@ -60,6 +60,7 @@
                     {
                         <a href="@Url.RecipeBrewSessionsUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name)" class="button button_small button_black">Other Brew Sessions</a>
                     }
+                    <a href="@Url.RecipeBrewTag(Model.BrewSessionId)" class="button button_small button_gray floatright"><img src="~/img/icons/application_form.png" alt="edit" class="valignmiddle marginright10" /> <span class="valignmiddle">Print Tag</span></a>
                     <a href="@Url.RecipeEditUrl(Model.RecipeId)" class="button button_small button_gray floatright"><img src="~/img/icons/calculator.png" alt="edit" class="valignmiddle marginright10" /> <span class="valignmiddle">Go To Recipe</span></a>
                 }
             </div>

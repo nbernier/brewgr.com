@@ -406,5 +406,26 @@ namespace Brewgr.Web.Controllers
 
 			return true;
 		}
-	}
+
+	    [ForceHttps]
+	    [Authorize]
+	    public ActionResult BrewSessionTag(int brewSessionId)
+	    {
+            var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
+
+            if (!this.VerifyBrewSessionAccess(brewSession))
+            {
+                return this.Issue404();
+            }
+
+            // Ensure only Active Tasting Notes
+            brewSession.TastingNotes =
+                brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
+
+            var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
+
+            return View(brewSessionViewModel);
+        }
+
+    }
 }

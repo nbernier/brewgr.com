@@ -763,6 +763,13 @@
 	.groupbox > span h3 { color: #000; font-size: 12px; }
 	ol.instructions { margin: 0px 32px; }
 	ol.instructions li { font-size:100%; margin-bottom:2px; }
+
+    .center {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
 }
 
 
