@@ -69,7 +69,7 @@
 						<a href="#" class="button button_gray button_small delete-brewsession" data-brewsessionid="@Model.BrewSessionId">Delete</a>
 					}
 					<a href="@Url.RecipeDetailUrl(Model.RecipeId, Model.RecipeName, !string.IsNullOrWhiteSpace(Model.RecipeBjcpStyleSubCategoryId) ? Model.RecipeBjcpStyleName : null)" class="button button_gray button_small">Go To Recipe</a>
-				</div>
+                    <a href="@Url.RecipeBrewTag(Model.BrewSessionId)" class="button button_gray button_small">Tag</a>				</div>
                 
                 @* Start Comments *@
                 @Html.Partial("_Comments", Model.CommentWrapperViewModel)
