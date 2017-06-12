@@ -2,7 +2,11 @@
 @model Brewgr.Web.Core.Model.UserSummary
 
 @{
-    var username = Model.Username.Length > 30 ? Model.Username.Substring(0, 30) + "..." : Model.Username;
+    var username = "";
+    if (Model.Username != null)
+    {
+        username = Model.Username.Length > 30 ? Model.Username.Substring(0, 30) + "..." : Model.Username;
+    }
 }
 
 <div class="user-widget">
