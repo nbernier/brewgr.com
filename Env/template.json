@@ -1,0 +1,693 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "servers_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "serverfarms_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "components_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "config_web_name": {
+            "defaultValue": "web",
+            "type": "String"
+        },
+        "storageAccounts_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "databases_brewgr_name": {
+            "defaultValue": "brewgr",
+            "type": "String"
+        },
+        "databases_master_name": {
+            "defaultValue": "master",
+            "type": "String"
+        },
+        "databases_brewgr_backup_name": {
+            "defaultValue": "brewgr_backup",
+            "type": "String"
+        },
+        "deployments_421504749510320_name": {
+            "defaultValue": "421504749510320",
+            "type": "String"
+        },
+        "deployments_411497272802025_name": {
+            "defaultValue": "411497272802025",
+            "type": "String"
+        },
+        "deployments_401495285832050_name": {
+            "defaultValue": "401495285832050",
+            "type": "String"
+        },
+        "deployments_391495237130272_name": {
+            "defaultValue": "391495237130272",
+            "type": "String"
+        },
+        "deployments_381491959088194_name": {
+            "defaultValue": "381491959088194",
+            "type": "String"
+        },
+        "deployments_371491675072294_name": {
+            "defaultValue": "371491675072294",
+            "type": "String"
+        },
+        "deployments_361491674984897_name": {
+            "defaultValue": "361491674984897",
+            "type": "String"
+        },
+        "deployments_351491305170387_name": {
+            "defaultValue": "351491305170387",
+            "type": "String"
+        },
+        "deployments_341491274398979_name": {
+            "defaultValue": "341491274398979",
+            "type": "String"
+        },
+        "deployments_331491272981324_name": {
+            "defaultValue": "331491272981324",
+            "type": "String"
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "defaultValue": "AllowAllWindowsAzureIps",
+            "type": "String"
+        },
+        "hostNameBindings_brewgr.azurewebsites.net_name": {
+            "defaultValue": "brewgr.azurewebsites.net",
+            "type": "String"
+        },
+        "firewallRules_ClientIPAddress_2017_1_0_22_59_17_name": {
+            "defaultValue": "ClientIPAddress_2017-1-0_22-59-17",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/microsoft.insights/components/brewgr'.",
+            "type": "microsoft.insights/components",
+            "kind": "web",
+            "name": "[parameters('components_brewgr_name')]",
+            "apiVersion": "2014-04-01",
+            "location": "eastus",
+            "tags": {
+                "hidden-link:/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Web/sites/brewgr": "Resource"
+            },
+            "scale": null,
+            "properties": {
+                "ApplicationId": "[parameters('components_brewgr_name')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr'.",
+            "type": "Microsoft.Sql/servers",
+            "kind": "v12.0",
+            "name": "[parameters('servers_brewgr_name')]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "administratorLogin": "nbernier",
+                "administratorLoginPassword": null,
+                "version": "12.0"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Storage/storageAccounts/brewgr'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_brewgr_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "canadaeast",
+            "tags": {},
+            "scale": null,
+            "properties": {},
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Web/serverfarms/brewgr'.",
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "B1",
+                "tier": "Basic",
+                "size": "B1",
+                "family": "B",
+                "capacity": 1
+            },
+            "kind": "app",
+            "name": "[parameters('serverfarms_brewgr_name')]",
+            "apiVersion": "2016-09-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "name": "[parameters('serverfarms_brewgr_name')]",
+                "workerTierName": null,
+                "adminSiteName": null,
+                "hostingEnvironmentProfile": null,
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Web/sites/brewgr'.",
+            "type": "Microsoft.Web/sites",
+            "kind": "app",
+            "name": "[parameters('sites_brewgr_name')]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "tags": {
+                "hidden-related:/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/serverfarms/brewgr": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_brewgr_name'),'.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_brewgr_name'),'.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_brewgr_name'))]",
+                "reserved": false,
+                "siteConfig": null,
+                "scmSiteAlsoStopped": false,
+                "hostingEnvironmentProfile": null,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "cloningInfo": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr/databases/brewgr'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,user",
+            "name": "[concat(parameters('servers_brewgr_name'), '/', parameters('databases_brewgr_name'))]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "databaseId": "673b2ffa-6984-4b93-b843-8287348eaba0",
+                "edition": "Standard",
+                "status": "Online",
+                "serviceLevelObjective": "S0",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "1073741824",
+                "creationDate": "2017-04-05T00:35:18.497Z",
+                "currentServiceObjectiveId": "f1173c43-91bd-4aaa-973c-54e79e15235b",
+                "requestedServiceObjectiveId": "f1173c43-91bd-4aaa-973c-54e79e15235b",
+                "requestedServiceObjectiveName": "S0",
+                "sampleName": null,
+                "defaultSecondaryLocation": "Canada Central",
+                "earliestRestoreDate": "2017-08-03T00:00:00Z",
+                "elasticPoolName": null,
+                "containmentState": 2,
+                "readScale": "Disabled",
+                "failoverGroupId": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr/databases/brewgr_backup'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,user",
+            "name": "[concat(parameters('servers_brewgr_name'), '/', parameters('databases_brewgr_backup_name'))]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "databaseId": "fa8a4865-9bc3-446e-a100-8ffc7b683a59",
+                "edition": "Basic",
+                "status": "Online",
+                "serviceLevelObjective": "Basic",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "1073741824",
+                "creationDate": "2017-04-04T11:18:33.087Z",
+                "currentServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveId": "dd6d99bb-f193-4ec1-86f2-43d3bccbc49c",
+                "requestedServiceObjectiveName": "Basic",
+                "sampleName": null,
+                "defaultSecondaryLocation": "Canada Central",
+                "earliestRestoreDate": "2017-08-31T00:00:00Z",
+                "elasticPoolName": null,
+                "containmentState": 2,
+                "readScale": "Disabled",
+                "failoverGroupId": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr/databases/master'.",
+            "type": "Microsoft.Sql/servers/databases",
+            "kind": "v12.0,system",
+            "name": "[concat(parameters('servers_brewgr_name'), '/', parameters('databases_master_name'))]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "databaseId": "9eb64959-1d65-462e-be45-bff4e68268b3",
+                "edition": "System",
+                "status": "Online",
+                "serviceLevelObjective": "System0",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "32212254720",
+                "creationDate": "2017-02-05T22:44:14.733Z",
+                "currentServiceObjectiveId": "29dd7459-4a7c-4e56-be22-f0adda49440d",
+                "requestedServiceObjectiveId": "29dd7459-4a7c-4e56-be22-f0adda49440d",
+                "requestedServiceObjectiveName": "System0",
+                "sampleName": null,
+                "defaultSecondaryLocation": "Canada Central",
+                "earliestRestoreDate": null,
+                "elasticPoolName": null,
+                "containmentState": 2,
+                "readScale": "Disabled",
+                "failoverGroupId": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr/firewallRules/AllowAllWindowsAzureIps'.",
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "kind": "v12.0",
+            "name": "[concat(parameters('servers_brewgr_name'), '/', parameters('firewallRules_AllowAllWindowsAzureIps_name'))]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Sql/servers/brewgr/firewallRules/ClientIPAddress_2017-1-0_22-59-17'.",
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "kind": "v12.0",
+            "name": "[concat(parameters('servers_brewgr_name'), '/', parameters('firewallRules_ClientIPAddress_2017_1_0_22_59_17_name'))]",
+            "apiVersion": "2014-04-01-preview",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "startIpAddress": "216.113.29.141",
+                "endIpAddress": "216.113.29.141"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Web/sites/brewgr/config/web'.",
+            "type": "Microsoft.Web/sites/config",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('config_web_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "tags": {
+                "hidden-related:/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/serverfarms/brewgr": "empty"
+            },
+            "scale": null,
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2015",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": true,
+                "publishingUsername": "$brewgr",
+                "publishingPassword": null,
+                "appSettings": null,
+                "metadata": null,
+                "connectionStrings": null,
+                "machineKey": null,
+                "handlerMappings": null,
+                "documentRoot": null,
+                "scmType": "VSTSRM",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "javaVersion": null,
+                "javaContainer": null,
+                "javaContainerVersion": null,
+                "appCommandLine": "",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "runtimeADUser": null,
+                "runtimeADUserPassword": null,
+                "loadBalancing": "LeastRequests",
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "limits": null,
+                "autoHealEnabled": false,
+                "autoHealRules": {
+                    "triggers": null,
+                    "actions": null
+                },
+                "tracingOptions": null,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "cors": null,
+                "push": null,
+                "apiDefinition": null,
+                "autoSwapSlotName": null,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/421504749510320'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_421504749510320_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_421504749510320_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"a4b44040b655b113567b18a57433a81fb5e66d7e\",\"buildId\":\"43\",\"releaseId\":\"42\",\"buildNumber\":\"20170907.1\",\"releaseName\":\"Release-42\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-09-07T01:58:34.4636043Z",
+                "end_time": "2017-09-07T01:58:34.4636043Z",
+                "active": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/411497272802025'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_411497272802025_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_411497272802025_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"efd1ea4f3a4193c93cddcf8d0302e280720bde29\",\"buildId\":\"42\",\"releaseId\":\"41\",\"buildNumber\":\"20170612.1\",\"releaseName\":\"Release-41\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-06-12T13:06:46.3456649Z",
+                "end_time": "2017-06-12T13:06:46.3456649Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/401495285832050'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_401495285832050_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_401495285832050_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"b454266012c0f19032e9f9d3ee4310194d22b9a6\",\"buildId\":\"41\",\"releaseId\":\"40\",\"buildNumber\":\"20170520.1\",\"releaseName\":\"Release-40\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-05-20T13:10:32.8067455Z",
+                "end_time": "2017-05-20T13:10:32.8067455Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/391495237130272'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_391495237130272_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_391495237130272_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"637a4ee3798fcfd32fd77d536d3d94fb5747f197\",\"buildId\":\"40\",\"releaseId\":\"39\",\"buildNumber\":\"20170519.1\",\"releaseName\":\"Release-39\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-05-19T23:38:50.999198Z",
+                "end_time": "2017-05-19T23:38:50.999198Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/381491959088194'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_381491959088194_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_381491959088194_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"1164c38589dca7407d5555a953af485d48377a46\",\"buildId\":\"39\",\"releaseId\":\"38\",\"buildNumber\":\"20170412.1\",\"releaseName\":\"Release-38\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-12T01:04:51.7877172Z",
+                "end_time": "2017-04-12T01:04:51.7877172Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/371491675072294'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_371491675072294_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_371491675072294_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"6023b7514210f10451026f7be702a4f9b841d03c\",\"buildId\":\"38\",\"releaseId\":\"37\",\"buildNumber\":\"20170408.2\",\"releaseName\":\"Release-37\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-08T18:11:12.579447Z",
+                "end_time": "2017-04-08T18:11:12.579447Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/361491674984897'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_361491674984897_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_361491674984897_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"1ef66a404aeae5a0c861752b336b33da65573039\",\"buildId\":\"37\",\"releaseId\":\"36\",\"buildNumber\":\"20170408.1\",\"releaseName\":\"Release-36\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-08T18:09:48.8337048Z",
+                "end_time": "2017-04-08T18:09:48.8337048Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/351491305170387'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_351491305170387_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_351491305170387_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"fd9573e2809fb9b60035339884b047e893efdcfa\",\"buildId\":\"36\",\"releaseId\":\"35\",\"buildNumber\":\"20170404.5\",\"releaseName\":\"Release-35\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-04T11:26:11.7414239Z",
+                "end_time": "2017-04-04T11:26:11.7414239Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/341491274398979'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_341491274398979_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_341491274398979_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"7d4675e7074df0db9230bca59be3e088c928fb49\",\"buildId\":\"35\",\"releaseId\":\"34\",\"buildNumber\":\"20170404.4\",\"releaseName\":\"Release-34\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-04T02:53:24.036988Z",
+                "end_time": "2017-04-04T02:53:24.036988Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourcegroups/brewgr/providers/Microsoft.Web/sites/brewgr/deployments/331491272981324'.",
+            "type": "Microsoft.Web/sites/deployments",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('deployments_331491272981324_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "id": "[parameters('deployments_331491272981324_name')]",
+                "status": 4,
+                "author_email": "",
+                "author": "Microsoft.VisualStudio.Services.TFS",
+                "deployer": "VSTS",
+                "message": "{\"type\":\"Deployment\",\"commitId\":\"353822d5e5d55a3300e35ead0c1b521c190fff77\",\"buildId\":\"34\",\"releaseId\":\"33\",\"buildNumber\":\"20170404.3\",\"releaseName\":\"Release-33\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://brewgr.visualstudio.com/\",\"teamProject\":\"MyFirstProject\",\"slotName\":\"Production\"}",
+                "start_time": "2017-04-04T02:29:42.4324979Z",
+                "end_time": "2017-04-04T02:29:42.4324979Z",
+                "active": false
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/06b86eef-e8f5-4495-9939-8a1001b35eb8/resourceGroups/brewgr/providers/Microsoft.Web/sites/brewgr/hostNameBindings/brewgr.azurewebsites.net'.",
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "name": "[concat(parameters('sites_brewgr_name'), '/', parameters('hostNameBindings_brewgr.azurewebsites.net_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "Canada East",
+            "scale": null,
+            "properties": {
+                "siteName": "brewgr",
+                "domainId": null,
+                "hostNameType": "Verified"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_brewgr_name'))]"
+            ]
+        }
+    ]
+}

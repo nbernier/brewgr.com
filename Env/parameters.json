@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_brewgr_name": {
+            "value": null
+        },
+        "servers_brewgr_name": {
+            "value": null
+        },
+        "serverfarms_brewgr_name": {
+            "value": null
+        },
+        "components_brewgr_name": {
+            "value": null
+        },
+        "config_web_name": {
+            "value": null
+        },
+        "storageAccounts_brewgr_name": {
+            "value": null
+        },
+        "databases_brewgr_name": {
+            "value": null
+        },
+        "databases_master_name": {
+            "value": null
+        },
+        "databases_brewgr_backup_name": {
+            "value": null
+        },
+        "deployments_421504749510320_name": {
+            "value": null
+        },
+        "deployments_411497272802025_name": {
+            "value": null
+        },
+        "deployments_401495285832050_name": {
+            "value": null
+        },
+        "deployments_391495237130272_name": {
+            "value": null
+        },
+        "deployments_381491959088194_name": {
+            "value": null
+        },
+        "deployments_371491675072294_name": {
+            "value": null
+        },
+        "deployments_361491674984897_name": {
+            "value": null
+        },
+        "deployments_351491305170387_name": {
+            "value": null
+        },
+        "deployments_341491274398979_name": {
+            "value": null
+        },
+        "deployments_331491272981324_name": {
+            "value": null
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "value": null
+        },
+        "hostNameBindings_brewgr.azurewebsites.net_name": {
+            "value": null
+        },
+        "firewallRules_ClientIPAddress_2017_1_0_22_59_17_name": {
+            "value": null
+        }
+    }
+}
