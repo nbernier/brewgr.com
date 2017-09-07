@@ -751,15 +751,15 @@ var WaterCalc =
         this.setValue('.wc_runoff', util.gal_To_l, runoffVol);
 
         // Mash Strike Volume
-        var mashStrikeVol = ((input.mashThickness * input.grain) / 4) + input.mashTunLoss;
+        var mashStrikeVol = ((input.mashThickness * input.grain) / 4) ;
         this.setValue('.wc_strikeVol', util.gal_To_l, mashStrikeVol);
 
         // First Runnings 
-        var firstRunnings = mashStrikeVol - (input.grain) * input.mashAbsorp;
+        var firstRunnings = mashStrikeVol - (input.grain * input.mashAbsorp);
         this.setValue('.wc_firstRunnings', util.gal_To_l, firstRunnings);
 
         // Sparge Volume
-        var spargeVol = (runoffVol - firstRunnings) + (input.spargeAbsorp * input.grain);
+        var spargeVol = (runoffVol - firstRunnings) + (input.spargeAbsorp * input.grain) + input.mashTunLoss;
         this.setValue('.wc_spargeVol', util.gal_To_l, spargeVol);
 
         // Strike Temp
