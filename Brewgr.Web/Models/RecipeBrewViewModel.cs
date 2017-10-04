@@ -35,7 +35,7 @@ namespace Brewgr.Web.Models
 
 	    public DateTime EstimateFinalDate
 	    {
-	        get { return BrewDate != DateTime.MinValue ? BrewDate.AddDays(42) : DateTime.Now.AddDays(42); }
+	        get { return BrewDate != DateTime.MinValue ? BrewDate.AddDays(30) : DateTime.Now.AddDays(30); }
 	    }
 
 	    /// <summary>
