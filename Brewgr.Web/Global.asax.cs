@@ -63,14 +63,14 @@ namespace Brewgr.Web
 			var context = HttpContext.Current;
 			Uri url = context.Request.Url;
 
-			//if (WwwRegex.IsMatch(url.ToString()))
-			//{
-			//	String newUrl = WwwRegex.Replace(url.ToString(), String.Format("{0}://", url.Scheme));
-			//	context.Response.RedirectPermanent(newUrl);
-			//}
+            if (WwwRegex.IsMatch(url.ToString()))
+            {
+                String newUrl = WwwRegex.Replace(url.ToString(), String.Format("{0}://", url.Scheme));
+                context.Response.RedirectPermanent(newUrl);
+            }
 
-			// Handle Partner Detection
-			if (!string.IsNullOrWhiteSpace(context.Request.QueryString["pid"]))
+            // Handle Partner Detection
+            if (!string.IsNullOrWhiteSpace(context.Request.QueryString["pid"]))
 			{
 				var kernel = KernelPersister.Get();
 				var partnerService = kernel.Get<IPartnerService>();
