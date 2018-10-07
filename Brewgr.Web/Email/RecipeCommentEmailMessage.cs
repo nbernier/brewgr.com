@@ -60,7 +60,7 @@ namespace Brewgr.Web.Email
 			message.AppendLine();
 			message.AppendLine("You can read the comment and respond by visiting the recipe page on Brewgr at the following link.");
 			message.AppendLine();
-			message.AppendLine("<http://brewgr.com>");
+			message.AppendLine("<http://beerrecipe.ca>");
 
 			message.AppendLine("If clicking the link above does not work, copy and paste the URL in");
 			message.AppendLine("a new browser window instead.");

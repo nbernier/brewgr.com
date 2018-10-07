@@ -42,7 +42,7 @@ namespace Brewgr.Web.Core.Model
 				new XElement("RECIPE",
 				new XElement("WATER"),
 				new XElement("EQUIPMENT"),
-				new XElement("NAME", recipe.RecipeName + " (exported from brewgr.com)"),
+				new XElement("NAME", recipe.RecipeName + " (exported from beerrecipe.ca)"),
 				new XElement("VERSION", "1"),
 				new XElement("TYPE", HumanReadableFormatter.AddSpacesToPascalCaseString(((RecipeType)recipe.RecipeTypeId).ToString())),
 				new XElement("BREWER", recipe.User.CalculatedUsername + string.Format(" /!/{0})", recipe.User.CalculatedUsername)),
@@ -147,7 +147,7 @@ namespace Brewgr.Web.Core.Model
 		{
 			var notes = new StringBuilder();
 
-			notes.AppendLine("This recipe was exported from http://brewgr.com.  ");
+			notes.AppendLine("This recipe was exported from http://beerrecipe.ca.  ");
 			
 			if (!string.IsNullOrWhiteSpace(recipe.Description))
 			{

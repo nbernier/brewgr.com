@@ -39,45 +39,45 @@ namespace Brewgr.Web.Core.Service
 			IList<BlogPost> blogMatches = null;
 			IList<UserSummary> userMatches = null;
 
-			Parallel.Invoke(
-			// Recipes
-			() =>
+            Parallel.Invoke(
+            // Recipes
+            () =>
             {
-				recipeMatches = this.Repository.GetSet<RecipeSummary>()
-				.Where(x => x.IsActive)
-				.Where(x => x.IsPublic)
-				.Where(x =>
-				       x.RecipeName == searchTerm ||
-				       x.RecipeName.StartsWith(searchTerm) ||
-				       x.RecipeName.Contains(searchTerm) ||
-				       x.Description.Contains(searchTerm) ||
-					   x.BJCPStyleName.Contains(searchTerm))
-				.ToList();         
+                recipeMatches = this.Repository.GetSet<RecipeSummary>()
+                .Where(x => x.IsActive)
+                .Where(x => x.IsPublic)
+                .Where(x =>
+                       x.RecipeName == searchTerm ||
+                       x.RecipeName.StartsWith(searchTerm) ||
+                       x.RecipeName.Contains(searchTerm) ||
+                       x.Description.Contains(searchTerm) ||
+                       x.BJCPStyleName.Contains(searchTerm))
+                .ToList();
             },
-			// Users
-			() =>
-			{
-				userMatches = this.Repository.GetSet<User>()
-				    .Where(x => x.IsActive)
-				    .Where(x =>
-				            x.CalculatedUsername == searchTerm ||
-							x.CalculatedUsername.Contains(searchTerm) ||
-				            x.Bio.Contains(searchTerm))
-					.OrderBy(x => x.CalculatedUsername.StartsWith("Brewer") ? "zzz" + x.CalculatedUsername : x.CalculatedUsername)
-					.ThenByDescending(x => x.Recipes.Any() ? x.Recipes.Count : 0 )
-					.ThenByDescending(x => x.BrewSessions.Any() ? x.BrewSessions.Count : 0)
-					.ThenByDescending(x => x.UserConnections.Any() ? x.UserConnections.Count : 0)
-					.Select(x => x.UserSummary)
-				    .ToList();
-			},
-			// Blog Posts
-			() =>
-			{
-                // Added to fail gracefully when DEV environment doesn't have blog connection string
-			    if(!string.IsNullOrWhiteSpace(this.BrewgrBlogConnection.ConnectionString))
-			    {
-			        blogMatches = this.BrewgrBlogRepository.SearchBlogPosts(searchTerm).ToList();
-			    }
+            // Users
+            () =>
+            {
+                userMatches = this.Repository.GetSet<User>()
+                    .Where(x => x.IsActive)
+                    .Where(x =>
+                            x.CalculatedUsername == searchTerm ||
+                            x.CalculatedUsername.Contains(searchTerm) ||
+                            x.Bio.Contains(searchTerm))
+                    .OrderBy(x => x.CalculatedUsername.StartsWith("Brewer") ? "zzz" + x.CalculatedUsername : x.CalculatedUsername)
+                    .ThenByDescending(x => x.Recipes.Any() ? x.Recipes.Count : 0)
+                    .ThenByDescending(x => x.BrewSessions.Any() ? x.BrewSessions.Count : 0)
+                    .ThenByDescending(x => x.UserConnections.Any() ? x.UserConnections.Count : 0)
+                    .Select(x => x.UserSummary)
+                    .ToList();
+   //         },
+			//// Blog Posts
+			//() =>
+			//{
+   //             // Added to fail gracefully when DEV environment doesn't have blog connection string
+			//    if(!string.IsNullOrWhiteSpace(this.BrewgrBlogConnection.ConnectionString))
+			//    {
+			//        blogMatches = this.BrewgrBlogRepository.SearchBlogPosts(searchTerm).ToList();
+			//    }
 			});
 
 			return new SearchResult

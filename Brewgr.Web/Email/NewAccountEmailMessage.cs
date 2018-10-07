@@ -19,7 +19,7 @@ namespace Brewgr.Web.Email
 
             this.SenderAddress = webSettings.SenderAddress;
             this.SenderDisplayName = webSettings.SenderDisplayName;
-            this.Subject = "Welcome to Brewgr.com";
+            this.Subject = "Welcome to beerrecipe.ca";
             this.FormatAsHtml = false;
         }
 

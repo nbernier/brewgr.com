@@ -46,7 +46,7 @@ namespace Brewgr.Web.Core.Model
 			message.AppendLine();
 
 			message.AppendLine("Cheers!");
-			message.AppendLine("Brewgr.com on behalf of " + this.Partner.Name);
+			message.AppendLine("beerrecipe.ca on behalf of " + this.Partner.Name);
 
 			return message.ToString();
 		}

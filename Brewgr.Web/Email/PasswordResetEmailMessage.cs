@@ -19,7 +19,7 @@ namespace Brewgr.Web.Email
 
 			this.SenderAddress = webSettings.SenderAddress;
 			this.SenderDisplayName = webSettings.SenderDisplayName;
-			this.Subject = "Password Reset for Brewgr.com";
+			this.Subject = "Password Reset for beerrecipe.ca";
 			this.FormatAsHtml = false;
 		}
 
@@ -41,7 +41,7 @@ namespace Brewgr.Web.Email
 
 			message.AppendLine("Hello,");
 			message.AppendLine();
-			message.AppendLine("We've received a request to reset your password for brewgr.com");
+			message.AppendLine("We've received a request to reset your password for beerrecipe.ca");
 			message.AppendLine("To initiate the process, please click the following link:");
 			message.AppendLine();
 			message.AppendFormat("<{0}/set-password/{1}>", this.WebSettings.RootPathSecure, this.AuthToken);

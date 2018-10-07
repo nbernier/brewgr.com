@@ -23,7 +23,7 @@ namespace Brewgr.Web.Email
 			this.UserHostAddressResolver = userHostAddressResolver;
 
 			this.SenderAddress = webSettings.SenderAddress;
-			this.Subject = "Brewgr.com Contact Form";
+			this.Subject = "BerrRecipe Contact Form";
 			this.FormatAsHtml = false;
 
 			webSettings.ContactFormEmailAddress.ForEach(this.ToRecipients.Add);
@@ -46,7 +46,7 @@ namespace Brewgr.Web.Email
 		{
 			var message = new StringBuilder();
 
-			message.AppendLine("Brewgr.com Contact Form");
+			message.AppendLine("beerrecipe.ca Contact Form");
 			message.AppendLine("----------------------------------------------------------------------------------");
 			message.AppendLine("From: " + this.ContactViewModel.Name + " (" + this.ContactViewModel.EmailAddress + ") ");
 			message.AppendLine("Date: " + DateTime.Now.ToString());

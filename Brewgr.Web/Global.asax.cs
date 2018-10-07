@@ -52,7 +52,7 @@ namespace Brewgr.Web
 			Database.SetInitializer<BrewgrContext>(null);
 
 			// Setup Exception Error Store
-			ErrorStore.Setup("Brewgr.com", new SQLErrorStore(ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString));
+			ErrorStore.Setup("beerrecipe.ca", new SQLErrorStore(ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString));
 		}
 
 		/// <summary>

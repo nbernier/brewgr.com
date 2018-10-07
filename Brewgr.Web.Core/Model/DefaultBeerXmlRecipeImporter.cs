@@ -326,7 +326,7 @@ namespace Brewgr.Web.Core.Model
 		void SetRecipeInfo(Recipe recipe, XElement entryPoint)
 		{
 			// Name
-			recipe.RecipeName = entryPoint.Element("NAME") != null ? entryPoint.Element("NAME").Value.Replace("(exported from brewgr.com)", "") : null;
+			recipe.RecipeName = entryPoint.Element("NAME") != null ? entryPoint.Element("NAME").Value.Replace("(exported from beerrecipe.ca)", "") : null;
 
 			// Style
 			if (entryPoint.Element("STYLE") != null)

@@ -19,24 +19,24 @@ namespace Brewgr.Web
 
 		readonly string[] StaticLinks = new[]
 		{
-			"http://brewgr.com",
-			"http://brewgr.com/about",
-			"http://brewgr.com/features",
-			"http://brewgr.com/blog",
-			"https://brewgr.com/login",
-			"http://brewgr.com/howitworks",
-			"http://brewgr.com/homebrew-recipes",
-			"https://brewgr.com/homebrew-recipe-calculator",
-			"https://brewgr.com/contact",
-            "http://brewgr.com/calculations",
-			"http://brewgr.com/calculations/original-gravity",
-			"http://brewgr.com/calculations/final-gravity",
-			"http://brewgr.com/calculations/srm-beer-color",
-			"http://brewgr.com/calculations/ibu-hop-bitterness",
-			"http://brewgr.com/calculations/alcohol-content",
-			"http://brewgr.com/calculations/calories",
-			"http://brewgr.com/calculators/hydrometer-correction",
-			"http://brewgr.com/pliny-the-elder-clone-recipes"
+			"http://beerrecipe.ca",
+			"http://beerrecipe.ca/about",
+			"http://beerrecipe.ca/features",
+			"http://beerrecipe.ca/blog",
+			"https://beerrecipe.ca/login",
+			"http://beerrecipe.ca/howitworks",
+			"http://beerrecipe.ca/homebrew-recipes",
+			"https://beerrecipe.ca/homebrew-recipe-calculator",
+			"https://beerrecipe.ca/contact",
+            "http://beerrecipe.ca/calculations",
+			"http://beerrecipe.ca/calculations/original-gravity",
+			"http://beerrecipe.ca/calculations/final-gravity",
+			"http://beerrecipe.ca/calculations/srm-beer-color",
+			"http://beerrecipe.ca/calculations/ibu-hop-bitterness",
+			"http://beerrecipe.ca/calculations/alcohol-content",
+			"http://beerrecipe.ca/calculations/calories",
+			"http://beerrecipe.ca/calculators/hydrometer-correction",
+			"http://beerrecipe.ca/pliny-the-elder-clone-recipes"
 		};
 
 		/// <summary>
@@ -92,7 +92,6 @@ namespace Brewgr.Web
 			#region UNCATEGORIZED 
 
 			// Add the Uncategorized Pages
-			//http://dev.brewgr.com/recipes/other-homebrew-recipes
 			var uncategorizedPageCount = this.BeerStyleService.GetUnCategorizedRecipesPageCount();
 
 			if(uncategorizedPageCount > 0)
