@@ -14,6 +14,7 @@
     <TargetFrameworkProfile />
     <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -339,6 +340,7 @@
     <Compile Include="Code\ViewModelValidatorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".well-known\pki-validation\public\ED873ADEF931728310D074613092E49B.txt" />
     <Content Include="crossdomain.xml" />
     <Content Include="css\builder.css" />
     <Content Include="css\colorbox.css" />

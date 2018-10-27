@@ -228,14 +228,14 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string Image(this UrlHelper urlHelper, string relativeImagePath)
 		{
-			if (!IsHttps(urlHelper))
-			{
-				return urlHelper.Content("~/" + relativeImagePath.Replace("~/", ""));
-			}
+			//if (!IsHttps(urlHelper))
+			//{
+			//	return urlHelper.Content("~/" + relativeImagePath.Replace("~/", ""));
+			//}
 
-			var webSettings = GetWebSettings();
+			//var webSettings = GetWebSettings();
 
-			return string.Format("{0}/{1}", webSettings.RootPathSecure, relativeImagePath.Replace("~/", ""));
+			return string.Format("/{0}", relativeImagePath.Replace("~/", ""));
 		}
 
 		/// <summary>
