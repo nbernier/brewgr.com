@@ -340,6 +340,7 @@
     <Compile Include="Code\ViewModelValidatorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".well-known\pki-validation\ED873ADEF931728310D074613092E49B.txt" />
     <Content Include=".well-known\pki-validation\public\ED873ADEF931728310D074613092E49B.txt" />
     <Content Include="crossdomain.xml" />
     <Content Include="css\builder.css" />
