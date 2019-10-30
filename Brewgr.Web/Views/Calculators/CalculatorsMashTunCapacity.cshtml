@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = "~/Views/Calculators/_CalculatorsSubLayout.cshtml";
+    ViewBag.Title = "Mash Tun Capacity Calculator";
+    ViewBag.Description = "Mash tun capactiy calculator for homebrew.";
+}
+
+
+
+<h2 class="page-header visible-md visible-lg">Mash Tun Capacity Calculator</h2>
+
+
+<p>
+    Use this calculator to find out how big of a mash tun you will need. This will use your amount of grain and mash thickness to determine mash tun size.
+</p>
+
+<style>
+    .measurement { display: none; }
+</style>
+
+
+<form class="form-horizontal">
+    <div class="row">
+        <div class="col-sm-8" id="s_waterIn">
+
+            <div class="form-group">
+                <label class="col-sm-5 control-label">
+                    Measurement
+                </label>
+                <div class="col-sm-4 col-xs-10">
+                    <select id="scale" class="form-control" data-name="s_UnitType">
+                        <option value="s" selected="selected">US</option>
+                        <option value="m">Metric</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 col-xs-2 measurement">
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-5 control-label">
+                    Grain Weight
+                    <span class="helptip" original-title="The amount of grain in that will be added to the mash. Do not include sugars, honey, molasess, etc. as they do not absorb any liquid">&nbsp;</span>
+                </label>
+                <div class="col-sm-4 col-xs-10">
+                    <input type="text" data-name="s_GrainWeight" value="" class="wc_trig wc_grain form-control" data-filter="positiveFloat" />
+                </div>
+                <div class="col-sm-3 col-xs-2 measurement">
+                    <span data-unit="s">lb</span>
+                    <span data-unit="m">kg</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-5 control-label">
+                    Mash Thickness
+                    <span class="helptip" original-title="The thickness of the mash, the water to grain ratio in the mash tun. A thick mash would be a low number (i.e. 1.2) and a thin mash would be a high number (i.e. 1.6). An average is 1.33 qt/lb">&nbsp;</span>
+                </label>
+                <div class="col-sm-4 col-xs-10">
+                    <input type="text" data-name="s_MashThickness" value="" class="wc_trig wc_mashThickness form-control" data-filter="positiveFloat" />
+                </div>
+                <div class="col-sm-3 col-xs-2 measurement">
+                    <span data-unit="s">qt/lb</span><span data-unit="m">l/kg</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-5 control-label">
+                    Mash Tun Capacity
+                    <span class="helptip" original-title="This is how big your mash tun will need to be.">&nbsp;</span>
+                </label>
+                <div class="col-sm-4 col-xs-10">
+                    <input type="text" data-name="s_mashTunCapacity" value="" class="wc_trig wc_mashTunCapacity form-control" data-filter="positiveFloat"  disabled />
+                </div>
+                <div class="col-sm-3 col-xs-2 measurement">
+                    <span data-unit="s">gals</span>
+                    <span data-unit="m">liters</span>
+                </div>
+            </div>
+
+            <button class="btn btn-success btn-lg">Calculate Mash Tun Capacity</button>
+        </div>
+    </div>   
+</form>
+    <script type="text/javascript">
+        $(function () {
+
+            // Unit Change Event
+            $('[data-name=s_UnitType]').change(function () {
+                useUnit($(this).val());
+
+                if ($(this).val() == 'm') {
+                    $('.wc_grain').val(util.lb_To_kg($('.wc_grain').val()));
+                    $('.wc_mashThickness').val(util.qt_per_lb_To_l_per_kg($('.wc_mashThickness').val()));
+                    $('.wc_mashTunCapacity').val(util.gal_To_l($('.wc_mashTunCapacity').val()));
+                } else {
+                    $('.wc_grain').val(util.kg_To_lb($('.wc_grain').val()));
+                    $('.wc_mashThickness').val(util.l_per_kg_To_qt_per_lb($('.wc_mashThickness').val()));
+                    $('.wc_mashTunCapacity').val(util.l_To_gal($('.wc_mashTunCapacity').val()));
+                }
+            });
+
+            function useUnit(unit) {
+                if ($('[data-name=s_UnitType]') === unit) {
+                    return;
+                }
+
+                var prevUnit = unit === 'm' ? 's' : 'm';
+
+                // Toggle Labels
+                $('[data-unit]').hide();
+                $('[data-unit="' + unit + '"]').show();
+                $('.measurement').show();
+            }
+
+            useUnit("s");
+
+            $('.btn-success').click(function (e) {
+                e.preventDefault();
+                var grain = $('.wc_grain').val();
+                var mashThickness = $('.wc_mashThickness').val();
+                var mashTunCapacity = grain * (.08 + mashThickness / 4);
+                $('.wc_mashTunCapacity').val(mashTunCapacity.toFixed(3));
+            });
+
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+    </script>

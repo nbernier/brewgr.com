@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Brewgr.Web.Core.Model;
 using Brewgr.Web.Core.Service;
+using Brewgr.Web.Models;
 using ctorx.Core.Messaging;
 
 namespace Brewgr.Web.Controllers
@@ -41,7 +43,11 @@ namespace Brewgr.Web.Controllers
 				return this.View(recipeSearchOptions);
 			}
 
-			return this.View("RecipeFinderResults", new RecipeSearchResults { RecipeSearchOptions = recipeSearchOptions, Recipes = recipes });
+            // Map it here
+            var recipeSearchResults = new RecipeSearchResults { RecipeSearchOptions = recipeSearchOptions, Recipes = recipes };
+            var recipesViewModel =  Mapper.Map(recipeSearchResults, new RecipeSearchResultsViewModel());
+
+            return this.View("RecipeFinderResults", recipesViewModel);
 		}
 	}
 }

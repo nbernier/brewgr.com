@@ -76,10 +76,10 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		public ActionResult Index()
 		{
-            if (this.ActiveUser != null)
-            {
-                return RedirectToAction("Dashboard", "Dashboard");
-            }
+            //if (this.ActiveUser != null)
+            //{
+            //    return RedirectToAction("Dashboard", "Dashboard");
+            //}
 
 			var newRecipes = this.RecipeService.GetNewestRecipes(4);
 			var popularRecipes = this.RecipeService.GetPopularRecipes(4);
@@ -133,7 +133,7 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		public JsonResult RecentPhotos()
 		{
-			return Json(this.RecipeService.GetRecentRecipesCached(3)
+			return Json(this.RecipeService.GetRecentRecipesCached(8)
 				.Select(x => new
 				{
 					ImageUrl = Url.RecipeThumbnailUrl(x.ImageUrlRoot, x.Srm),
@@ -149,7 +149,7 @@ namespace Brewgr.Web.Controllers
 		{
 			if(this.ActiveUser != null)
 			{
-				return View(new ContactViewModel { Name = this.ActiveUser.FullName, EmailAddress = this.ActiveUser.EmailAddress, ShopEmail = this.WebSettings.ShopEmail});	
+				return View(new ContactViewModel { Name = this.ActiveUser.FullName, EmailAddress = this.ActiveUser.EmailAddress });	
 			}
 
 			return View();
@@ -170,7 +170,7 @@ namespace Brewgr.Web.Controllers
 			contactMessage.SetContactViewModel(contactViewModel);
 			this.EmailSender.Send(contactMessage);
 
-			this.ForwardMessage(new SuccessMessage { Text = "Thank You.  Your message has been sent" });
+			this.ForwardMessage(new SuccessMessage { Text = "Thank You. Your message has been sent" });
 
 			return RedirectToAction("contact");
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using Brewgr.Web.Validators;
 using ctorx.Core.Validation;
 
@@ -18,10 +17,9 @@ namespace Brewgr.Web.Models
 		/// </summary>
 		public string EmailAddress { get; set; }
 
-        public string ShopEmail { get; set; }
-        /// <summary>
-        /// Gets or sets the MessageContent
-        /// </summary>
-        public string MessageContent { get; set; }
+		/// <summary>
+		/// Gets or sets the MessageContent
+		/// </summary>
+		public string MessageContent { get; set; }
 	}
 }

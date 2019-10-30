@@ -96,10 +96,15 @@ namespace Brewgr.Web.Core.Model
 		/// </summary>
 		public double? StrikeWaterVolume { get; set; }
 
-		/// <summary>
-		/// Gets or sets the FirstRunningsVolume
+        /// <summary>
+		/// Gets or sets the MashTunCapacity
 		/// </summary>
-		public double? FirstRunningsVolume { get; set; }
+		public double? MashTunCapacity { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the FirstRunningsVolume
+        /// </summary>
+        public double? FirstRunningsVolume { get; set; }
 
 		/// <summary>
 		/// Gets or sets the SpargeWaterVolume
@@ -121,9 +126,14 @@ namespace Brewgr.Web.Core.Model
 		/// </summary>
 		public double? MashTunLoss { get; set; }
 
-		/// <summary>
-		/// Gets or sets the BoilLoss
-		/// </summary>
+        /// <summary>
+        /// Gets or sets the HLTMTHeatLoss
+        /// </summary>
+        public double? HLTMTHeatLoss { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BoilLoss
+        /// </summary>
 		public double? BoilLoss { get; set; }
 
 		/// <summary>

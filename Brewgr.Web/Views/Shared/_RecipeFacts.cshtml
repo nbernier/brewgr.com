@@ -9,14 +9,9 @@
 	<div class="first block">
 		<div class="color" style="background-color: #FFFFFF;"></div>
 		<h3 class="upper">Recipe Facts</h3>
-	    <div data-name="recipe-name">
-	        
+	    <div data-name="recipe-name">        
             @recipeDisplayName
 	        <div data-name="facts_stylename">@(!string.IsNullOrWhiteSpace(Model.StyleId) ? Model.StyleName : "")</div>
-            @if (ViewBag.ActiveUser != null && ViewBag.ActiveUser.UserId == Model.CreatedBy)
-            {
-                <a href="@Url.RecipeDetailUrl(Model.RecipeId, Model.Name, Model.StyleName)?public=true" class="public-link">View Public Version</a>
-            }
 	    </div>
 	</div>
 	<div class="block second">

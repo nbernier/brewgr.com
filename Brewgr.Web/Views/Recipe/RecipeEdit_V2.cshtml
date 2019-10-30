@@ -1,0 +1,63 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@using System.Web.Optimization
+
+@model RecipeViewModel
+@{
+    ViewBag.Title = "Editing " + Model.Name;
+    HtmlHelper.ClientValidationEnabled = false;
+}
+
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder_V2")
+
+@{ViewBag.IsVew = false; }
+
+@using (Html.BeginForm())
+{
+    <div id="view-editrecipe" class="content builder-wrapper">
+        <div class="container">
+            <div class="row">
+                <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+                    @* Recipe Builder *@
+                    <div class="builder primary">
+                        @Html.Partial("_Builder_V2", Model)
+
+                        @* Tasting Notes *@
+                        @Html.Partial("_TastingNoteList", Model.TastingNotes ?? new List<TastingNote>(), new ViewDataDictionary(ViewData) { { "CreatorId", Model.CreatedBy }, { "RecipeId", Model.RecipeId } })
+
+                        @* Start Comments *@
+                        @Html.Partial("_RecipeDetailComments", Model)
+                    </div>
+                </section>
+                <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                    <div class="compliment">
+                        <div id="recipe-facts">
+                            @Html.Partial("_RecipeFactsNew", Model)
+                        </div>
+
+                        <input type="submit" id="SaveRecipeButton" class="btn btn-success btn-lg save-recipe" value="Save Recipe" />
+
+                        @Html.Partial("_RecipeStyleGuide_V2", Model)
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+}
+
+@* Photo Dialog *@
+<div class="hidden">
+    <div id="RecipePhotoDialog">
+        @Html.Partial("_BuilderPhotoDialog", Model)
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            Builder.initialize();
+        });
+    </script>
+}

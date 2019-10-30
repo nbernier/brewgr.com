@@ -1,0 +1,71 @@
+﻿@using System.Linq;
+@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Web
+
+@model IList<RecipeFermentableViewModel>
+
+@{
+    RecipeCreationOptions options = ViewBag.RecipeCreationOptions;
+}
+
+<div class="panel panel-default fermentables panel-ingredient-group"  >
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-sm-6"><h3 class="panel-title">Fermentables</h3></section>
+            <section class="col-sm-6">
+                @if (!ViewBag.IsVew)
+                {
+                    <div class="pull-right-sm">
+                        <select id="fermentable-list" data-trigger="f" class="ingredient-select form-control">
+                            <option value="" data-image="/img/pixel.gif" data-imagecss="lovibond addfirst">Add Fermentables...</option>
+                            <option value="0" data-image="/img/pixel.gif" data-use="Mash" data-ppg="0" data-l="0" data-imagecss="lovibond addcustom">Add Custom Ingredient</option>
+                            @foreach (Fermentable fermentable in ViewBag.RecipeCreationOptions.Fermentables)
+                        {
+                        var cssClass = options.SendToShopSettings.IsEnabled ? options.SendToShopSettings.IngredientIsEnabled(fermentable) ? "partner-ing-yes" : "partner-ing-no" : "";
+                        <option class="@cssClass" value="@fermentable.IngredientId" data-ppg="@fermentable.Ppg" data-l="@fermentable.Lovibond" data-use="@(((FermentableUsageType)fermentable.DefaultUsageTypeId).ToString())" data-image="/img/pixel.gif" data-imagecss="lovibond L@((fermentable.Lovibond > 41) ? 41 : fermentable.Lovibond)">@fermentable.Name</option>
+                        }
+                        </select>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+    <div data-name="f_table" class="panel-body table-responsive dataTable sort-wrap">
+        @if (!Model.Any())
+    {
+        if (ViewBag.IsVew)
+    {
+        <div class="content">No fermentables in this recipe</div>
+}
+else
+{
+    <div class="row introrow">
+        <section class="col-xs-4 col-sm-2"><img src="@Url.Content("~/img/malted-grain.png")" width="100" height="100" alt="Malted Grain" /></section>
+        <section class="col-xs-8 col-sm-7">
+            <h4>Add Extracts, Malted Grains or Other Fermentables</h4>
+            Fermentables are sugary foods that yeast eat to produce alcohol and carbon dioxide. Malted grains also play a key role in adding flavor and color to your home
+            brew.
+        </section>
+        <section class="hidden-xs col-sm-3"><span class="starthere"><img src="@Url.Image("~/img/start-here.gif")" alt="Start Here" /></span></section>
+    </div>
+}
+}
+else
+{
+    foreach (var fermentable in Model)
+    {
+        @Html.Partial("_BuilderFermentableRow_V2", fermentable)
+}
+}
+    </div>
+    <div class="@(!Model.Any() ? "builder-hidden" : "") panel-footer">
+        <span data-name="f_Total">@Model.Select(x => double.Parse(x.Amt)).Sum()</span>
+        <span data-unit="s">lb</span>
+        <span data-unit="m">kg</span>
+        <span> total fermentables</span>
+    </div>
+</div>

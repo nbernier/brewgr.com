@@ -82,6 +82,7 @@ namespace Brewgr.Web.Models
 			this.BoilLoss = 1.00;
 			this.MashGrainAbsorption = 0.15;
 			this.SpargeGrainAbsorption = 0.01;
+            this.HLTMTHeatLoss = 0;
 		}
 	}
 }

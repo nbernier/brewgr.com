@@ -1,0 +1,70 @@
+﻿@using Brewgr.Web.Core.Model;
+@model IRecipeFactsViewModel
+
+<style>
+    /*#select-style section { padding-left: 2px; padding-right: 2px; }*/
+    .bjcp-scale { padding-left: 0px; padding-right: 0px; }
+    .bjcp-leftnumber { padding-right: 1px; text-align: right; }
+    .bjcp-rightnumber { padding-left:3px; }
+    [data-name=r_StyleId] { width: 100%; }
+    .bjcp-marker { position:absolute; }
+    .bjcp-details { margin-bottom: 20px; margin-top: -20px; text-align: center; }
+    .bjcp-details small {  }
+</style>
+
+<div id="select-style" class="well well-sm recipedata">
+    <div class="form-field">
+
+        @if (ViewData["DisableEditing"] != null)
+        {
+            @Html.HiddenFor(m => m.StyleId)
+        }
+        else
+        {
+            <h4>Homebrew Style Guide</h4>
+            <p>
+                The homebrew style guide helps you match your homebrew recipe with one
+                of the Beer Judge Certification Program (BJCP) official styles.
+            </p>
+
+            <select data-name="r_StyleId">
+                <option value="">Choose BJCP Style...</option>
+                @foreach (BjcpStyleGroup item in ViewBag.RecipeCreationOptions.StyleGroups)
+                {
+                    <optgroup label="@item.CategoryId.ToString(). @item.CategoryName">
+                        @foreach (var child in item.BjcpStyleSummaries)
+                        {
+                            <option value="@child.SubCategoryId" @(child.SubCategoryId == Model.StyleId ? "selected=\"selected\"" : "")>@child.SubCategoryId. @child.SubCategoryName</option>
+                        }
+                    </optgroup>
+                }
+            </select>
+        }
+    </div>
+    <div id="selected-style-chart"></div>
+    <div id="similar-style-chart"></div>
+    <div id="style-showmore"><a href="#" id="show-similar-styles">Show Similar Styles</a></div>
+    <div id="style-hidemore" class="hidden"><a href="#" id="hide-similar-styles">Hide Similar Styles</a></div>
+</div>
+<script id="bjcpStyleTitle" type="text/x-jquery-tmpl">
+    <h4>${SubCategoryName}</h4>
+</script>
+
+<script id="bjcpStyleTemplate" type="text/x-jquery-tmpl">
+
+    <div class="row">
+        <section class="col-xs-3 bjcp-leftnumber small"><b>${styleElement}</b> ${styleElementStartValue}</section>
+        <section class="col-xs-6 bjcp-scale">
+            <div class="progress" original-title="${styleElement}: {{if styleStart == 0}} Varies {{else}} ${styleStart}-${styleEnd} {{/if}} / Your ${styleElement}: ${currentBrewValue}">
+                <div class="progress-bar {{if styleMatch == 'block'}} progress-bar-success {{else}} progress-bar-danger {{/if}} " role="progressbar" aria-valuenow="${styleMarkerPercent}" aria-valuemin="0" aria-valuemax="100" style="width: ${styleElementEndPercent}%; margin-left:${styleElementStartPercent}%;">
+                    <img class="bjcp-marker" src="/img/stylemarker.png" style="left: ${styleMarkerPercent}%;" />
+                </div>
+            </div>
+        </section>
+        <section class="col-xs-3 bjcp-rightnumber small">${styleElementEndValue}</section>
+        <section class="visible-xs col-xs-12 bjcp-details">
+            <small>${styleElement}: {{if styleStart == 0}} Varies {{else}} ${styleStart}-${styleEnd} {{/if}} / Your ${styleElement}: ${currentBrewValue}</small>
+        </section>
+    </div>
+
+</script>

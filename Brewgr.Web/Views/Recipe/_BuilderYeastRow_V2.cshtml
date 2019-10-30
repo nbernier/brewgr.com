@@ -1,0 +1,62 @@
+﻿@using ctorx.Core.Conversion
+@using ctorx.Core.Primitives
+@model RecipeYeastViewModel
+
+<div class="panel panel-warning panel-ingredient" data-datarow="1">
+    <div class="panel-body ingredient-panel-body">
+        <div class="row">
+            <input type="hidden" data-name="y_Id" data-track="1" value="@Model.Id.WhenNull("{{=Id}}")" />
+            <input type="hidden" data-name="y_IngId" data-track="1" value="@Model.IngId.WhenNull("{{=IngId}}")" />
+            <input type="hidden" data-name="y_Rank" data-track="1" value="@Model.Rank.WhenNull("{{=Rank}}")" />
+            <section class="col-xs-4 col-sm-7">
+                <div class="form-group">
+                    <label>
+                        name
+                    </label>
+                    <span data-name="y_Name" class="ingName @(Model.IsCustom() ? "hidden" : "")">@Model.Name.WhenNull("{{=Name}}")</span>
+                    @if (ViewBag.IsVew)
+    {
+                <span class="recipe-field-view">@Model.CustomName</span>
+}
+else
+{
+                
+                <input type="text" data-name="y_CustomName" data-track="1" placeholder="Enter Yeast Name" class="@(!Model.IsCustom() ? "hidden" : "") customname form-control input-sm" data-validate="1" value="@Model.CustomName" />
+}
+
+                </div>
+            </section>
+            <section class="col-xs-5 col-sm-3">
+                <div class="form-group">
+                    <label>attenuation <span class="helptip" original-title="Apparent attenuation is the percentage of sugars that the yeast will convert into alcohol and carbon dioxide during fermentation">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+    {
+                    <span class="recipe-field-view">@(Converter.Convert<double>(Model.Atten) * 100)%</span>
+}
+else
+{
+                <select data-name="y_Atten" data-track="1" class="form-control input-sm">
+                    @for (var i = 30; i <= 90; i++)
+    {
+        var isSelected = Model != null && Model.Atten != null && (Converter.Convert<double>(Model.Atten) * 100).IsEqualTo(i, .01);
+                <option value="0.@i" @(isSelected ? " selected=\"selected\"" : "")>@i%</option>
+}
+                </select>
+}
+
+                    
+                </div>
+            </section>
+            <section class="col-xs-3 col-sm-2">
+                @if (!ViewBag.IsVew)
+    {
+            <div class="pull-right">
+                <img src="@Url.Content("~/img/icons/arrow_ns.png")" data-name="sort" tabindex="-1" alt="" title="Drag to Sort" />
+                <img src="@Url.Content("~/img/icons/delete.png")" data-name="remove" title="Remove" />
+            </div>
+}
+
+            </section>
+        </div>
+    </div>
+</div>

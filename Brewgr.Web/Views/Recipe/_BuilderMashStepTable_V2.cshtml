@@ -1,0 +1,105 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+
+@model IList<RecipeMashStepViewModel>
+
+
+<div class="panel panel-default mash-steps panel-ingredient-group">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-sm-6"><h3 class="panel-title">Mash Steps</h3></section>
+            <section class="col-sm-6">
+                @if (!ViewBag.IsVew)
+                {
+            <div class="pull-right-sm">
+                <select id="mashstep-list" data-trigger="m" class="ingredient-select form-control">
+                    <option value="" data-image="/img/pixel.gif" data-imagecss="lovibond addfirst">Add Mash Steps...</option>
+                    <option value="0" data-image="/img/pixel.gif" data-use="Mash" data-imagecss="lovibond addcustom">Add Custom Mash Step</option>
+                    @foreach (MashStep mashStep in ViewBag.RecipeCreationOptions.MashSteps)
+                    {
+            <option value="@mashStep.IngredientId">@mashStep.Name</option>
+                    }
+                </select>
+            </div>
+                }
+            </section>
+        </div>
+    </div>
+    <div data-name="m_table" class="panel-body table-responsive dataTable sort-wrap">
+        @if (!Model.Any())
+    {
+        if (!ViewBag.IsVew)
+        {
+            <div class="row introrow">
+                <section class="col-xs-4 col-sm-2"><img src="@Url.Image("~/img/mash2.png")" width="100" height="100" alt="Mash Steps" /></section>
+                <section class="col-xs-8 col-sm-10">
+                    <h4>Add Mash Steps for Planning the Perfect Conversion</h4>
+                    If you are an extract brewer you can ignore this step. Mashing is a simple  technique in which your malted grains are soaked and the amylase enzymes from the grains convert their starch to fermentable sugars.
+                </section>
+            </div>
+    }
+    else
+    {
+        <div class="content">No mash steps in this recipe</div>
+}
+}
+else
+{
+foreach (var mashStep in Model)
+{
+    @Html.Partial("_BuilderMashStepRow_V2", mashStep)
+}
+}
+    </div>
+</div>
+
+
+@*<div class="groupbox">
+    <span>
+        <h3 class="floatleft"></h3>
+        <div class="floatright">
+            
+        </div>
+    </span>
+    <div class="nopadding">
+        <table data-name="m_table" class="dataTable">
+            <thead class="@(!Model.Any() ? "builder-hidden" : "")">
+                <tr>
+                    <td>type</td>
+                    <td>heat </td>
+                    <td>
+                        <span data-unit="s">temp &deg;F</span>
+                        <span data-unit="m">temp &deg;C</span>
+                    </td>
+                    <td>time</td>
+                    <td>remove</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr class="introrow">
+                        <td colspan="8">
+                            
+                            <div class="content">
+                                
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var mashStep in Model)
+                    {
+                        @Html.Partial("_BuilderMashStepRow", mashStep)
+                    }
+                }
+            </tbody>
+            <tfoot class="@(!Model.Any() ? "builder-hidden" : "")">
+                <tr>
+                    <td colspan="5">&nbsp; </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>*@

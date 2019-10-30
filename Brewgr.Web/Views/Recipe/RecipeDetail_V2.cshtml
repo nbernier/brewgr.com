@@ -1,0 +1,127 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@using ctorx.Core.Formatting
+@using System.Web.Optimization
+
+@model RecipeDetailViewModel
+
+@{
+    ViewBag.Title = Model.GetTitle();
+    ViewBag.Description = Model.GetDescription();
+    ViewBag.Canonical = Url.RecipeDetailUrl(Model.RecipeViewModel.RecipeId, Model.RecipeViewModel.Name, Model.RecipeViewModel.StyleName);
+}
+
+@*
+    This has to be here -- don't get rid of it.  kthxbye
+*@
+<style type="text/css">
+    [data-unit=@Model.RecipeViewModel.UnitType] { display: inline !important; }
+</style>
+
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder_V2")
+
+
+@{ViewBag.IsVew = true; }
+
+<script type="text/javascript">var switchTo5x = true;</script>
+
+<div id="view-recipedetail" class="content builder-wrapper">
+
+    <div class="container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+
+                <div class="primary builder" itemscope itemtype="http://schema.org/Recipe">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
+    {
+                <span class="hidden" itemprop="recipeCuisine">@Model.RecipeViewModel.StyleName</span>
+}
+
+                @* Recipe Info *@
+                @*@Html.Partial("_BuilderInfo_V2", Model.RecipeViewModel)*@
+                    @Html.Partial("_RecipeDetailInfo_V2", Model)
+
+                    @* Fermentables *@
+                    @Html.Partial("_BuilderFermentableTable_V2", Model.RecipeViewModel.Fermentables, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* Hops *@
+                    @Html.Partial("_BuilderHopTable_V2", Model.RecipeViewModel.Hops, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* Yeast *@
+                    @Html.Partial("_BuilderYeastTable_V2", Model.RecipeViewModel.Yeasts, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* Adjuncts *@
+                    @Html.Partial("_BuilderAdjunctTable_V2", Model.RecipeViewModel.Others, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* MashSteps *@
+                    @Html.Partial("_BuilderMashStepTable_V2", Model.RecipeViewModel.MashSteps, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* Recipe Steps *@
+                    @Html.Partial("_BuilderStepTable_V2", Model.RecipeViewModel.Steps, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+
+                    @*@Html.Partial("_RecipeDetailSteps", Model.RecipeViewModel)*@
+
+                    @* Tasting Notes *@
+                    @Html.Partial("_TastingNoteList", Model.TastingNotes ?? new List<TastingNote>())
+
+                    @* Start Comments *@
+                    @Html.Partial("_RecipeDetailComments", Model.RecipeViewModel)
+                </div>
+            </section>
+            <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                @* Nutrition Label *@
+                <div class="compliment">
+
+                    @Html.Partial("_RecipeFactsNew", Model.RecipeViewModel, new ViewDataDictionary(ViewData) { { "ShowInModal", false } })
+
+                    <a href="@Url.RecipeCloneUrl(Model.RecipeViewModel.RecipeId)" rel="nofollow" class="btn btn-default btn-lg">Clone This Recipe</a>
+
+
+
+                    @if (ViewBag.ActiveUser != null && ViewBag.ActiveUser.UserId == Model.RecipeViewModel.CreatedBy)
+                    {
+                        <a href="@Url.RecipeDetailUrl(Model.RecipeViewModel.RecipeId, Model.RecipeViewModel.Name, Model.RecipeViewModel.StyleName)" rel="nofollow" class="btn btn-default btn-lg">Edit Recipe</a>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
+                    {
+                        @Html.Partial("_RecipeStyleGuide_V2", Model.RecipeViewModel)
+                    }
+
+                    @* Similar Recipes *@
+                    @if (ViewBag.SimilarRecipes.Count > 0)
+                    {
+                        <div id="similar-recipesOOO">
+                            <h3 class="green margintop20">Similar Homebrew Recipes</h3>
+                            @foreach (RecipeSummary recipeSummary in ViewBag.SimilarRecipes)
+                            {
+                                @Html.Partial("_RecipeWidget", recipeSummary)
+                            }
+                        </div>
+                    }
+                </div>
+                @*</div>*@
+
+            </section>
+        </div>
+    </div>
+</div>
+
+<div id="RecipeJson" class="hidden">@Html.Raw(Model.RecipeViewModel.GetJson())</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            var recipe = getRecipe();
+
+            // set up the style chart
+            var targetStyle = StyleChart.GetStyle('@Model.RecipeViewModel.StyleId');
+            StyleChart.create(targetStyle, recipe, $('#selected-style-chart'));
+        });
+    </script>
+}
+

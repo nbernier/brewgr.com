@@ -1,0 +1,94 @@
+﻿@using ctorx.Core.Primitives
+@model RecipeFermentableViewModel
+
+
+<div class="panel panel-warning panel-ingredient" data-datarow="1">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-xs-9">
+                <span data-name="f_Per">@Model.Per%</span><span> - </span><span data-name="f_Name" class="ingName @(Model.IsCustom() ? "hidden" : "")">@Model.Name.WhenNull("{{=Name}}")</span>
+                @if (ViewBag.IsVew)
+                {
+                <span class="recipe-field-view">@Model.CustomName</span>
+                }
+                else
+                {
+                <input type="text" data-name="f_CustomName" data-track="1" placeholder="Enter Fermentable Name" class="@(!Model.IsCustom() ? "hidden" : "") customname form-control input-sm" data-validate="1" value="@Model.CustomName" />
+                }
+            </section>
+            <section class="col-xs-3">
+                @if (!ViewBag.IsVew)
+                {
+                <div class="pull-right">
+                <img src="@Url.Content("~/img/icons/arrow_ns.png")" data-name="sort" tabindex="-1" alt="" title="Drag to Sort" />
+                <img src="@Url.Content("~/img/icons/delete.png")" data-name="remove" title="Remove" />
+                </div>
+                }
+            </section>
+        </div>
+    </div>
+    <div class="panel-body ingredient-panel-body">
+        <div class="row">
+            <input type="hidden" data-name="f_Id" data-track="1" value="@Model.Id.WhenNull("{{=Id}}")" />
+            <input type="hidden" data-name="f_IngId" data-track="1" value="@Model.IngId.WhenNull("{{=IngId}}")" />
+            <input type="hidden" data-name="f_Rank" data-track="1" value="@Model.Rank.WhenNull("{{=Rank}}")" />
+            <section class="col-xs-3">
+                <div class="form-group">
+                    <label><span data-unit="s">lb</span><span data-unit="m">kg</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                        <span class="recipe-field-view">@Model.Amt.WhenNull("{{=Amt}}")</span>
+                    }
+                    else
+                    {
+                        <input type="text" data-name="f_Amt" data-track="1" data-scale="1" data-filter="positiveFloat" value="@Model.Amt.WhenNull("{{=Amt}}")" data-validate="1" class="form-control input-sm" />
+                    }
+                </div>
+            </section>
+            <section class="col-xs-3">
+                <div class="form-group">
+                    <label>ppg <span class="helptip" original-title="PPG: Points per pound per gallon - This is the gravity points that you would get if you extracted 100% of the sugars from a pound of this malt into a gallon of water.  For extract brewers adding your own ingredients, use 32 if you aren't sure.">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                        <span class="recipe-field-view">@Model.Ppg</span>
+                    }
+                    else
+                    {
+                        <input type="text" data-name="f_Ppg" data-track="1" data-scale="1" data-filter="positiveInt" value="@Model.Ppg" data-validate="1" class="form-control input-sm" />
+                    }
+                </div>
+            </section>
+            <section class="col-xs-3">
+                <div class="form-group">
+                    <label>L <span class="helptip" original-title="Degrees Lovibond is a measurement of the color that a malt or sugar will contribute to a batch of homebrew beer">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@Model.L</span>
+                    }
+                    else
+                    {
+                    <input type="text" data-name="f_L" data-track="1" data-scale="1" data-filter="positiveInt" value="@Model.L" data-validate="1" class="form-control input-sm" />
+                    }
+                </div>
+            </section>
+            <section class="col-xs-3">
+                <div class="form-group">
+                    <label>use <span class="helptip" original-title="Indicates how the fermentable is used.  All grain brewers will typically select mash while extract brewers will typically select extract or steep.  For fermentables added late in the boil such as sugar, select late.">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@Model.Use</span>
+                    }
+                    else
+                    {
+                    <select data-name="f_Use" data-track="1" class="form-control input-sm">
+                    <option value="Mash" @(Model.Use == "Mash" ? " selected=\"selected\"" : "")>Mash</option>
+                    <option value="Extract" @(Model.Use == "Extract" ? " selected=\"selected\"" : "")>Extract</option>
+                    <option value="Steep" @(Model.Use == "Steep" ? " selected=\"selected\"" : "")>Steep</option>
+                    <option value="Late" @(Model.Use == "Late" ? " selected=\"selected\"" : "")>Late</option>
+                    </select>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

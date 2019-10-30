@@ -1,0 +1,28 @@
+﻿@using ctorx.Core.Primitives
+@model RecipeStepViewModel
+
+
+<div class="row special-instructions" data-datarow="1">
+    <input type="hidden" data-name="s_Id" data-track="1" value="@Model.Id.WhenNull("{{=Id}}")" />
+    <input type="hidden" data-name="s_Rank" data-track="1" value="@Model.Rank.WhenNull("{{=Rank}}")" />
+    <section class="col-xs-2 col-sm-1 numbers"><span data-name="s_RankLabel">@Model.Rank.WhenNull("{{=Rank}}").</span></section>
+    <section class="col-xs-7 col-sm-9">
+        @if (ViewBag.IsVew)
+    {
+        <span class="recipe-field-view">@Model.Text</span>
+}
+else
+{
+        <input type="text" data-name="s_Text" data-track="1" value="@Model.Text" placeholder="Enter a brewing step" class="form-control" />
+}
+        
+    </section>
+    <section class="col-xs-3 col-sm-2">
+        @if (!ViewBag.IsVew)
+    {
+        <img src="@Url.Content("~/img/icons/arrow_ns.png")" data-name="sort" tabindex="-1" alt="" title="Drag to Sort" />
+        <img src="@Url.Content("~/img/icons/delete.png")" data-name="remove" title="Remove" />
+}
+
+    </section>
+</div>

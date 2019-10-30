@@ -61,3 +61,62 @@
 		</table>
 	</div>
 </div>
+
+<div class="groupbox">
+    <span><h3 class="floatleft">Hop Summary</h3></span>
+    <div class="nopadding">
+        <table>
+            @if (Model.Hops != null && Model.Hops.Any())
+            {
+                <thead>
+                    <tr>
+                        <td class="aligncenter">@(Model.UnitType == "s" ? "oz" : "g")</td>
+                        <td>variety </td>
+                        <td class="aligncenter">type</td>
+                        <td class="aligncenter">AA</td>
+                    </tr>
+                </thead>
+            }
+                <tbody>
+                    @if (Model.Hops == null || !Model.Hops.Any())
+    {
+                <tr>
+                    <td colspan="6">
+                        <div class="content">No hops in this recipe</div>
+                    </td>
+                </tr>
+}
+else
+{
+                foreach (var recipeHop in Model.Hops.GroupBy(x => new { x.Name, x.Type, x.AA })
+.Select(x1 => new RecipeHopViewModel
+{
+Name = x1.First().Name,
+Type = x1.First().Type,
+AA = x1.First().AA,
+Amt = x1.Sum(c => Decimal.Parse(c.Amt)).ToString()
+}).ToList())
+    {
+                <tr>
+                    <td class="aligncenter">@recipeHop.Amt</td>
+                    <td><span class="bold" itemprop="ingredients">@recipeHop.Name</span></td>
+                    <td class="aligncenter">@HumanReadableFormatter.AddSpacesToPascalCaseString(recipeHop.Type)</td>
+                    <td class="aligncenter">@(Converter.Convert<double>(recipeHop.AA).ToString("F1"))</td>
+                </tr>
+}
+}
+                </tbody>
+            @if (Model.Hops != null && Model.Hops.Any())
+            {
+                <tfoot>
+                    <tr>
+                        <td class="aligncenter" id="h-ounce-total">@Model.Hops.Sum(x => Converter.Convert<double>(x.Amt)).ToString() @(Model.UnitType == "s" ? "oz" : "g")</td>
+                        <td colspan="3" class="alignright options paddingright10">
+                           &nbsp;
+                        </td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+</div>

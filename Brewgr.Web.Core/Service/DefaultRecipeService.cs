@@ -637,14 +637,14 @@ namespace Brewgr.Web.Core.Service
 		/// </summary>
 		public IList<RecipeSummary> GetPopularRecipes(int count)
 		{
-			var startDate = DateTime.Now.AddDays(-7);
+			var startDate = DateTime.Now.AddDays(-30);
 
 			return this.Repository.GetSet<Recipe>()
                 .Include(x => x.RecipeComments)
 				.Where(x => x.IsActive && x.IsPublic)
-				.Where(x => x.RecipeComments.Any())
-				.OrderByDescending(x => x.RecipeComments.Count(y => y.DateCreated >= startDate))
-				.Select(x => x.RecipeSummary)
+                .Where(x => x.DateCreated >= startDate)
+                .OrderByDescending(x => x.RecipeComments.Count())
+                .Select(x => x.RecipeSummary)
 				.Take(count)
 				.ToList();
 		}

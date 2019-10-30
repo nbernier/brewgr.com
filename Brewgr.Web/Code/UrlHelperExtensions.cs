@@ -16,8 +16,8 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string UserProfileUrl(this UrlHelper urlHelper, string userName)
 		{
-			var adjustedUserName = userName?.Replace(" ", "-");
-			return urlHelper.Action("UserProfile", "User", new { userName = adjustedUserName });
+			var adjustedUserName = userName.Replace(" ", "-");
+			return urlHelper.Action("UserProfile", "User", new { userName = adjustedUserName }, urlHelper.Https());
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Brewgr.Web
 				recipeName += "-recipe";
 			}
 
-			return urlHelper.Action("RecipeDetail", "Recipe", new { recipeId, recipename = StringCleaner.CleanForUrl(recipeName) });
+			return urlHelper.Action("RecipeDetail", "Recipe", new { recipeId, recipename = StringCleaner.CleanForUrl(recipeName) }, "http");
 		}
 
 		/// <summary>
@@ -44,19 +44,22 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string RecipeEditUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("RecipeEdit", "Recipe", new { recipeId });
+			return urlHelper.Action("RecipeEdit", "Recipe", new { recipeId }, urlHelper.Https());
 		}
 
-        public static string RecipeBrewTag(this UrlHelper urlHelper, int brewSessionId)
+        /// <summary>
+        /// Creates a Recipe Label Url
+        /// </summary>
+        public static string BrewSessionLabelUrl(this UrlHelper urlHelper, int brewSessionId)
+        {
+            return urlHelper.Action("BrewSessionLabel", "BrewSession", new { brewSessionId }, urlHelper.Https());
+        }
+        /// <summary>
+        /// Creates a Brew Clone Url
+        /// </summary>
+        public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("BrewSessionTag", "BrewSession", new { brewSessionId });
-		}
-/// <summary>
-/// Creates a Brew Clone Url
-/// </summary>
-public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
-		{
-			return urlHelper.Action("RecipeClone", "Recipe", new { recipeId });
+			return urlHelper.Action("RecipeClone", "Recipe", new { recipeId }, urlHelper.Https());
 		}
 
 
@@ -65,7 +68,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string RecipePrintUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("RecipePrint", "Recipe", new { recipeId });
+			return urlHelper.Action("RecipePrint", "Recipe", new { recipeId }, urlHelper.Https());
 		}
 
 		/// <summary>
@@ -73,7 +76,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string NewBrewSessionUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("NewBrewSession", "BrewSession", new { recipeId });
+			return urlHelper.Action("NewBrewSession", "BrewSession", new { recipeId }, "http");
 		}
 
 		/// <summary>
@@ -81,7 +84,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string EditBrewSessionUrl(this UrlHelper urlHelper, int brewSessionId)
 		{
-			return urlHelper.Action("BrewSessionEdit", "BrewSession", new { brewSessionId });
+			return urlHelper.Action("BrewSessionEdit", "BrewSession", new { brewSessionId }, "http");
 		}
 
 		/// <summary>
@@ -89,7 +92,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string BrewSessionDetailUrl(this UrlHelper urlHelper, int brewSessionId, string recipeName)
 		{
-			return urlHelper.Action("BrewSessionDetail", "BrewSession", new { brewSessionId = brewSessionId, recipename = StringCleaner.CleanForUrl(recipeName) });
+			return urlHelper.Action("BrewSessionDetail", "BrewSession", new { brewSessionId = brewSessionId, recipename = StringCleaner.CleanForUrl(recipeName) }, "http");
 		}
 
 		/// <summary>
@@ -106,7 +109,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string RecipeDeleteUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("RecipeDelete", "Recipe", new { recipeId });
+			return urlHelper.Action("RecipeDelete", "Recipe", new { recipeId }, urlHelper.Https());
 		}
 
 		/// <summary>
@@ -114,7 +117,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string RecipeBrewSessionsUrl(this UrlHelper urlHelper, int recipeId, string recipeName)
 		{
-			return urlHelper.Action("RecipeBrewSessions", "Recipe", new { recipeId = recipeId, recipeName = StringCleaner.CleanForUrl(recipeName) });
+			return urlHelper.Action("RecipeBrewSessions", "Recipe", new { recipeId = recipeId, recipeName = StringCleaner.CleanForUrl(recipeName) }, "http");
 		}
 
 		/// <summary>
@@ -178,7 +181,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 				urlFriendlyName = urlFriendlyName + "-recipes";
 			}
 
-			return urlHelper.Action("StyleDetail", "Recipe", new { urlFriendlyName, page });
+			return urlHelper.Action("StyleDetail", "Recipe", new { urlFriendlyName, page }, "http");
 		}
 
 		/// <summary>
@@ -186,7 +189,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string FermentableDetailUrl(this UrlHelper urlHelper, int fermentableId, string name)
 		{
-			return urlHelper.Action("FermentableDetail", "Ingredient", new { ingredientId = fermentableId, name = StringCleaner.CleanForUrl(name) });
+			return urlHelper.Action("FermentableDetail", "Ingredient", new { ingredientId = fermentableId, name = StringCleaner.CleanForUrl(name) }, "http");
 		}
 
 		/// <summary>
@@ -194,7 +197,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string HopDetailUrl(this UrlHelper urlHelper, int hopId, string name)
 		{
-			return urlHelper.Action("HopDetail", "Ingredient", new { ingredientId = hopId, name = StringCleaner.CleanForUrl(name) });
+			return urlHelper.Action("HopDetail", "Ingredient", new { ingredientId = hopId, name = StringCleaner.CleanForUrl(name) }, "http");
 		}
 
 		/// <summary>
@@ -202,7 +205,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string YeastDetailUrl(this UrlHelper urlHelper, int yeastId, string name)
 		{
-			return urlHelper.Action("YeastDetail", "Ingredient", new { ingredientId = yeastId, name = StringCleaner.CleanForUrl(name) });
+			return urlHelper.Action("YeastDetail", "Ingredient", new { ingredientId = yeastId, name = StringCleaner.CleanForUrl(name) }, "http");
 		}
 
 		/// <summary>
@@ -210,7 +213,7 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string AdjunctDetailUrl(this UrlHelper urlHelper, int adjunctId, string name)
 		{
-			return urlHelper.Action("AdjunctDetail", "Ingredient", new { ingredientId = adjunctId, name = StringCleaner.CleanForUrl(name) });
+			return urlHelper.Action("AdjunctDetail", "Ingredient", new { ingredientId = adjunctId, name = StringCleaner.CleanForUrl(name) }, "http");
 		}
 
 		/// <summary>
@@ -228,14 +231,14 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		/// </summary>
 		public static string Image(this UrlHelper urlHelper, string relativeImagePath)
 		{
-			//if (!IsHttps(urlHelper))
-			//{
-			//	return urlHelper.Content("~/" + relativeImagePath.Replace("~/", ""));
-			//}
+			if (!IsHttps(urlHelper))
+			{
+				return urlHelper.Content("~/" + relativeImagePath.Replace("~/", ""));
+			}
 
-			//var webSettings = GetWebSettings();
+			var webSettings = GetWebSettings();
 
-			return string.Format("/{0}", relativeImagePath.Replace("~/", ""));
+			return string.Format("{0}/{1}", webSettings.RootPathSecure, relativeImagePath.Replace("~/", ""));
 		}
 
 		/// <summary>
@@ -255,6 +258,16 @@ public static string RecipeCloneUrl(this UrlHelper urlHelper, int recipeId)
 		{
 			var webSettings = GetWebSettings();
 			return (webSettings.IsProduction()) ? "https" : "http";
+		}
+
+		/// <summary>
+		/// Gets the Root Url
+		/// </summary>
+		public static string RootUrl(this UrlHelper urlHelper, bool https = false)
+		{
+			var webSettings = GetWebSettings();
+			var rootPath = webSettings.RootPathSecure.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).FirstOrDefault().TrimEnd('/');
+			return string.Concat("http", https ? "s" : "", "://", rootPath);
 		}
 
 		/// <summary>

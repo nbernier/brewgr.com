@@ -15,6 +15,6 @@ namespace Brewgr.Web.Models
 		/// <summary>
 		/// Gets or sets the BrewSessions
 		/// </summary>
-		public IList<BrewSessionSummary> BrewSessions { get; set; }
+		public IList<BrewSessionSummaryViewModel> BrewSessions { get; set; }
 	}
 }

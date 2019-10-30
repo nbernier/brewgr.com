@@ -1,0 +1,16 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@model BrewSessionViewModel
+
+@{
+    Layout = "~/Views/Calculators/_CalculatorsSubLayout.cshtml";
+    ViewBag.Title = "Mash and Sparge Infusion Water Calculator";
+    ViewBag.Description = "Mash and sparge water temperature infusion calculator for homebrew.";
+    ViewBag.ViewId = "vw-watercalc";
+}
+
+
+<h2 class="page-header visible-md visible-lg">Mash and Sparge Water Infusion Calculator</h2>
+
+
+@Html.Partial("~/Views/BrewSession/_BrewSessionForm.cshtml", Model)

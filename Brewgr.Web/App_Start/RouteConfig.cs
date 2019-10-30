@@ -61,8 +61,9 @@ namespace Brewgr.Web
 			// Admin Routes
 			routes.MapRoute("ExceptionRoute", "admin/exceptions/{resource}/{subResource}", new { controller = "Admin", action = "Exceptions", resource = UrlParameter.Optional, subResource = UrlParameter.Optional });
 
-			// Route all Inferred Routes
-			routes.MapInferredRoutes(
+ 
+            // Route all Inferred Routes
+            routes.MapInferredRoutes(
 				controllerSearchType: typeof(BrewgrController),
 				controllerNameMappings: new List<ControllerNameMap>()
 				{

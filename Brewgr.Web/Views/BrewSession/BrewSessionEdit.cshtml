@@ -1,42 +1,88 @@
 ﻿@using Brewgr.Web
 @using Brewgr.Web.Core.Model
+@using ctorx.Core.Formatting
+@using System.Web.Optimization
 @model BrewSessionViewModel
 
 @{
-    ViewBag.Title = "Editing Brew Session for " + Model.RecipeSummary.Name;
+                /**/
+
+                ViewBag.Title = "Editing Brew Session for " + Model.RecipeSummary.Name;
 }
 
-<div id="view-editbrewsession" class="content builder-wrapper">
-    <div class="primary builder session">
-        @Html.Partial("_BrewSessionForm", Model)
-        
-        @* Tasting Notes *@
-        @Html.Partial("~/Views/Recipe/_TastingNoteList.cshtml", Model.TastingNotes ?? new List<TastingNote>(), new ViewDataDictionary(ViewData) { { "CreatorId", Model.UserId }, { "BrewSessionId", Model.BrewSessionId } })
-        
-        @* Comments *@
-        @Html.Partial("_BrewSessionDetailComments", Model)
-    </div>
-    <div class="catcher">
-        <!--catcher-->
-    </div>
-    <div class="compliment">
-        @Html.Partial("_RecipeFacts", Model.RecipeSummary)
-        <input type="submit" id="SaveBrewSessionButton" class="button button_green save-brewsession margintop10" value="Save Brew Session" />        
-    </div>
-    <div class="catcher">
-        <!--catcher-->
+
+<style>
+    #edit-brew-session .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #edit-brew-session {
+        margin-top: 30px;
+    }
+</style>
+
+
+<div id="edit-brew-session">
+
+    <div class="container">
+        <div class="row">
+            <section class="col-md-8 col-lg-9">
+                @Html.Partial("_BrewSessionForm", Model)
+
+                <div class="actions">
+                    <input type="submit" id="" class="btn btn-success btn-lg save-recipe SaveBrewSessionButton" value="Save Brew Session" />
+                    @if (!Model.IsNewBrewSession())
+                    {
+                        <a href="#" class="btn btn-danger btn-lg delete-brewsession" data-brewsessionid="@Model.BrewSessionId">Delete</a>
+                    }
+                    @if (Model.BrewSessionId > 0)
+                    {
+                        if (Model.RecipeSummary.BrewSessionCount > 1)
+                        {
+                            <a href="@Url.RecipeBrewSessionsUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name)" class="btn btn-default btn-lg">Other Brew Sessions</a>
+                        }
+                        <a href="@Url.RecipeEditUrl(Model.RecipeId)" class="btn btn-default btn-lg">Go To Recipe</a>
+                        <a href="@Url.BrewSessionLabelUrl(Model.BrewSessionId)" class="btn btn-default btn-lg">Print Label</a>
+                    }
+                </div>
+
+                @* Tasting Notes *@
+                @Html.Partial("~/Views/Recipe/_TastingNoteList.cshtml", Model.TastingNotes ?? new List<TastingNote>(), new ViewDataDictionary(ViewData) { { "CreatorId", Model.UserId }, { "BrewSessionId", Model.BrewSessionId } })
+
+                @* Comments *@
+                @Html.Partial("_BrewSessionDetailComments", Model)
+
+
+
+            </section>
+            <section class="col-md-4 col-lg-3">
+                <div class="compliment">
+                    <div id="recipe-facts">
+                        @Html.Partial("_RecipeFactsNew", Model.RecipeSummary)
+                    </div>
+                    <div class="hidden-sm hidden-xs">
+                        <input type="submit" id="" class="btn btn-success btn-lg save-recipe SaveBrewSessionButton" value="Save Brew Session" />
+                        <div class="actions">
+                            @if (!Model.IsNewBrewSession())
+                            {
+                                <a href="#" class="btn btn-danger btn-lg delete-brewsession" data-brewsessionid="@Model.BrewSessionId">Delete</a>
+                            }
+                            @if (Model.BrewSessionId > 0)
+                            {
+                                if (Model.RecipeSummary.BrewSessionCount > 1)
+                                {
+                                    <a href="@Url.RecipeBrewSessionsUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name)" class="btn btn-default btn-lg">Other Brew Sessions</a>
+                                }
+                                <a href="@Url.RecipeEditUrl(Model.RecipeId)" class="btn btn-default btn-lg">Go To Recipe</a>
+                                <a href="@Url.BrewSessionLabelUrl(Model.BrewSessionId)" class="btn btn-default btn-lg">Print Label</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
     </div>
 </div>
-
-@section Scripts
-{
-    <script type="text/javascript">
-        $(function() {
-            SessionBuilder.initialize();
-            @if(Model.RecipeSummary.RecipeTypeId != (int)RecipeType.Extract)
-            {
-                <text>WaterCalc.initialize($('#s_waterIn'), $('#s_waterOut'), $('select[data-name=s_UnitType]'));</text>
-            }
-        });
-    </script>
-}

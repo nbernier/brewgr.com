@@ -1,0 +1,143 @@
+﻿@using ctorx.Core.Conversion
+@using ctorx.Core.Primitives
+@model RecipeHopViewModel
+
+
+
+<div class="panel panel-success panel-ingredient" data-datarow="1">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-xs-9">
+                <span data-name="h_Name" class="ingName @(Model.IsCustom() ? "hidden" : "")">@Model.Name.WhenNull("{{=Name}}")</span>
+                @if (ViewBag.IsVew)
+                {
+                <span class="recipe-field-view">@Model.CustomName</span>
+                }
+                else
+                {
+                <input type="text" data-name="h_CustomName" data-track="1" placeholder="Enter Hop Name" class="@(!Model.IsCustom() ? "hidden" : "") customname" data-validate="1" value="@Model.CustomName" />
+                }
+            </section>
+            <section class="col-xs-3">
+                @if (!ViewBag.IsVew)
+    {
+            <div class="pull-right">
+                <img src="@Url.Content("~/img/icons/arrow_ns.png")" data-name="sort" tabindex="-1" alt="" title="Drag to Sort" />
+                <img src="@Url.Content("~/img/icons/delete.png")" data-name="remove" title="Remove" />
+            </div>
+}
+            </section>
+        </div>
+    </div>
+    <div class="panel-body ingredient-panel-body">
+        <div class="row">
+            <input type="hidden" data-name="h_Id" data-track="1" value="@Model.Id.WhenNull("{{=Id}}")" />
+            <input type="hidden" data-name="h_IngId" data-track="1" value="@Model.IngId.WhenNull("{{=IngId}}")" />
+            <input type="hidden" data-name="h_Rank" data-track="1" value="@Model.Rank.WhenNull("{{=Rank}}")" />
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>
+                        <span data-unit="s">oz</span>
+                        <span data-unit="m">g</span>
+                    </label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@Model.Amt.WhenNull("{{=Amt}}")</span>
+                    }
+                    else
+                    {
+                    <input type="text" data-name="h_Amt" data-track="1" data-scale="1" data-filter="positiveFloat" value="@Model.Amt.WhenNull("{{=Amt}}")" data-validate="1" class="form-control input-sm" />
+                    }
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>type</label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@Model.Type</span>
+                    }
+                    else
+                    {
+                    <select data-name="h_Type" data-track="1" class="form-control input-sm">
+                    <option value="Leaf" @(Model.Type == "Leaf" ? " selected=\"selected\"" : "")>Leaf</option>
+                    <option value="Pellet" @(Model.Type == "Pellet" ? " selected=\"selected\"" : "")>Pellet</option>
+                    <option value="Plug" @(Model.Type == "Plug" ? " selected=\"selected\"" : "")>Plug</option>
+                    </select>
+                    }
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>usage</label>
+                    @if (ViewBag.IsVew)
+    {
+                <span class="recipe-field-view">@Model.Use</span>
+}
+else
+{
+                <select data-name="h_Use" data-track="1" class="form-control input-sm">
+                    <option value="FirstWort" @(Model.Use == "FirstWort" ? " selected=\"selected\"" : "")>First Wort</option>
+                    <option value="Mash" @(Model.Use == "Mash" ? " selected=\"selected\"" : "")>Mash</option>
+                    <option value="Boil" @(Model.Use == "Boil" ? " selected=\"selected\"" : "")>Boil</option>
+                    <option value="FlameOut" @(Model.Use == "FlameOut" ? " selected=\"selected\"" : "")>Flame Out</option>
+                    <option value="DryHop" @(Model.Use == "DryHop" ? " selected=\"selected\"" : "")>Dry Hop</option>
+                </select>
+}
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>time</label>
+                    @if (ViewBag.IsVew)
+    {
+if (Model.Use == "DryHop")
+{
+                
+                <span class="recipe-field-view">@Model.Day day(s)</span>
+}
+else
+{
+                <span class="recipe-field-view">@Model.Min min(s)</span>
+}
+
+}
+else
+{
+                <select data-name="h_Min" data-track="1" style="display:@(Model.Use == "DryHop" ? "none" : "block");" class="form-control input-sm" @(Model.Use == "FirstWort" || Model.Use == "FlameOut" ? " disabled=\"disabled\"" : "")>
+                    @for (var i = 0; i <= 180; i++)
+    {
+                <option value="@i" @(Model.Min == i.ToString() ? " selected=\"selected\"" : "")>@i min</option>
+}
+                </select>
+                <select data-name="h_Day" data-track="1" style="display:@(Model.Use != "DryHop" ? "none" : "block");" class="form-control input-sm">
+                    @for (var i = 0; i <= 60; i++)
+    {
+                <option value="@i" @(Model.Day == i.ToString() ? " selected=\"selected\"" : "")>@i days</option>
+}
+                </select>
+}
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>AA <span class="helptip" original-title="Alpha Acids are the compounds found inside the cones of the hop plant and contribute to the bitterness of the beer">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+    {
+                <span class="recipe-field-view">@Model.AA</span>
+}
+else
+{
+                <input type="text" data-name="h_AA" data-track="1" data-scale="1" data-filter="positiveFloat" value="@Model.AA" data-validate="1" class="form-control input-sm" />
+}
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-2">
+                <div class="form-group">
+                    <label>IBU</label>
+                    <span class="ibu-display" data-name="h_Ibu">@(Model != null && !string.IsNullOrWhiteSpace(Model.Ibu) ? Converter.Convert<double>(Model.Ibu).ToString("F1") : "0")</span>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

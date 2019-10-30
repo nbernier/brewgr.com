@@ -1,75 +1,99 @@
 @using System.Web.Optimization
 
-<!doctype html>
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<meta name="description" content="@(ViewBag.Description ?? "BeerRecipe is an online homebrew community and recipe calculator to help homebrewers find, create and share homebrew recipes with other homebrewers.")" />
-	<title>@ViewBag.Title | BeerRecipe</title>
-	
-    @* Stylesheet Bundle *@
-    @Styles.Render("~/bundles/css")   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    @* Styles Insertion Point *@
-    <!-- Styles -->
-    @RenderSection("Styles", false)
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Description))
+    {
+        <meta name="description" content="@(ViewBag.Description ?? "Brewgr is an online homebrew community and recipe calculator to help homebrewers find, create and share homebrew recipes with other homebrewers.")" />
+    }
 
-    <link href="//fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css" />
-    
-    @*<script type="text/javascript">
-		var config = { staticRoot: '@ViewBag.StaticRoot' };
-	</script>*@
-    
-    @if (ViewBag.Canonical != null)
+    <title>@ViewBag.Title | Brewgr</title>
+
+    <!-- Google Tag Manager -->
+    <script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PV32DQ3');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Canonical))
     {
         <link rel="canonical" href="@(ViewBag.Canonical)" />
     }
 
-    @*
-        NOTE: jQuery should be included at the end of <body> but there is a weird issue with jQueryUI tabs and a password fields
-        within them that causes the page to flash and do weird stuff with text on page load, so we're keeping it up here for now
-    *@
-    
+    @* Bootstrap CSS *@
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    @* Datepicker *@
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
+    @* DataTables *@
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+
+    @* Style Bundle *@
+    @Styles.Render("~/bundles/css")
+
+    @* Styles Insertion Point *@
+    @RenderSection("Styles", false)
+
+    @* jQuery $() Queue -- Taken from: http://writing.colin-gourlay.com/safely-using-ready-before-including-jquery/ *@
+    <script>(function (w, d, u) { w.readyQ = []; w.bindReadyQ = []; function p(x, y) { if (x == "ready") { w.bindReadyQ.push(y); } else { w.readyQ.push(x); } }; var a = { ready: p, bind: p }; w.$ = w.jQuery = function (f) { if (f === d || f === u) { return a } else { p(f) } } })(window, document)</script>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PV32DQ3" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    @RenderBody()
+
     @* jQuery from Google CDN with fallback *@
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="@Url.Content("~/js/jquery-1.11.0.min.js")"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="@Url.Content("~/js/lib/jquery-1.11.3.min.js")"><\/script>')</script>
 
     @* jQuery Migrate CDN with fallback - This is required to deal with jquery validate parseJSON error -- keep an eye on it for later removal *@
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script>window.jQuery.migrateWarnings || document.write('<script src="@Url.Content("~/js/jquery-migrate-1.2.1.min.js")"><\/script>')</script>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    <script>window.jQuery.migrateWarnings || document.write('<script src="@Url.Content("~/js/lib/jquery-migrate-1.2.1.min.js")"><\/script>')</script>
 
-        ga('create', 'UA-106179717-2', 'auto');
-        ga('send', 'pageview');
-
-    </script>
-</head>
-<body>
-    @RenderBody()
+    @* jQuery $() Queue -- Taken from: http://writing.colin-gourlay.com/safely-using-ready-before-including-jquery/ *@
+    <script>(function ($, d) { $.each(readyQ, function (i, f) { $(f) }); $.each(bindReadyQ, function (i, f) { $(d).bind("ready", f) }) })(jQuery, document)</script>
 
     @* jQuery UI CDN with fallback *@
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script>window.jQuery.ui || document.write('<script src="@Url.Content("~/js/jquery-ui.min.js")"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script>window.jQuery.ui || document.write('<script src="@Url.Content("~/js/lib/jquery-ui-1.11.4.min.js")"><\/script>')</script>
+
+    @* Bootstrap JS *@
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    @* Moment - Date tool *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+
+    @* Datepicker *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+    @* DataTables *@
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
 
     @* Scripts Bundle *@
     @Scripts.Render("~/bundles/js")
 
     @* Scripts Insertion Point *@
-    <!-- Scripts -->
-    @RenderSection("Scripts", false)  
-    
-    @if (ViewBag.Environment == "prod" && (ViewBag.ActiveUser == null || !ViewBag.ActiveUser.IsAdmin))
-    {
-        @Html.Partial("_TrackingScript")
-    }
+    @RenderSection("Scripts", false)
 </body>
 </html>

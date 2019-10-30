@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "_BuilderInfo_V2";
+}
+
+@using Brewgr.Web
+
+@model RecipeViewModel
+
+
+<div id="recipeinfo" class="panel panel-default panel-ingredient-group recipedata">
+    <div class="panel-heading">
+        <h3 class="panel-title">Recipe Info</h3>
+    </div>
+    <div class="panel-body table-responsive sort-wrap">
+        <input type="hidden" data-name="r_OriginalRecipeId" value="@Model.OriginalRecipeId" />
+        <input type="hidden" data-name="r_RecipeId" value="@Model.RecipeId" />
+
+        <div class="row homebrew-name">
+            <section class="col-xs-12">
+                @if (ViewBag.IsVew)
+                {
+                <h2>@Model.Name</h2>
+                }
+                else
+                {
+                <input type="text" placeholder="Give Your Homebrew a Name" data-name="r_Name" data-filter="ext-text" class="name form-control input-lg" value="@Model.Name" data-validate="1" />
+                }
+            </section>
+        </div>
+
+        <div class="row">
+            <section class="col-xs-4 col-sm-5ths">
+                <div class="form-group">
+                    <label>Measurement</label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@(Model.UnitType == "s" ? "US" : "Metric")</span>
+                    }
+                    else
+                    {
+                    <select name="unit" data-name="r_UnitType" data-track="1" class="form-control input-sm">
+                    <option value="s" @(Model.UnitType == "s" ? " selected=\"selected\"" : "")>US</option>
+                    <option value="m" @(Model.UnitType == "m" ? " selected=\"selected\"" : "")>Metric</option>
+                    </select>
+                    }
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-5ths">
+                <div class="form-group">
+                    <label>Batch <span class="hidden-xs">Size</span> <span class="helptip" original-title="The amount of wort, after the boil.  NOTE: This includes any volume you expect to lose due to trub loss when transferring to your fermenter.">&nbsp;</span></label>
+                    <div class="input-group">
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">@Model.BatchSize
+                    <span class="measurement">
+                    <span data-unit="s" class="textlabel">gal</span>
+                    <span data-unit="m" class="textlabel">lit</span>
+                    </span>
+                    </span>
+                    }
+                    else
+                    {
+                    <input type="text" name="batch_size" data-name="r_BatchSize" data-track="1" data-filter="positiveFloat" maxlength="6" value="@Model.BatchSize" data-validate="1" class="form-control input-sm" />
+                    <span class="input-group-addon measurement">
+                    <span data-unit="s" class="textlabel">gal</span>
+                    <span data-unit="m" class="textlabel">lit</span>
+                    </span>
+                    }
+                    </div>
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-5ths">
+                <div class="form-group">
+                    <label>Boil <span class="hidden-xs">Size</span> <span class="helptip" original-title="The amount of sweet wort that you will be boiling">&nbsp;</span></label>
+                    <div class="input-group">
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">
+                    @Model.BoilSize
+                    <span class="measurement">
+                    <span data-unit="s" class="textlabel">gal</span>
+                    <span data-unit="m" class="textlabel">lit</span>
+                    </span>
+                    </span>
+                    }
+                    else
+                    {
+                    <input type="text" name="boil_size" data-name="r_BoilSize" data-track="1" data-filter="positiveFloat" maxlength="6" value="@Model.BoilSize" data-validate="1" class="form-control input-sm" />
+                    <span class="input-group-addon measurement">
+                    <span data-unit="s" class="textlabel">gal</span>
+                    <span data-unit="m" class="textlabel">lit</span>
+                    </span>
+                    }
+                    </div>
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-5ths">
+                <div class="form-group">
+                    <label>Boil Time <span class="helptip" original-title="The total time that you will be boiling the sweet wort">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">
+                    @Model.BoilTime Minutes
+                    </span>
+                    }
+                    else
+                    {
+                    <select name="boil_time" data-name="r_BoilTime" data-track="1" class="form-control input-sm">
+                    @for (var i = 5; i <= 180; i += 5)
+                    {
+                    <option value="@i" @(Model.BoilTime == i ? " selected=\"selected\"" : "")>@i Minutes</option>
+                    }
+                    </select>
+                    }
+                </div>
+            </section>
+            <section class="col-xs-4 col-sm-5ths">
+                <div class="form-group">
+                    <label>Efficiency <span class="helptip" original-title="This is how well your equipment and process does at extracting sugars from the malts in the mash/lauter process (Brewhouse Efficiency)">&nbsp;</span></label>
+                    @if (ViewBag.IsVew)
+                    {
+                    <span class="recipe-field-view">
+                    @Model.Efficiency%
+                    </span>
+                    }
+                    else
+                    {
+                    <select name="efficiency" data-name="r_Efficiency" data-track="1" class="form-control input-sm">
+                    @for (var i = 10; i <= 99; i++)
+                    {
+                    if (Model.Efficiency * 100 == i)
+                    {
+                    <option value=".@i" selected="selected">@i%</option>
+                    }
+                    else
+                    {
+                    <option value=".@i">@i%</option>
+                    }
+                    }
+                    <option value="1" @(Model.Efficiency == 1 ? " selected=\"selected\"" : "")>100%</option>
+                    </select>
+                    }
+                </div>
+            </section>
+        </div>
+
+        <div class="row homebrew-notes">
+            <section class="col-xs-12">
+                <div class="form-group">
+                    <label>Description / Notes</label>
+                    @if (ViewBag.IsVew)
+    {
+                if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+                @Html.Partial("_StringWithLineBreaks", Model.Description)
+}
+else
+{
+                @*@Model.GetInferredDescription()*@
+}
+}
+else
+{
+                <textarea name="description" data-name="r_Description" class="expand2-200 form-control">@Model.Description</textarea>
+                <span id="helpBlock" class="help-block">(Include recipe history, facts and other details that brewers will find interesting)</span>
+}
+                </div>
+            </section>
+        </div>
+
+
+        <div class="row actions">
+            <section class="col-xs-12">
+                <a href="#" id="ScalePopupTrigger" class="btn btn-primary btn-xs">Scale</a>
+                <a href="#" id="PhotoPopupTrigger" class="btn btn-primary btn-xs">@(Model.HasImage ? "New Photo" : "Add a Photo")</a>
+                @if (!Model.IsNewRecipe())
+    {
+            <a href="@Url.RecipeCloneUrl(Model.RecipeId)" class="btn btn-primary btn-xs">Clone</a>
+            <a href="@Url.RecipeDetailUrl(Model.RecipeId, Model.Name, Model.StyleName)?public=true" class="btn btn-primary btn-xs">View</a>
+            <a href="@Url.RecipePrintUrl(Model.RecipeId)" class="btn btn-primary btn-xs new-window" rel="nofollow">Shopping List</a>
+            <a href="@Url.RecipePrintUrl(Model.RecipeId)" class="btn btn-primary btn-xs new-window" rel="nofollow">Print</a>
+            <a href="#" class="btn btn-primary btn-xs delete-recipe" data-recipeid="@Model.RecipeId">Delete</a>
+}
+                @if (!Model.IsNewRecipe())
+    {
+        if (Model.MostRecentBrewSession.HasValue)
+        {
+            <a href="@Url.EditBrewSessionUrl(Model.MostRecentBrewSession.Value)" class="btn btn-primary btn-xs"><span class="valignmiddle">View Brew Session</span></a>
+}
+            <a href="@Url.NewBrewSessionUrl(Model.RecipeId)" class="btn btn-primary btn-xs"><span class="valignmiddle">New Brew Session</span></a>
+
+}
+            </section>
+        </div>
+    </div>
+</div>
