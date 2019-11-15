@@ -89,7 +89,7 @@ namespace Brewgr.Web.Controllers
 			}
 
 			return View("UnCategorized", new UnCategorizedRecipesViewModel { Recipes = Mapper.Map(recipes, new List<RecipeSummaryViewModel>()), Pager = pager, 
-				BaseUrl = Url.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null }, "http")});
+				BaseUrl = Url.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null })});
 		}
 
 		/// <summary>
@@ -869,7 +869,7 @@ namespace Brewgr.Web.Controllers
 
                     if (Request.UrlReferrer == null)
                     {
-                        return Redirect(Url.Action("my-recipes", "recipe", null, "http"));
+                        return Redirect(Url.Action("my-recipes", "recipe"));
                     }
 
                     if (Request.UrlReferrer.ToString() == Url.RecipeEditUrl(recipe.RecipeId))

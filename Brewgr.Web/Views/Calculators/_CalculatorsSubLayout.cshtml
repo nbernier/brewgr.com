@@ -9,19 +9,19 @@
             <h2 class="page-header small">Homebrew Calculators</h2>
             <ul class="nav nav-pills nav-stacked">
                 <li class="@(url.EndsWith("/calculators") ? "active" : "")">
-                    <a href="@Url.Action("Calculators", "Calculators", null, "http")">Calculators Home</a>
+                    <a href="@Url.Action("Calculators", "Calculators")">Calculators Home</a>
                 </li>
                 <li class="@(url.Contains("hydrometer-correction") ? "active" : "")">
-                    <a href="@Url.Action("CalculatorsHydrometerTemp", "Calculators", null, "http")">Hydrometer Temperature Correction Calculator</a>
+                    <a href="@Url.Action("CalculatorsHydrometerTemp", "Calculators")">Hydrometer Temperature Correction Calculator</a>
                 </li>
                 <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-                    <a href="@Url.Action("CalculatorsMashSpargeWater", "Calculators", null, "http")">Mash and Sparge Water Infusion Calculator</a>
+                    <a href="@Url.Action("CalculatorsMashSpargeWater", "Calculators")">Mash and Sparge Water Infusion Calculator</a>
                 </li>
                 <li class="@(url.Contains("mash-tun-capacity") ? "active" : "")">
-                    <a href="@Url.Action("CalculatorsMashTunCapacity", "Calculators", null, "http")">Mash Tun Capacity Calculator</a>
+                    <a href="@Url.Action("CalculatorsMashTunCapacity", "Calculators")">Mash Tun Capacity Calculator</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("homebrew-recipe-calculator", "Recipe", null, "http")">Recipe Calculator</a>
+                    <a href="@Url.Action("homebrew-recipe-calculator", "Recipe")">Recipe Calculator</a>
                 </li>
             </ul>
         </div>

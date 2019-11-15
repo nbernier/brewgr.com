@@ -10,9 +10,8 @@ namespace Brewgr.Web.Core.Data
 {
 	public class BrewgrContext : AbstractDbContext, IDataContext
 	{
-        private const string CNN_KEY = "Brewgr_ConnectionString";
-
-        public BrewgrContext() : base(CNN_KEY)
+ 
+        public BrewgrContext(string connectionString) : base(connectionString)
         {
 //            Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(CNN_KEY));
         }

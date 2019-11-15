@@ -15,25 +15,25 @@
 <h2 class="page-header small">Homebrew Calculations</h2>
 <ul class="nav nav-pills nav-stacked">
     <li class="@(url.EndsWith("/calculations") ? "active" : "")">
-        <a href="@Url.Action("Calculations", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Homebrew Calculations</a>
+        <a href="@Url.Action("Calculations", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Homebrew Calculations</a>
     </li>
     <li class="@(url.Contains("original-gravity") ? "active" : "")">
-        <a href="@Url.Action("CalculationsOriginalGravity", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Original Gravity</a>
+        <a href="@Url.Action("CalculationsOriginalGravity", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Original Gravity</a>
     </li>
     <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-        <a href="@Url.Action("CalculationsFinalGravity", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Final Gravity</a>
+        <a href="@Url.Action("CalculationsFinalGravity", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Final Gravity</a>
     </li>
     <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-        <a href="@Url.Action("CalculationsSRM", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate SRM/Beer Color</a>
+        <a href="@Url.Action("CalculationsSRM", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate SRM/Beer Color</a>
     </li>
     <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-        <a href="@Url.Action("CalculationsIBU", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate IBU/Hop Bitterness</a>
+        <a href="@Url.Action("CalculationsIBU", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate IBU/Hop Bitterness</a>
     </li>
     <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-        <a href="@Url.Action("CalculationsAlcohol", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Alcohol Content</a>
+        <a href="@Url.Action("CalculationsAlcohol", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Alcohol Content</a>
     </li>
     <li class="@(url.Contains("mash-sparge-water-infusion") ? "active" : "")">
-        <a href="@Url.Action("CalculationsCalories", "content", null, "http")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Calories</a>
+        <a href="@Url.Action("CalculationsCalories", "content")@if (Request.QueryString["iframe"] == "1"){<text>?iframe=1</text>}">Calculate Calories</a>
     </li>
 
 </ul>

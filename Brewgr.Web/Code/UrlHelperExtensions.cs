@@ -17,7 +17,7 @@ namespace Brewgr.Web
 		public static string UserProfileUrl(this UrlHelper urlHelper, string userName)
 		{
 			var adjustedUserName = userName.Replace(" ", "-");
-			return urlHelper.Action("UserProfile", "User", new { userName = adjustedUserName }, urlHelper.Https());
+			return urlHelper.Action("UserProfile", "User", new { userName = adjustedUserName });
 		}
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace Brewgr.Web
 				recipeName += "-recipe";
 			}
 
-			return urlHelper.Action("RecipeDetail", "Recipe", new { recipeId, recipename = StringCleaner.CleanForUrl(recipeName) }, "http");
+			return urlHelper.Action("RecipeDetail", "Recipe", new { recipeId, recipename = StringCleaner.CleanForUrl(recipeName) });
 		}
 
 		/// <summary>
@@ -44,7 +44,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string RecipeEditUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("RecipeEdit", "Recipe", new { recipeId }, urlHelper.Https());
+			return urlHelper.Action("RecipeEdit", "Recipe", new { recipeId });
 		}
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Brewgr.Web
         /// </summary>
         public static string BrewSessionLabelUrl(this UrlHelper urlHelper, int brewSessionId)
         {
-            return urlHelper.Action("BrewSessionLabel", "BrewSession", new { brewSessionId }, urlHelper.Https());
+            return urlHelper.Action("BrewSessionLabel", "BrewSession", new { brewSessionId });
         }
         /// <summary>
         /// Creates a Brew Clone Url
@@ -76,7 +76,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string NewBrewSessionUrl(this UrlHelper urlHelper, int recipeId)
 		{
-			return urlHelper.Action("NewBrewSession", "BrewSession", new { recipeId }, "http");
+			return urlHelper.Action("NewBrewSession", "BrewSession", new { recipeId });
 		}
 
 		/// <summary>
@@ -84,7 +84,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string EditBrewSessionUrl(this UrlHelper urlHelper, int brewSessionId)
 		{
-			return urlHelper.Action("BrewSessionEdit", "BrewSession", new { brewSessionId }, "http");
+			return urlHelper.Action("BrewSessionEdit", "BrewSession", new { brewSessionId });
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string BrewSessionDetailUrl(this UrlHelper urlHelper, int brewSessionId, string recipeName)
 		{
-			return urlHelper.Action("BrewSessionDetail", "BrewSession", new { brewSessionId = brewSessionId, recipename = StringCleaner.CleanForUrl(recipeName) }, "http");
+			return urlHelper.Action("BrewSessionDetail", "BrewSession", new { brewSessionId = brewSessionId, recipename = StringCleaner.CleanForUrl(recipeName) });
 		}
 
 		/// <summary>
@@ -117,7 +117,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string RecipeBrewSessionsUrl(this UrlHelper urlHelper, int recipeId, string recipeName)
 		{
-			return urlHelper.Action("RecipeBrewSessions", "Recipe", new { recipeId = recipeId, recipeName = StringCleaner.CleanForUrl(recipeName) }, "http");
+			return urlHelper.Action("RecipeBrewSessions", "Recipe", new { recipeId = recipeId, recipeName = StringCleaner.CleanForUrl(recipeName) });
 		}
 
 		/// <summary>
@@ -181,7 +181,7 @@ namespace Brewgr.Web
 				urlFriendlyName = urlFriendlyName + "-recipes";
 			}
 
-			return urlHelper.Action("StyleDetail", "Recipe", new { urlFriendlyName, page }, "http");
+			return urlHelper.Action("StyleDetail", "Recipe", new { urlFriendlyName, page });
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string FermentableDetailUrl(this UrlHelper urlHelper, int fermentableId, string name)
 		{
-			return urlHelper.Action("FermentableDetail", "Ingredient", new { ingredientId = fermentableId, name = StringCleaner.CleanForUrl(name) }, "http");
+			return urlHelper.Action("FermentableDetail", "Ingredient", new { ingredientId = fermentableId, name = StringCleaner.CleanForUrl(name) });
 		}
 
 		/// <summary>
@@ -197,7 +197,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string HopDetailUrl(this UrlHelper urlHelper, int hopId, string name)
 		{
-			return urlHelper.Action("HopDetail", "Ingredient", new { ingredientId = hopId, name = StringCleaner.CleanForUrl(name) }, "http");
+			return urlHelper.Action("HopDetail", "Ingredient", new { ingredientId = hopId, name = StringCleaner.CleanForUrl(name) });
 		}
 
 		/// <summary>
@@ -205,7 +205,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string YeastDetailUrl(this UrlHelper urlHelper, int yeastId, string name)
 		{
-			return urlHelper.Action("YeastDetail", "Ingredient", new { ingredientId = yeastId, name = StringCleaner.CleanForUrl(name) }, "http");
+			return urlHelper.Action("YeastDetail", "Ingredient", new { ingredientId = yeastId, name = StringCleaner.CleanForUrl(name) });
 		}
 
 		/// <summary>
@@ -213,7 +213,7 @@ namespace Brewgr.Web
 		/// </summary>
 		public static string AdjunctDetailUrl(this UrlHelper urlHelper, int adjunctId, string name)
 		{
-			return urlHelper.Action("AdjunctDetail", "Ingredient", new { ingredientId = adjunctId, name = StringCleaner.CleanForUrl(name) }, "http");
+			return urlHelper.Action("AdjunctDetail", "Ingredient", new { ingredientId = adjunctId, name = StringCleaner.CleanForUrl(name) });
 		}
 
 		/// <summary>

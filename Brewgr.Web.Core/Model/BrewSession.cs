@@ -251,9 +251,9 @@ namespace Brewgr.Web.Core.Model
 		/// </summary>
 		public IList<TastingNote> TastingNotes { get; set; }
 
-	    public DateTime? RackingDate { get; set; }
+	    //public DateTime? RackingDate { get; set; }
 
-        public double? RackingGravity { get; set; }
+        //public double? RackingGravity { get; set; }
         /// <summary>
         /// Determines if a recipe was brewed by a specific user 
         /// </summary>

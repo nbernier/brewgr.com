@@ -75,7 +75,7 @@
         {
             <a href="@Url.RecipeBeerXmlUrl(Model.RecipeId)"><img src="@Url.Image("~/img/xml.gif")" width="40" height="20" alt="Beer Xml" /></a>
         }
-        <a href="@Url.Action("Calculations", "content", null, "http")"class="calculations" data-showinmodal="@((ViewData["ShowInModal"] == null || (ViewData["ShowInModal"] != null && Convert.ToBoolean(ViewData["ShowInModal"]))) ? 1 : 0)" class="floatright margintop2">How are these calculations made?</a>
+        <a href="@Url.Action("Calculations", "content")"class="calculations" data-showinmodal="@((ViewData["ShowInModal"] == null || (ViewData["ShowInModal"] != null && Convert.ToBoolean(ViewData["ShowInModal"]))) ? 1 : 0)" class="floatright margintop2">How are these calculations made?</a>
         <div class="clearall"></div>
     </div>
 </div>
