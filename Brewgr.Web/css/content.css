@@ -1,0 +1,385 @@
+﻿/* ================================================================================================= */
+/* NOTE: The CSS in this file is for view specific styles only -- no layout or reusable styles */
+/* ::Feature specific responsive features SHOULD be included in this file */
+/* ::Build off of bootstrap styles first and only define styles when absolutely necessary */
+/* ================================================================================================= */
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Bootstrap Overrides ----------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.page-header { margin: 0 0 20px 0; padding-bottom: 15px; }
+.nav-tabs > li.active > a { font-weight: bold; }
+.page-header.small { font-size: 20px; margin-bottom: 10px; }
+.btn-grey { color: #fff; background-color: #c0c0c0; border-color: #c0c0c0; }
+
+/* 5 equal columns  
+<div class="row">
+    <div class="col-md-5ths col-xs-6">
+       ...
+    </div>
+</div>*/
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths { position: relative; min-height: 1px; padding-right: 15px; padding-left: 15px; }
+
+.col-xs-5ths { width: 20%; float: left; }
+
+@media (min-width: 768px) {
+    .col-sm-5ths { width: 20%; float: left; }
+}
+
+@media (min-width: 992px) {
+    .col-md-5ths { width: 20%; float: left; }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-5ths { width: 20%; float: left; }
+}
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Components -------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.ad { margin: 18px 0; border: solid 1px #ccc; padding: 8px 8px; text-align: center; }
+abbr.timeago { display: none; border: 0; cursor: default; } /* Hide TimeAgo by Default to prevent flashing */
+.subhead, .view .subhead { color: #779e00; }
+.fine-print { font-size: 11px; color: #aaa; } 
+[data-rating] { width: 100px; height: 21px; }
+.compliment .btn { display: block; width: 100%; margin-bottom: 20px; }
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- List ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.list .media { position: relative; overflow: visible; border-bottom: solid 1px #eee; margin-bottom: 18px; padding-bottom: 18px; }
+.list abbr { cursor: default; border-bottom: 0; color: #585d5e; }
+.list h3.media-heading { font-size: 18px; line-height: 18px; font-weight: bold; }
+.list .media img.avatar { width: 16px; height: 16px; }
+.list .media .list-inline { margin-top: 8px; margin-left: 0; }
+.list .media .list-inline li { padding: 0; }
+.list .media .list-inline li .badge { background-color: #eee; color: #666; padding: 4px 15px; border-radius: 4px; }
+.list .menu { position: absolute; top: 0; right: 0; }
+@media only screen and (max-width: 767px) {
+    .list h3.media-heading { padding-right: 48px; }
+}
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Comments ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.comments-wrapper { background-color: #f5f5f5; }
+.comments-wrapper .comment-list { padding: 0; list-style: none; }
+.comments-wrapper .comment-list li { margin: 0; margin-top: 10px; border-bottom: solid 1px #ddd; }
+.comments-wrapper .comment-list li:first-child { margin-top:0px; }
+.comments-wrapper .comment-list li:last-child { border-bottom: none; }
+.comments-wrapper .comment-list li > div { display: table-cell; }
+.comments-wrapper .commenter-image { width: 30px; margin-right: 5px; height: 100%; float: left; }
+.comments-wrapper .commenter-image img { width: 100%; }
+.comments-wrapper .comment-text p { margin: 0; }
+.comments-wrapper .timeago { color: #aaa; font-size: 11px; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Recipe List ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.list-recipe .srm { display: inline-block; border-radius: 6px; width: 11px; height: 11px; }
+.list-recipe .media-body > span a:nth-of-type(2) { text-decoration: underline; }
+.list-recipe .media-body > span a:nth-of-type(2):hover { text-decoration: none; }
+.list-recipe .media-body .badge { margin-bottom: 5px; }
+.list-recipe [data-rating] { margin-bottom: 8px; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Recipe Widget ----------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+/*.recipe-widget { font-size: 12px; line-height: 18px; }
+.recipe-widget [data-rating] { margin-bottom: 6px; margin-top: -4px; }
+.recipe-widget .media-body { color: #666; }
+.recipe-widget h4 { font-size: 14px; font-weight: bold; margin-bottom: 2px; }
+.recipe-widget .badge { display: table;  width: 100%; border-radius: 4px; background-color: #eee; margin-top: 8px; border: solid 1px #ddd; color: #57595D; font-weight: normal; }
+.recipe-widget .badge span { display: table-cell; text-align: center; vertical-align: middle; }*/
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- SRM ----------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.srmFF { background: #ffffff; } .srm1  { background: #FFE699; } 
+.srm2  { background: #FFD878; } .srm3  { background: #FFCA5A; }
+.srm4  { background: #FFBF42; } .srm5  { background: #FBB123; } 
+.srm6  { background: #F8A600; } .srm7  { background: #F39C00; } 
+.srm8  { background: #EA8F00; } .srm9  { background: #E58500; } 
+.srm10 { background: #DE7C00; } .srm11 { background: #D77200; } 
+.srm12 { background: #CF6900; } .srm13 { background: #CB6200; } 
+.srm14 { background: #C35900; } .srm15 { background: #BB5100; } 
+.srm16 { background: #B54C00; } .srm17 { background: #B04500; } 
+.srm18 { background: #A63E00; } .srm19 { background: #A13700; } 
+.srm20 { background: #9B3200; } .srm21 { background: #952D00; } 
+.srm22 { background: #8E2900; } .srm23 { background: #882300; } 
+.srm24 { background: #821E00; } .srm25 { background: #7B1A00; } 
+.srm26 { background: #771900; } .srm27 { background: #701400; } 
+.srm28 { background: #6A0E00; } .srm29 { background: #660D00; } 
+.srm30 { background: #5E0B00; } .srm31 { background: #5A0A02; } 
+.srm32 { background: #600903; } .srm33 { background: #520907; } 
+.srm34 { background: #4C0505; } .srm35 { background: #470606; } 
+.srm36 { background: #440607; } .srm37 { background: #3F0708; } 
+.srm38 { background: #3B0607; } .srm39 { background: #3A070B; } 
+.srm40 { background: #36080A; } .srm00 { background: #000000; }
+.srm-disc { display: inline-block; width: 16px; height: 16px; border-radius: 50%; }
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Flash Elements ---------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.flash { 
+    -moz-animation: flash 1s ease-out; 
+    -moz-animation-iteration-count: 1; 
+    -webkit-animation: flash 1s ease-out; 
+    -webkit-animation-iteration-count: 1; 
+    -ms-animation: flash 1s ease-out; 
+    -ms-animation-iteration-count: 1; 
+}
+@-webkit-keyframes flash    { 0% { background-color:initial; } 50% { background-color:#fbf8b2; } 100% { background-color:initial; }}
+@-moz-keyframes flash       { 0% { background-color:initial; } 50% { background-color:#fbf8b2; } 100% { background-color:initial; }}
+@-ms-keyframes flash        { 0% { background-color:initial; } 50% { background-color:#fbf8b2; } 100% { background-color:initial; }}
+
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: Common ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------*/
+.view { padding-top: 10px; }
+.view h2, .view .h2 { font-size: 24px; color: #EB7723; line-height: 30px; }
+.view h3, .view .h3 { font-size: 21px; color: #666; }
+@media only screen and (max-width: 767px) {
+    /*.view img { width: 100%; height: auto; }  full width images */
+    .view img.keepsize, .view .keepsize img { width: initial; height: initial; } /* full width images */
+}
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: ABOUT ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#vw-about h4 { margin-top: 18px; }
+#vw-about .col-md-4 { margin-top: 18px; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: HOW IT WORKS ------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------*/
+#vw-howitworks .row > .col-md-9 a { display: block; margin-top: 4px; }
+#vw-howitworks > .row > .col-md-3 { margin-top: 10%; }
+@media only screen and (max-width: 767px) {
+    #vw-howitworks img { width: 90%; height: auto; }
+}
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: FEATURES ---------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#vw-features img { display: block; margin: 3% auto; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: RECIPE CATALOG ---------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+@media only screen and (min-width: 768px) {
+    #vw-recipes .panel { min-height: 215px; }
+    #vw-recipes .panel h3 { margin-top: 0; }
+}
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: STYLE DETAIL ------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------*/
+#vw-styledetail .hero .col-md-7 { text-align: right; padding-top: 8px; }
+#vw-styledetail .hero p { font-size: 16px; line-height: 24px; margin-top: 12px; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: PROFILE ----------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#vw-profile .col-md-3 .thumbnail { border: 0; }
+#vw-profile .info h2 { margin-bottom: 0; }
+#vw-profile .info p { margin-top: 12px; }
+#vw-profile .tab-pane { padding-top: 18px; }
+#vw-profile .tab-content .thumbnail { width: 130px; float: left;  }
+#vw-profile [data-followid] { display: block; width: 200px; border-top-left-radius: 0; border-top-right-radius: 0; }
+#vw-profile .new-recipe-button { text-align:right; }
+@media only screen and (min-width: 768px) and (max-width: 1199px) {
+    #vw-profile .nav-tabs { margin-top: 18px; }
+}
+@media only screen and (min-width: 768px) {
+    #vw-profile .tab-pane { padding: 18px 30px; }
+    #vw-profile .username { margin-top: 8px; }
+}
+@media only screen and (max-width: 767px) {
+    #vw-profile [data-followid] { display: block; width: auto; }   
+}
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- View: RECIPE DETAIL------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------*/
+#vw-recipedetail #recinfo .panel-body { padding: 14px 8px; } 
+#vw-recipedetail #recinfo .media-heading { font-size: 22px; margin-bottom: 0; line-height: 24px; }
+#vw-recipedetail #recinfo h2 { margin: 0 0 4px 0; }
+#vw-recipedetail #recinfo .specs { margin: 12px 0; }
+#vw-recipedetail #recinfo .specs .row div:first-of-type { font-weight: bold; }
+#vw-recipedetail #recinfo .menu { position: absolute; right: 25px; }
+#vw-recipedetail #recinfo [data-rating] { margin-bottom: 4px; }
+.recipe-info #ratingind { margin: 10px 0px; }
+
+@media only screen and (min-width: 768px) {
+
+    /* Slight derivation from bootstrap cols */
+    #vw-recipedetail .image { margin-left: 8px; }
+    #vw-recipedetail .detail { margin-left: -8px; }
+
+    #vw-recipedetail  .ing-panel-row-head div,
+        #vw-recipedetail .ing-panel-row div,
+        #vw-recipedetail .ing-panel-row-foot div { text-align: center; } /* Default to Center */
+
+    #vw-recipedetail .ing-panel-row div:first-of-type { text-align: left; } /* Left align Name Cols */
+
+    #vw-recipedetail #fermentables .ing-panel-row-head div:nth-of-type(3),    /* Left Align Name Head Cols */
+        #vw-recipedetail #hops .ing-panel-row-head div:nth-of-type(2),
+        #vw-recipedetail #yeasts .ing-panel-row-head div:first-of-type,
+        #vw-recipedetail #others .ing-panel-row-head div:nth-of-type(3),
+        #vw-recipedetail #mashsteps .ing-panel-row-head div:first-of-type
+            { text-align: left; }    
+        
+    #vw-recipedetail #hops .panel-footer .row > div:last-of-type { text-align: right; }    
+}
+
+@media only screen and (max-width: 767px) { 
+
+    #vw-recipedetail [data-rating]:first-of-type { margin: -12px 0 6px 0; }
+
+    #vw-recipedetail .ing-panel-row { padding: 8px; }
+    #vw-recipedetail .ing-panel-row div { padding-bottom: 0; padding-top: 0; text-align: left ; }
+    #vw-recipedetail .ing-panel span.visible-xs { display: inline-block !important; }
+
+    /* Bold Ing Named for XS*/
+    #vw-recipedetail .ing-panel-row div:first-of-type { font-weight: bold; }    
+
+    /* reposition actions */
+    #vw-recipedetail #recinfo .menu { top: -208px; right: 17px; }
+
+}
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- ING Panel --------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.ing-panel .panel-heading { background-color: #888; border: solid 1px #888; color: #fff; font-size: 17px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+.ing-panel .panel-body  { padding-top: 0; padding-bottom: 0; }
+.ing-panel .panel-body p, .ing-panel .panel-body ol { margin-top: 8px; }
+.ing-panel .panel-body ol { padding-left: 18px; }
+.ing-panel-row-head { background-color: #eee; font-weight: bold; }
+.ing-panel-row-head div { padding: 2px 8px; }
+.ing-panel-row div { padding: 8px;  }
+.ing-panel-row { border-top: solid 1px #ddd; }
+.ing-panel-row:nth-of-type(odd) { background-color: #eee; }
+.ing-panel .panel-footer { background-color: #ddd; padding: 2px 15px; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Dashboard --------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#dashboard .row .create-recipe { display: table; margin: 20px auto; }
+#dashboard .dashboard-more { width: 70%; display: table; margin: 10px auto; }
+#dashboard .tab-content { padding-top: 20px; }
+#dashboard .list h5 { color:#aaa; margin-bottom:15px; }
+#dashboard .addedby-date { color:#aaa; }
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Homepage ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+.recipe-widget .data .srm { width: 18px; height: 18px; float: left; margin-top: 0px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; margin-right: 4px; padding-top: 0 !important; }
+.recipe-widget .data .item { padding-left:5px; padding-right:5px; }
+.recipe-widget h4 { margin-top: 0px; margin-bottom: 2px; }
+#vw-home .user-widget h4 { margin-top: 0px; margin-bottom: 2px; }
+#vw-home #hero-image { text-align: center; height: 500px; background: #e8eced url('/img/home-brew-single-teir.jpg') no-repeat center; }
+#vw-home .wrapper-mobile { text-align: center; margin-top: 30px !important; }
+#vw-home .wrapper { margin: 0 auto; background-color: rgba(0, 0, 0, 0.6); display: inline-block; padding: 2%; margin-top: 100px; border-radius: 20px; }
+#vw-home .wrapper h1 { color: #fff; margin: 0px 0px 40px; font-size: 30px; font-weight: bold; }
+#vw-home .home-search { margin-top: 40px; margin-bottom: 20px; text-align: center; }
+#vw-home .home-search .input-group { width: 40%; margin: 0 auto; }
+.carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img { width:100%;}
+
+@media only screen and (max-width: 767px) { 
+    #vw-home .home-search .input-group { width: 100%; margin: 0 auto; }
+    #brewgr-hp-carousel { margin-top:90px; }
+    .carousel-caption { display:none;}
+}
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Water Calculator -------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#water-calc span[data-unit].active { display: inline; }
+#water-calc [data-unit] { display: none; }
+#water-calc .measurement { white-space: nowrap; }
+#view-editbrewsession { white-space: nowrap; }
+
+
+/* ------------------------------------------------------------------------------------------*/
+/* --------- Recipes ----------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------*/
+#recipes-view .panel { min-height: 236px; }
+#recipes-view .first-row { margin-bottom:30px; }
+#vw-styledetail .style-summary { margin-top:60px; }
+#vw-styledetail .style-summary h3 { margin-top:0px; }
+
+
+/* ---- [ tipsy ] ---------------------------------------------> */
+.tipsy { font-size: 11px; position: absolute; padding: 5px; z-index: 100000; }
+.tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
+.tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }
+.tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed #000; }
+.tipsy-arrow-n { border-bottom-color: #000; }
+.tipsy-arrow-s { border-top-color: #000; }
+.tipsy-arrow-e { border-left-color: #000; }
+.tipsy-arrow-w { border-right-color: #000; }
+.tipsy-n .tipsy-arrow { top: 0px; left: 50%; margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-nw .tipsy-arrow { top: 0; left: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-ne .tipsy-arrow { top: 0; right: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -5px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-se .tipsy-arrow { bottom: 0; right: 10px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-e .tipsy-arrow { right: 0; top: 50%; margin-top: -5px; border-left-style: solid; border-right: none; border-top-color: transparent; border-bottom-color: transparent; }
+.tipsy-w .tipsy-arrow { left: 0; top: 50%; margin-top: -5px; border-right-style: solid; border-left: none; border-top-color: transparent; border-bottom-color: transparent; }
+
+.helptip { background: url(/img/help.gif) no-repeat; height: 11px; width: 12px; display: inline-block; vertical-align: middle; margin-top: -2px; }
+
+.no-search-results { margin-top:20px; margin-bottom:200px; }
+.recipe-search-form .checkbox label { margin-right:20px; }
+.recipe-search-form .styles { height: 150px; width: 95%; overflow-y: scroll; padding: 5px; border: solid 1px #ccc; }
+.recipe-search-form .styles label { display:block; }
+
+.spinner { display: none; margin-left: 8px; vertical-align: middle; }
+
+/* ---- [ messages ] ---------------------------------------------> */
+.messages { color: #333; margin-top: 12px; }
+.messages ul { display: block; margin: 0; padding: 0; margin-bottom: 18px; }
+.messages li { list-style:none; font-size: 18px; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; margin-bottom: 15px; font-family: Arial,Helvetica,sans-serif; font-weight: bold; padding: 12px; text-align: center; }
+.messages li.error, div.error { background: #fff2f2; border: solid 3px #ffc8c8; color: #ee6b6b }
+.messages li.success { background: #ecf7e2; border: solid 3px #b1db7f; color: #74a43a; }
+.messages li.warn { background: #fcfbdf; border: solid 3px #ddd487; color: #aba64e; }
+.messages li.info { background: #eaf8ff; border: solid 3px #b4d6e7; color: #68a1bd; }
+.messages.small li { font-size: 12px; width: auto; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; padding: 8px; border-width: 1px; }
+div.error { border: solid 3px #ffc8c8; padding: 12px; font-size: 18px; width: 100%; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; margin-bottom: 15px; font-family: Arial,Helvetica,sans-serif; font-weight: bold; text-align: center; }
+input.field-error { background-color: #FFF2F2; color: #EE6B6B !important; border: solid 2px #EE6B6B; }
+
+.messages li.info a { color: #68a1bd !important; text-decoration: underline; }
+.messages li.info a:hover { color: #68a1bd; text-decoration: none; }
+
+.recipe-list-table .media-object { float:left; display:inline; }
+.recipe-list-table .menu { position: relative; }
+
+.carboyhole {
+    width: 300px;
+    height: 300px;
+    border: 5px solid #888;
+}
+
+.circleBase {
+    border-radius: 50%;
+    width: 100%;
+}

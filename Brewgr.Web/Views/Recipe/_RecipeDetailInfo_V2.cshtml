@@ -1,0 +1,50 @@
+﻿@using Brewgr.Web
+@using ctorx.Core.Formatting
+@model RecipeDetailViewModel
+
+<div class="panel panel-default hops panel-ingredient-group recipe-info">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-xs-12"><h3 class="panel-title">Recipe Info</h3></section>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <section class="col-xs-12 col-sm-4">
+                <img src="@Url.RecipeDetailImageUrl(Model.RecipeViewModel.ImageUrlRoot, Model.RecipeViewModel.Srm)" alt="Recipe Image" class="img-responsive" />
+                <span class="hidden" itemprop="image">@Url.RecipeDetailImageUrl(Model.RecipeViewModel.ImageUrlRoot, Model.RecipeViewModel.Srm)</span>
+                <span class="hidden" itemprop="thumbnailUrl">@Url.RecipeThumbnailUrl(Model.RecipeViewModel.ImageUrlRoot, Model.RecipeViewModel.Srm)</span>
+            </section>
+            <section class="col-xs-12 col-sm-8">
+                <h2 itemprop="name">@Model.RecipeViewModel.Name</h2>
+                <span>by <b><a href="@Url.UserProfileUrl(Model.UserSummary.Username)" itemprop="author">@Model.UserSummary.Username</a></b> on <span itemprop="datePublished" content="@Model.RecipeViewModel.DateCreated.Year-@Model.RecipeViewModel.DateCreated.Month-@Model.RecipeViewModel.DateCreated.Day  ">@Model.RecipeViewModel.DateCreated.ToShortDateString()</span></span>
+
+                <div id="ratingind"><a href="#tastingnotes" class="nodec pointer"><div id="recipe-rating" data-rating="@Model.RecipeViewModel.AverageRating"></div>from tasting notes</a></div>
+                <div class="clearall"></div>
+                <div class="recipe-info">
+                    <div><label>Recipe Type:</label> <span itemprop="recipeCategory">@Model.RecipeViewModel.GetRecipeTypeName()</span></div>
+                    <div><label>Batch Size:</label> <span itemprop="recipeYield">@Model.RecipeViewModel.BatchSize.ToString() @(Model.RecipeViewModel.UnitType == "s" ? "Gallon" : "Liter")(s)</span></div>
+                    <div><label>Boil Size:</label> @Model.RecipeViewModel.BoilSize.ToString() @(Model.RecipeViewModel.UnitType == "s" ? "Gallon" : "Liter")(s)</div>
+                    <div itemprop="cookTime" content="PT@(Model.RecipeViewModel.BoilTime)M"><label>Boil Time:</label> @Model.RecipeViewModel.BoilTime min</div>
+                    <div><label>Efficiency:</label> @(Model.RecipeViewModel.Efficiency * 100)%</div>
+                </div>
+                <div class="recipe-desc" itemprop="description">
+                    @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.Description))
+                    {
+                        @Html.Partial("_StringWithLineBreaks", Model.RecipeViewModel.Description)
+                    }
+                    else
+                    {
+                        @Model.GetInferredDescription()
+                    }
+                </div>
+
+                    @if (Model.RecipeViewModel.OriginalRecipe != null)
+                    {
+                        <text><br />This recipe was cloned from <a href="@Url.RecipeDetailUrl(Model.RecipeViewModel.OriginalRecipe.RecipeId, Model.RecipeViewModel.OriginalRecipe.Name, Model.RecipeViewModel.OriginalRecipe.StyleName)">@Model.RecipeViewModel.OriginalRecipe.Name</a>.</text>
+                    }
+                @*<a href="@Url.RecipePrintUrl(Model.RecipeViewModel.RecipeId)" id="print" class="btn btn-primary btn-xs">Print</a>*@
+            </section>
+        </div>
+    </div>
+</div>

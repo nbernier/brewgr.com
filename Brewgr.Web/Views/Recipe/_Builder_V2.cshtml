@@ -1,0 +1,45 @@
+﻿@using Brewgr.Web
+@model RecipeViewModel
+
+@{
+    Html.EnableUnobtrusiveJavaScript(false);
+}
+
+@*
+    This has to be here -- don't get rid of it.  kthxbye
+*@
+
+<script>
+    var BUILDER_VERSION = 2;
+</script>
+
+<style type="text/css">
+    [data-unit=@Model.UnitType] { display: inline; }
+</style>
+
+@* Recipe Info *@
+@Html.Partial("_BuilderInfo_V2", Model)
+
+@* Fermentables *@
+@Html.Partial("_BuilderFermentableTable_V2", Model.Fermentables)
+
+@* Hops *@
+@Html.Partial("_BuilderHopTable_V2", Model.Hops, new ViewDataDictionary(this.ViewData) { { "IbuFormula", Model.IbuFormula } })
+
+@* Yeast *@
+@Html.Partial("_BuilderYeastTable_V2", Model.Yeasts)
+
+@* Adjuncts *@
+@Html.Partial("_BuilderAdjunctTable_V2", Model.Others, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.UnitType } })
+
+@* Mash Steps *@
+@Html.Partial("_BuilderMashStepTable_V2", Model.MashSteps)
+
+@* Brewing Steps *@
+@Html.Partial("_BuilderStepTable_V2", Model.Steps)
+
+@* Dialogs *@
+<div class="hidden">
+    @Html.Partial("_BuilderScaleDialog")
+</div>
+

@@ -63,6 +63,8 @@ namespace Brewgr.Web.Controllers
 			commentWrapperViewModel.CommentType = CommentType.Session;
 			brewSessionViewModel.CommentWrapperViewModel = commentWrapperViewModel;
 
+            ViewBag.BrewSessionView = true;
+
 			return View(brewSessionViewModel);
 		}
 
@@ -164,42 +166,50 @@ namespace Brewgr.Web.Controllers
 		[Authorize]
 		public ActionResult BrewSessionEdit(int brewSessionId)
 		{
-		    try
-		    {
-		        var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
+			var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
 
-		        if (!this.VerifyBrewSessionAccess(brewSession))
-		        {
-		            return this.Issue404();
-		        }
+			if (!this.VerifyBrewSessionAccess(brewSession))
+			{
+				return this.Issue404();
+			}
 
-		        // Ensure only Active Tasting Notes
-		        brewSession.TastingNotes =
-		            brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
+			// Ensure only Active Tasting Notes
+			brewSession.TastingNotes = brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
 
-		        var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
-		        brewSessionViewModel.RecipeSummary =
-		            Mapper.Map(this.RecipeService.GetRecipeSummaryById(brewSessionViewModel.RecipeId),
-		                new RecipeSummaryViewModel());
+			var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
+			brewSessionViewModel.RecipeSummary = Mapper.Map(this.RecipeService.GetRecipeSummaryById(brewSessionViewModel.RecipeId), new RecipeSummaryViewModel());
 
-		        // TODO: Encapsulate into Service and Mapper
-		        var commentWrapperViewModel = new CommentWrapperViewModel();
-		        commentWrapperViewModel.CommentViewModels =
-		            Mapper.Map(this.RecipeService.GetBrewSessionComments(brewSessionId), new List<CommentViewModel>());
-		        commentWrapperViewModel.GenericId = brewSessionId;
-		        commentWrapperViewModel.CommentType = CommentType.Session;
-		        brewSessionViewModel.CommentWrapperViewModel = commentWrapperViewModel;
+			// TODO: Encapsulate into Service and Mapper
+			var commentWrapperViewModel = new CommentWrapperViewModel();
+			commentWrapperViewModel.CommentViewModels = Mapper.Map(this.RecipeService.GetBrewSessionComments(brewSessionId), new List<CommentViewModel>());
+			commentWrapperViewModel.GenericId = brewSessionId;
+			commentWrapperViewModel.CommentType = CommentType.Session;
+			brewSessionViewModel.CommentWrapperViewModel = commentWrapperViewModel;
 
-		        return View(brewSessionViewModel);
-		    }
-		    catch (Exception ex)
-		    {
-		        logger.Fatal(ex.Message,ex);
-		        throw ex;
-		    }
+			return View(brewSessionViewModel);
 		}
 
-		[HttpPost]
+        /// <summary>
+        /// Executes the View for BrewSessionEdit
+        /// </summary>
+        [ForceHttps]
+        [Authorize]
+        public ActionResult BrewSessionLabel(int brewSessionId)
+        {
+            var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
+
+            if (!this.VerifyBrewSessionAccess(brewSession))
+            {
+                return this.Issue404();
+            }
+
+            var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
+            brewSessionViewModel.RecipeSummary = Mapper.Map(this.RecipeService.GetRecipeSummaryById(brewSessionViewModel.RecipeId), new RecipeSummaryViewModel());
+
+            return View(brewSessionViewModel);
+        }
+
+        [HttpPost]
 		[Authorize]
 		[ForceHttps]
 		[Route("SaveSession")]
@@ -222,8 +232,21 @@ namespace Brewgr.Web.Controllers
 				return this.Issue404();
 			}
 
-			// Validation (client validates also ... this to ensure data consistency)
-			if (postedSession.BrewDate == DateTime.MinValue)
+            // Validation (client validates also ... this to ensure data consistency)
+            if (postedSession.BrewDate > DateTime.Now.AddDays(14))
+            {
+                if (isNewSession)
+                {
+                    this.AppendMessage(new ErrorMessage { Text = "You cannot enter a date that far in the future." });
+                    return View("NewBrewSession", new BrewSessionViewModel { RecipeId = postedSession.RecipeId, RecipeSummary = Mapper.Map(recipeSummary, new RecipeSummaryViewModel()) });
+                }
+
+                // Signals Invalid
+                return this.Content("0");
+            }
+
+            // Validation (client validates also ... this to ensure data consistency)
+            if (postedSession.BrewDate == DateTime.MinValue)
 			{
 				if (isNewSession)
 				{
@@ -406,26 +429,5 @@ namespace Brewgr.Web.Controllers
 
 			return true;
 		}
-
-	    [ForceHttps]
-	    [Authorize]
-	    public ActionResult BrewSessionTag(int brewSessionId)
-	    {
-            var brewSession = this.RecipeService.GetBrewSessionById(brewSessionId);
-
-            if (!this.VerifyBrewSessionAccess(brewSession))
-            {
-                return this.Issue404();
-            }
-
-            // Ensure only Active Tasting Notes
-            brewSession.TastingNotes =
-                brewSession.TastingNotes.Where(x => x.IsActive && x.IsPublic).OrderByDescending(x => x.TasteDate).ToList();
-
-            var brewSessionViewModel = Mapper.Map(brewSession, new BrewSessionViewModel());
-
-            return View(brewSessionViewModel);
-        }
-
-    }
+	}
 }

@@ -2,7 +2,8 @@
 @model IList<TastingNote>
     
 <style type="text/css">
-
+    #tastingnotes .tasting-notes-wrapper { margin-bottom: 20px; }
+    #tastingnotes .btn { display: inline; }
 </style>
 
 <div class="groupbox" id="tastingnotes">
@@ -27,39 +28,38 @@
     </div>
     @if (ViewBag.ActiveUser != null && Convert.ToInt32(ViewData["CreatorId"]) == ViewBag.ActiveUser.UserId)
     {
-        <div id="tasting-note-form">
+        <h3>Add Tasting Notes</h3>
+        <div class="panel panel-default tasting-note-form" id="tasting-note-form">
 
-            @if (ViewData["RecipeId"] != null)
-            {
-                <input type="hidden" id="TastingNotesRecipeId" value="@ViewData["RecipeId"]" />
-            }
-            else
-            {
-                <input type="hidden" id="TastingNotesBrewSessionId" value="@ViewData["BrewSessionId"]" />
-            }
+            <div class="panel-body">
 
-            <h4>Add Tasting Notes</h4>
-
-            <div class="values">
-                <div>
-                    <label for="taste-date">Date Tasted</label>
-                    <input type="text" id="taste-date" class="datepicker" value="@DateTime.Now.ToShortDateString()" />
-                </div>
-                <div>
-                    <div class="title">
-                        <label>Overall Rating</label>
+                @if (ViewData["RecipeId"] != null)
+                {
+                    <input type="hidden" id="TastingNotesRecipeId" value="@ViewData["RecipeId"]" />
+                }
+                else
+                {
+                    <input type="hidden" id="TastingNotesBrewSessionId" value="@ViewData["BrewSessionId"]" />
+                }
+                <div class="form-inline">
+                    <div class="form-group unit-type-select">
+                        <label for="">Date Tasted</label>
+                        <input type="text" id="taste-date" class="datepicker form-control" value="@DateTime.Now.ToShortDateString()" disabled />
+                    </div>
+                    <div class="form-group brew-date">
+                        <label for="">Overall Rating</label>
                         <span id="star"></span>
                         <input type="hidden" name="Rating" id="Rating" value="0" />
                     </div>
                 </div>
-            </div>
-            <div class="clearall"></div>
-            <div class="notes">
-                <label>Notes</label>
-                <textarea id="NewTastingNotes"></textarea>
-            </div>
-            <div class="save">
-                <a href="#" class="button_small button_green">Save Tasting Notes</a>
+                <div class="form-group notes">
+                    <label for="Notes">Notes</label>
+
+                    <textarea name="notes" class="form-control" id="NewTastingNotes"></textarea>
+                </div>
+                <div class="save">
+                    <a href="#" class="btn btn-success btn-md">Save Tasting Notes</a>
+                </div>
             </div>
         </div>
     }

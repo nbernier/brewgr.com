@@ -1,0 +1,63 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@using ctorx.Core.Formatting
+@using System.Web.Optimization
+@model BrewSessionViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoShell.cshtml";
+    ViewBag.Title = Model.RecipeSummary.Name;
+    ViewBag.Canonical = Url.BrewSessionDetailUrl(Model.BrewSessionId, Model.RecipeSummary.Name);
+}
+
+<style>
+    #view-brew-session .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #view-brew-session {
+        margin-top: 30px;
+    }
+</style>
+
+<div id="view-brew-session">
+    <div class="container">
+        <div class="row">
+            <section class="col-lg-3">
+                <div class="circleBase carboyhole"></div>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col-md-4 col-lg-3">
+                <div class="compliment">
+                    <div id="recipe-facts">
+                        @Html.Partial("_RecipeFactsNew", Model.RecipeSummary)
+                    </div>
+                </div>
+            </section>
+            <section class="well well-sm col-md-4">
+                <ul class="list-group">
+                    <li class="list-group-item marginbottom10">
+                        <span class="badge">
+                            <span data-name="label_brewDate">31-dec-2019</span>
+                        </span>
+                        Secondary Raking Date
+                    </li>
+                    <li class="list-group-item marginbottom10">
+                        <span class="badge">
+                            <span data-name="label_secondaryDate">31-dec-2019</span>
+                        </span>
+                        Secondary Raking Date
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="label_estimatedFinish">31-dec-2019</span>
+                        </span>
+                        Estimated Kegging Date
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>

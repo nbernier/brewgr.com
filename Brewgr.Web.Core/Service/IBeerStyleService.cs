@@ -26,7 +26,7 @@ namespace Brewgr.Web.Core.Service
 		/// <summary>
 		/// Gets a page of style recipes
 		/// </summary>
-		IPagedList<RecipeSummary> GetStyleRecipesPage(string subCategory, Pager pagerSettings);
+		IList<RecipeSummary> GetStyleRecipesPage(string subCategory, Pager pagerSettings);
 
 		/// <summary>
 		/// Gets the count of uncategorized Recipes

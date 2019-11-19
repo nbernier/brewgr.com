@@ -42,7 +42,7 @@ namespace Brewgr.Web
 				else
 				{
 					// New Ingredient Rows
-					if (absolutePath.EndsWith("buildertemplates-v2"))
+					if (absolutePath.EndsWith("buildertemplates-v2") || absolutePath.EndsWith("buildertemplates-v2-2"))
 					{
 						context.Response.AddHeader("Cache-Control", "max-age=86400,public");
 						context.Response.AddHeader("Expires", DateTime.Now.AddYears(20).ToString("r"));

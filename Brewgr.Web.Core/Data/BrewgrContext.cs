@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using Brewgr.Web.Core.Model;
@@ -10,11 +11,12 @@ namespace Brewgr.Web.Core.Data
 {
 	public class BrewgrContext : AbstractDbContext, IDataContext
 	{
-        private const string CNN_KEY = "Brewgr_ConnectionString";
-
-        public BrewgrContext() : base(CNN_KEY)
+        //public BrewgrContext() : base(ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString) {
+        //    Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(ConfigurationManager.ConnectionStrings["Brewgr_ConnectionString"].ConnectionString));
+        //}
+        public BrewgrContext(string connectionString) : base(connectionString)
         {
-//            Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>(CNN_KEY));
+            //Database.SetInitializer<BrewgrContext>(new MigrateDatabaseToLatestVersion<BrewgrContext, Migrations.Configuration>());
         }
 
         public virtual IDbSet<User> Users { get; set; }

@@ -1,9 +1,9 @@
 ﻿/* ---- [ Layout Overrides ] ------------------------------------ */
-    #middle-wrapper { background-color: #fff; padding: 10px; width: 940px; border-right: solid 1px #eee; border-left: solid 1px #eee; margin: 0 auto;}
+    #middle-wrapper { background-color: #fff; padding: 10px; width: 940px; border-right: solid 1px #eee; border-left: solid 1px #eee; }
     #footer { margin-top: 0; }
 
 /* ---- [ General ] ------------------------------------ */
-	#partner-wrapper .primary { width: 545px; font-size: 14px}
+	#partner-wrapper .primary { width: 545px; font-size: 14px; }
 	#partner-wrapper .compliment { width: 336px; }
 	#partner-wrapper span p { margin-top: 4px; margin-left: 4px; font-size: 11px; line-height: 14px; color: #999; }
 	#partner-wrapper span p.inline { display: inline-block !important; vertical-align: middle; margin-top: 2px; width: 230px !important;}

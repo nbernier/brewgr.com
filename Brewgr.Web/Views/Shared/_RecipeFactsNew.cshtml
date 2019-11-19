@@ -1,0 +1,112 @@
+﻿@using Brewgr.Web
+@model IRecipeFactsViewModel
+
+@{
+    var recipeDisplayName = !string.IsNullOrWhiteSpace(Model.Name) ? (Model.Name.Length > 50 ? Model.Name.Substring(0, 50) + "..." : Model.Name) : "Give Your Homebrew a Name";
+}
+
+<style>
+    .facts.well { padding: 10px 0px; }
+    .facts .first .color { width: 45px; height: 45px; float: right; }
+    .facts h3 { margin-top: 8px; }
+    .facts .list-group-item { padding: 5px 5px; }
+    .facts section { padding-right: 10px; padding-left: 10px; }
+    .facts .recipe-name { margin: 10px 0px;}
+    .facts .marginbottom10 { margin-bottom: 8px; }
+</style>
+
+<div class="well well-sm facts" itemprop="nutrition" itemscope itemtype="http://schema.org/NutritionInformation">
+    <div class="container-fluid">
+        <div class="row first">
+            <section class="col-xs-8">
+                <h3 class="upper">Recipe Facts</h3>
+            </section>
+            <section class="col-xs-4">
+                <div class="color" style="background-color: #FFFFFF;"></div>
+            </section>
+            <section class="col-xs-12 recipe-name">
+                <div data-name="recipe-name">
+                    @recipeDisplayName
+                    <div data-name="facts_stylename">@(!string.IsNullOrWhiteSpace(Model.StyleId) ? Model.StyleName : "")</div>
+                </div>
+            </section>
+        </div>
+        <div class="row second">
+            <section class="col-xs-12">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_batchsize">@(Model.BatchSize <= 0 ? "5.00" : Model.BatchSize.ToString("F2"))</span>
+                            <span data-unit="s">Gallons</span>
+                            <span data-unit="m">Liters</span>
+                        </span>
+                        Batch Size
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_boilsize">@(Model.BoilSize <= 0 ? "6.50" : Model.BoilSize.ToString("F2"))</span>
+                            <span data-unit="s">Gallons</span>
+                            <span data-unit="m">Liters</span>
+                        </span>
+                        Boil Size
+                    </li>
+                    <li class="list-group-item marginbottom10">
+                        <span class="badge">
+                            <span data-name="facts_boiltime">@(Model.BoilTime <= 0 ? "0" : Model.BoilTime.ToString())</span>
+                            <span>&nbsp;min</span>
+                        </span>
+                        Boil Time
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_og">@(Model.Og <= 0 ? "1.000" : Model.Og.ToString("F3"))</span>
+                        </span>
+                        OG
+                    </li>
+                    <li class="list-group-item marginbottom10">
+                        <span class="badge">
+                            <span data-name="facts_fg">@(Model.Og <= 0 ? "1.000" : Model.Fg.ToString("F3"))</span>
+                        </span>
+                        FG
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_ibu">@(Model.Ibu <= 0 ? "0.0" : Model.Ibu.ToString("F1"))</span><span data-name="facts_ibuformula">&nbsp;IBU (@Model.GetIbuFormulaName().ToLower())</span>
+                        </span>
+                        Bitterness
+                    </li>
+                    <li class="list-group-item marginbottom10">
+                        <span class="badge">
+                            <span data-name="facts_bggu">@(Model.BgGu.ToString("F2"))</span>
+                        </span>
+                        BG:GU
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_srm">@(Model.Srm <= 0 ? "0.0" : Model.Srm.ToString("F1"))</span><span>&deg; SRM</span>
+                        </span>
+                        Color
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_efficiency">@(Model.Efficiency <= 0 ? "0" : (Model.Efficiency * 100).ToString())%</span>
+                        </span>
+                        Efficiency
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_abv">@(Model.Abv <= 0 ? "0" : Model.Abv.ToString("F1"))</span><span>% ABV</span>
+                        </span>
+                        Alcohol
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">
+                            <span data-name="facts_cal"><span itemprop="calories">@(Model.Calories <= 0 ? "0" : Model.Calories.ToString())</span></span><span>&nbsp;per 12oz</span>
+                        </span>
+                        Calories
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>

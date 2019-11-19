@@ -119,10 +119,11 @@
 	.working-dialog h3 { display: inline-block; color: #FA8136; margin-right: 8px; font-size: 18px; }
 
 /* ---- [ layout ] ---------------------------------------------> */
-    .title h1, .title h2 { float: left; font-size: 24px; font-weight: normal; width: 600px; vertical-align: middle; max-height: 60px; overflow: hidden;}
+	.title h1, .title h2 { float: left; font-size: 24px; font-weight: normal; width: 600px; vertical-align: middle; max-height: 60px; overflow: hidden;}
 	
 	#middle-wrapper a:link, #middle-wrapper a:active, #middle-wrapper a:visited { color: #888; }
 	#middle-wrapper a:hover { color: #333; text-decoration: underline; }
+	tast
 	#other-stuff a:link, #other-stuff a:active, #other-stuff a:visited { color: #fff; }
 	#other-stuff a:hover { color: #aaa; text-decoration: none; }
 	
@@ -233,7 +234,7 @@
 
 
 /* ---- [ Recipe/User Widget ] ---------------------------------------------> */
-	.recipe-widget, .user-widget { border: solid 1px #ccc; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; padding: 10px; margin-bottom: 18px; background: #fff; height: 83px; }
+	/*.recipe-widget, .user-widget { border: solid 1px #ccc; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; padding: 10px; margin-bottom: 18px; background: #fff; height: 83px; }
 	.recipe-widget .image { float: left; height: 45px; }
 	.recipe-widget .image img { width: 50px; height: 50px; }
 	.recipe-widget .info, .user-widget .info { float: left; height: 50px; font-size: 11px; margin-left: 12px; padding-top: 2px; }
@@ -247,21 +248,21 @@
 	.recipe-widget .data .abv { width: 70px; }
 	.recipe-widget .data .calories { width: 75px; }
 	.recipe-widget .data .srm { width: 14px; height: 14px; display: inline-block; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; margin-right: 4px; padding-top: 0 !important; }
-	.recipe-widget .data .lovi { width: 25px; }
+	.recipe-widget .data .lovi { width: 25px; }*/
 
 	.user-widget .image { float: left; height: 75px; margin-top: 0; }
 	.user-widget .info { padding-top: 0; margin-top: 0; }
 	.user-widget .name { font-size: 14px; line-height: normal; height: auto; margin-top: 0; }
 	.user-widget div { margin-top: 2px; }
 
-	.compliment .recipe-widget { padding: 6px; }
+	/*.compliment .recipe-widget { padding: 6px; }
 	.compliment .recipe-widget .info { margin-left: 7px; }
 	.compliment .recipe-widget .data { padding: 3px; padding-bottom: 4px; }
 	.compliment .recipe-widget .data div { height: 14px; vertical-align: middle; }
 	.compliment .recipe-widget .data .ibu { width: 55px; }
 	.compliment .recipe-widget .data .abv { width: 60px; }
 	.compliment .recipe-widget .data .calories { width: 50px; }
-	.compliment .recipe-widget .name { width: 160px; }
+	.compliment .recipe-widget .name { width: 160px; }*/
 
 /* ---- [ Feedback ] ---------------------------------------------> */
 	#FeedbackTrigger { position: fixed; display: none; top: 200px; left: 0; }
@@ -305,7 +306,7 @@
 	.button_green:hover { color: #E1FF7B !important;}
 	.button_black:hover { color:#dcdcdc !important; background-color: #aaa !important; border: solid 1px #666; }
 	.button_gray:hover { color: #333 !important; }
-	.widebutton { width: 210px; font-weight: bold; font-size: 18px !important; text-align: center; margin-bottom:0px; }
+	.widebutton { width: 100%; font-weight: bold; font-size: 18px !important; text-align: center; margin-bottom:0px; }
 
 /* ---- [ forms ] ---------------------------------------------> */
 	.form-field { margin-bottom: 8px; }
@@ -335,7 +336,7 @@
 	.messages li.info a:hover { color:#68a1bd; text-decoration: none; }
 
 	
-/* ---- [ tipsy ] ---------------------------------------------> */
+/* ---- [ tipsy ] ---------------------------------------------> 
 	.tipsy { font-size: 11px; position: absolute; padding: 5px; z-index: 100000; }
 	.tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
 	.tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
@@ -354,7 +355,7 @@
 	.tipsy-e .tipsy-arrow { right: 0; top: 50%; margin-top: -5px; border-left-style: solid; border-right: none; border-top-color: transparent; border-bottom-color: transparent; }
 	.tipsy-w .tipsy-arrow { left: 0; top: 50%; margin-top: -5px; border-right-style: solid; border-left: none; border-top-color: transparent; border-bottom-color: transparent; }
 	
-	.helptip { background: url(/img/help.gif) no-repeat; height: 11px; width: 12px; display: inline-block; vertical-align: middle; margin-top: -2px;  }
+	.helptip { background: url(/img/help.gif) no-repeat; height: 11px; width: 12px; display: inline-block; vertical-align: middle; margin-top: -2px;  }*/
 	
 /* ---- [ view-login / #view-loginviadialog] ---------------------------------------------> */
 	#view-login { width: 725px; margin: 0 auto; }
@@ -415,7 +416,7 @@
     #view-recipedetail .recipe-title  h3 { margin-bottom: 0; }
 	#view-recipedetail .recipe-photo-actions { float: left; margin-right: 18px; margin-left: 6px; }
 	#view-recipedetail .recipe-photo-actions img { border: solid 1px #CCC; padding: 2px; display: block; }
-	#view-recipedetail .recipe-details { line-height: 14px; width: 400px; float:left; min-height: 200px; padding-bottom: 12px; }
+	#view-recipedetail .recipe-details { line-height: 14px; width: 100%; float:left; min-height: 200px; padding-bottom: 12px; }
 	#view-recipedetail .recipe-info { float: left; }
 	#view-recipedetail .recipe-info div { height: 18px; }
 	#view-recipedetail .recipe-info label {display: inline-block; padding: 0; width: 100px; font-weight: bold; }
@@ -462,7 +463,7 @@
 	#tasting-note-form .messages { margin-top: 0 !important; }
 
 /* ---- [ Style Chart ] ---------------------------------------------> */	
-    #select-style { border: solid 4px #aaa; background-color: #fff; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; padding: 8px; width: 220px; }
+    #select-style { border: solid 4px #aaa; background-color: #fff; -webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; padding: 8px; /*width: 220px;*/ }
     #select-style label { font-size: 14px; }
     #style-showmore { margin-top: 5px; }
     #style-hidemore { margin-top: 5px; }
@@ -478,7 +479,7 @@
     .bjcp-similarstyles { font-weight: bold; font-size: 12px; display: block; color:#333; padding:4px;}
     .bjcp-chartwrapper { padding-top: 6px; border-top: solid 4px #CCC;}
     .bjcp-marker { margin-top: -4px; margin-left: -4px; float: left; z-index: 3; position: absolute; }
-	[data-name=r_StyleId] { width: 220px; }
+	[data-name=r_StyleId] { width: 100%; }
     
 /* ---- [ Recipe List / BrewSession List] ---------------------------------------------> */	
 	 .recipe-list .button_small { padding-left: 8px; padding-right: 8px;  }
@@ -750,6 +751,7 @@
 	.header-wrapper1 { height: 70px; }
 	#user-info { display:none; }
 	#primary-nav { display:none; }
+	.title { display:none; }
 	.comments-sec { display:none; }
 	.respond { display:none; }
 	.info .button { display:none; }
@@ -761,13 +763,6 @@
 	.groupbox > span h3 { color: #000; font-size: 12px; }
 	ol.instructions { margin: 0px 32px; }
 	ol.instructions li { font-size:100%; margin-bottom:2px; }
-
-    .center {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
 }
 
 
@@ -885,7 +880,7 @@
 	.comments-wrapper .commenttext a { color: #666 !important; font-weight: bold; display: inline-block; margin-right: 6px; }
 	.comments-wrapper .commentdate { display: block; margin-top: 4px;font-size: .9em; color: #9E9D9D; }
 	.comments-wrapper .comment .commenttext #CommentText { float:left; width:510px; display: block; padding: 4px; line-height: 1.5; color: #666; resize: none; border: solid 1px #aaa; height:21px; }
-	.comments-wrapper #AddComment { margin: 0; padding: 4px 12px; margin-top: 3px; height: 16px; margin-left: 8px;}
+	.comments-wrapper #AddComment { margin: 0; padding: 4px 12px; margin-top: 3px; margin-left: 8px;}
 
 	.dashboard-list .comments-wrapper { margin-left: 70px; padding: 3px; }
     .dashboard-list .comments-wrapper .comment .commenttext .button { padding: 1px 4px; }

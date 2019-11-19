@@ -20,10 +20,12 @@ using Brewgr.Web.Core.Data;
 using Brewgr.Web.Core.Service;
 using Brewgr.Web.Models;
 using Brewgr.Web.Core.Model;
+using System.Web.Optimization;
 
 namespace Brewgr.Web.Controllers
 {
-	public class RecipeController : BrewgrController
+    [RoutePrefix("Recipe")]
+    public class RecipeController : BrewgrController
 	{
 		readonly IUnitOfWorkFactory<BrewgrContext> UnitOfWorkFactory;
 		readonly IRecipeService RecipeService;
@@ -86,7 +88,7 @@ namespace Brewgr.Web.Controllers
 				return this.Issue404();
 			}
 
-			return View("UnCategorized", new UnCategorizedRecipesViewModel { Recipes = recipes, Pager = pager, 
+			return View("UnCategorized", new UnCategorizedRecipesViewModel { Recipes = Mapper.Map(recipes, new List<RecipeSummaryViewModel>()), Pager = pager, 
 				BaseUrl = Url.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null })});
 		}
 
@@ -95,8 +97,61 @@ namespace Brewgr.Web.Controllers
 		/// </summary>
 		public ActionResult StyleDetail(string urlFriendlyName, int? page)
 		{
-			// 301 for old page 1 URL from previous button
-			if(page != null && page.Value == 1)
+            // temp 301 redirects for old bjcp styles
+            Dictionary<string, string> oldStyleLookUp = new Dictionary<string, string>
+            {
+                {"premium-american-lager","international-pale-lager"},
+                {"düsseldorf-altbier","altbier"},
+                {"german-pilsner-pils","german-pils"},
+                {"dunkelweizen","dunkles-weissbier"},
+                {"standard-american-lager","american-lager"},
+                {"southern-english-brown","sahti"},
+                {"american-wheat-or-rye-beer","american-wheat-beer"},
+                {"other-specialty-cider-perry","specialty-ciderperry"},
+                {"weizen-weissbier","weissbier"},
+                {"bohemian-pilsener","czech-premium-pale-lager"},
+                {"extra-special-strong-bitter-english-pale-ale","strong-bitter"},
+                {"oktoberfest-mã¤rzen","marzen"},
+                {"common-perry","new-world-perry"},
+                {"maibock-helles-bock","helles-bock"},
+                {"classic-rauchbier","rauchbier"},
+                {"scottish-export-80","scottish-export"},
+                {"special-best-premium-bitter","best-bitter"},
+                {"common-cider","new-world-cider"},
+                {"scottish-heavy-70","scottish-heavy"},
+                {"kölsch","kolsch"},
+                {"dortmunder-export","german-helles-exportbier"},
+                {"dry-stout","irish-stout"},
+                {"imperial-ipa","double-ipa"},
+                {"russian-imperial-stout","imperial-stout"},
+                {"robust-porter","american-porter"},
+                {"straight-unblended-lambic","lambic"},
+                {"scottish-light-60","scottish-light"},
+                {"mild","dark-mild"},
+                {"northern-english-brown-ale","british-brown-ale"},
+                {"dark-american-lager","international-dark-lager"},
+                {"flanders-brown-ale-oud-bruin","oud-bruin"},
+                {"california-common-beer","california-common"},
+                {"brown-porter","english-porter"},
+                {"roggenbier-german-rye-beer","london-brown-ale"},
+                {"schwarzbier-black-beer","munich-dunkel"},
+                {"lite-american-lager","american-light-lager"},
+                {"traditional-bock","dunkles-bock"},
+                {"fruit-cider","cider-with-other-fruit"},
+                {"standard-ordinary-bitter","ordinary-bitter"},
+                {"strong-scotch-ale","wee-heavy"},
+                {"classic-american-pilsner","pre-prohibition-porter"}
+            };
+
+            if (oldStyleLookUp.ContainsKey(urlFriendlyName))
+            {
+                var newStyleName = oldStyleLookUp[urlFriendlyName];
+                return this.RedirectPermanent(Request.Url.ToString().Replace(urlFriendlyName, newStyleName));
+            }
+            
+
+            // 301 for old page 1 URL from previous button
+            if (page != null && page.Value == 1)
 			{
 				return this.RedirectPermanent(Request.Url.ToString().Replace("/1", ""));
 			}
@@ -112,7 +167,7 @@ namespace Brewgr.Web.Controllers
 			
 			var styleRecipes = this.BeerStyleService.GetStyleRecipesPage(style.SubCategoryId, pager);
 
-			if(styleRecipes.Any() && !pager.IsInRange())
+            if (styleRecipes.Any() && !pager.IsInRange())
 			{
 				return this.Issue404();
 			}
@@ -122,7 +177,7 @@ namespace Brewgr.Web.Controllers
 			var model = new StyleDetailViewModel
 			{
 				BjcpStyle = style, 
-				Recipes = styleRecipes, 
+				Recipes = Mapper.Map(styleRecipes, new List<RecipeSummaryViewModel>()),
 				Pager = pager, 
 				BaseUrl = Url.StyleDetailUrl(urlFriendlyName),
 				TopRatedRecipes = topRatedRecipes
@@ -159,7 +214,7 @@ namespace Brewgr.Web.Controllers
 				{
 					this.AppendMessage(new ErrorMessage { Text = "Did you leave something blank?  Please check your entries and try again."});
 					ViewBag.RecipeCreationOptions = this.RecipeService.GetRecipeCreationOptions();
-					return this.View("NewRecipe", recipeViewModel);
+					return this.View("NewRecipe_V2", recipeViewModel);
 				}
 
 				// Signals Invalid
@@ -417,8 +472,8 @@ namespace Brewgr.Web.Controllers
 					{
 						ViewBag.RecipeCreationOptions = this.RecipeService.GetRecipeCreationOptions();
 						this.AppendMessage(new ErrorMessage { Text = GenericMessages.ErrorMessage });
-						return View("NewRecipe", recipeViewModel);
-					}
+                        return View("NewRecipe_V2", recipeViewModel);
+                    }
 					else
 					{
 						// Signals Failure
@@ -463,7 +518,7 @@ namespace Brewgr.Web.Controllers
 			// Add Messaging
 			this.AppendMessage(new InfoMessage { Text = "You are cloning \"" + recipe.RecipeName + "\".  Once you have made your changes, click \"Save Recipe\"" });
 
-			return View("NewRecipe", cloned);
+            return View("NewRecipe_V2", cloned);
 		}
 
 		/// <summary>
@@ -482,7 +537,9 @@ namespace Brewgr.Web.Controllers
 		[ForceHttps]
 		public ViewResult NewRecipe()
 		{
-			ViewBag.RecipeCreationOptions = this.RecipeService.GetRecipeCreationOptions();
+            
+
+            ViewBag.RecipeCreationOptions = this.RecipeService.GetRecipeCreationOptions();
 
 			// Source Recipe (or Default) // TODO: Derive Defaults from user preferences
 			var recipe = new RecipeViewModel();
@@ -493,7 +550,7 @@ namespace Brewgr.Web.Controllers
 			recipe.Efficiency = .75;
 			recipe.IbuFormula = "t";
 
-			return View("NewRecipe", recipe);
+            return View("NewRecipe_V2", recipe);
 		}
 
 		#endregion
@@ -507,14 +564,21 @@ namespace Brewgr.Web.Controllers
 			return View("_BuilderTemplates");			
 		}
 
-		#endregion
+        [ActionName("buildertemplates-v2-2")]
+        [ForceHttps]
+        public ViewResult BuilderTemplates_V2()
+        {
+            return View("_BuilderTemplates_V2");
+        }
 
-		#region EDIT RECIPE
+        #endregion
 
-		/// <summary>
-		/// Executes the View for RecipeEdit
-		/// </summary>
-		[Authorize]
+        #region EDIT RECIPE
+
+        /// <summary>
+        /// Executes the View for RecipeEdit
+        /// </summary>
+        [Authorize]
 		[ForceHttps]
 		public ActionResult RecipeEdit(int recipeId)
 		{
@@ -550,7 +614,15 @@ namespace Brewgr.Web.Controllers
 			// Get the most recent brew session -- this should be added to the recipe in the service, really but hey
 			recipeModel.MostRecentBrewSession = this.RecipeService.GetMostRecentBrewSession(recipeId);
 
-			return View(recipeModel);
+            //if (Request["version"] != null && Request["Version"].ToString() == "2")
+            //{
+                return View("RecipeEdit_V2", recipeModel);
+            //}
+            //else
+            //{
+            //    return View(recipeModel);
+            //}
+            
 		}
 
 		/// <summary>
@@ -691,12 +763,19 @@ namespace Brewgr.Web.Controllers
 			// TODO: Check if the name passed in the URL is different than what
 			// TODO: is in the DB.  If it is....do a 301 Redirect.  This is for SEO.
             ViewData["DisableEditing"] = true;
-
+            ViewData["IbuFormula"] = recipeDetailViewModel.RecipeViewModel.IbuFormula;
 
 			// Get Send To Shop Settings (if any)
 			ViewBag.SendToShopSettings = this.SendToShopService.GetRecipeCreationSendToShopSettings(false);
 
-            return View(recipeDetailViewModel);
+            //if (Request["version"] != null && Request["Version"].ToString() == "2")
+            //{
+                return View("RecipeDetail_V2", recipeDetailViewModel);
+            //}
+            //else
+            //{
+            //    return View(recipeDetailViewModel);
+            //}
 		}
 
  
@@ -790,7 +869,7 @@ namespace Brewgr.Web.Controllers
 
                     if (Request.UrlReferrer == null)
                     {
-                        return Redirect(Url.Action("my-recipes", "recipe", null, "http"));
+                        return Redirect(Url.Action("my-recipes", "recipe"));
                     }
 
                     if (Request.UrlReferrer.ToString() == Url.RecipeEditUrl(recipe.RecipeId))
@@ -872,8 +951,8 @@ namespace Brewgr.Web.Controllers
 			return View(new RecipeBrewSessionsViewModel
 			{
 				RecipeSummary = Mapper.Map(recipeSummary, new RecipeSummaryViewModel()),
-				BrewSessions = brewSessions
-			});
+				BrewSessions = Mapper.Map(brewSessions, new List<BrewSessionSummaryViewModel>())
+            });
 		}
 
 		#endregion
@@ -944,7 +1023,7 @@ namespace Brewgr.Web.Controllers
 
 			ViewBag.RecipeCreationOptions = this.RecipeService.GetRecipeCreationOptions();
 
-			return View("NewRecipe", Mapper.Map(recipe, new RecipeViewModel()));
+			return View("NewRecipe_V2", Mapper.Map(recipe, new RecipeViewModel()));
 		}
 
 		#endregion

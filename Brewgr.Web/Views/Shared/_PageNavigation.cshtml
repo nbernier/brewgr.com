@@ -8,7 +8,7 @@
             <div class="links">
                 @if (!Model.Pager.IsFirstPage())
                 {
-                    <a href="@Model.GetPreviousPageUrl()" class="previous button button_black" rel="prev"><< Back</a>
+                    <a href="@Model.GetPreviousPageUrl()" class="previous btn btn-success" rel="prev"><< Back</a>
                 }
 
                 @if(!Model.Pager.IsFirstPage() && !Model.Pager.IsLastPage())
@@ -18,7 +18,7 @@
 
                 @if(!Model.Pager.IsLastPage())
 				{
-				    <a href="@Model.GetNextPageUrl()" class="next button button_black" rel="next">Next >></a>
+				    <a href="@Model.GetNextPageUrl()" class="next btn btn-success" rel="next">Next >></a>
 				}
             </div>
         }

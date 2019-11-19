@@ -1,43 +1,52 @@
 ﻿@using Brewgr.Web
 @model ContactViewModel
 @{
-	ViewBag.Title = "Contact Us";
-	ViewBag.Description = "At Brewgr we understand that homebrewers all have different methods and preferences.  Want Brewgr to do something new that will help you?  Let us know!";
+    ViewBag.Title = "Contact Us";
+    ViewBag.Description = "At Brewgr we understand that homebrewers all have different methods and preferences.  Want Brewgr to do something new that will help you?  Let us know!";
 }
-<div id="contact-view" class="content">
-	<div class="two_third">
-		@using (Html.BeginForm())
-		{
-			<div class="form-field">
-				<div>@Html.LabelFor(m => m.Name, "Your Name")</div>
-				<span>@Html.TextBoxFor(m => m.Name, new { size = 30 })</span>
-			</div>
-			<div class="form-field">
-				<div>@Html.LabelFor(m => m.EmailAddress, "Your Email Address")</div>
-				<span>@Html.TextBoxFor(m => m.EmailAddress, new { size = 30 })</span>
-			</div>			
-			<div class="form-field">
-				<div>@Html.LabelFor(m => m.MessageContent, "Message")</div>
-				<span>@Html.TextAreaFor(m => m.MessageContent)</span>
-			</div>
-	
-			<input type="submit" value="Send Message" class="button button_green" />	
-		}
-	</div>
-	<div class="one_third column-last">
-		<h3>
-			Contact Details</h3>
-		<div class="contact">
-			<div class="cont-detail">
-				<img src="@Url.Image("~/img/mail1.png")" alt="" width="15" height="12" />
-				<strong>Email:</strong> <a href="mailto:@Model.ShopEmail">@Model.ShopEmail</a></div>
-		</div>
-		
-		<h3>Keep In Touch</h3>
-		<ul class="touch">
-			<li><a href="http://www.facebook.com/nbernierpq">
-				<img src="@Url.Image("~/img/facebook.png")" alt="" />
-			</a></li>
-		</ul>
-	</div>
+
+
+
+
+
+<div id="contact-view" class="container view">
+
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Feel free to contact us with questions or comments.</h3>
+            
+            @*@using (Html.BeginForm())
+            {
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, "Your Name")
+                    @Html.TextBoxFor(m => m.Name, new { size = 30, @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EmailAddress, "Your Email Address")
+                    @Html.TextBoxFor(m => m.EmailAddress, new { size = 50, @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.MessageContent, "Message")
+                    @Html.TextAreaFor(m => m.MessageContent, new { @class = "form-control" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            }*@
+
+        </div>
+        <div class="col-md-4">
+            <h2>Contact Details</h2>
+            <p><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="mailto:brewgr@brewgr.com">brewgr@brewgr.com</a></p>
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            @*<h2>Keep in Touch</h2>
+            <div id="social" class="tooltips">
+                <a href="http://www.facebook.com/brewgr" rel="tooltip" title="Facebook"><img src="@Url.Image("~/img/facebook.png")" alt="Facebook" /></a>
+                <a href="http://www.twitter.com/Brewgr_com" rel="tooltip" title="Twitter"><img src="@Url.Image("~/img/twitter.png")" alt="Twitter" /></a>
+                <a href="http://feeds.feedburner.com/brewgr" rel="tooltip" title="FeedBurner"><img src="@Url.Image("~/img/rss.png")" alt="FeedBurner" /></a>
+                <a href="http://www.flickr.com/people/83842708@N02/" rel="tooltip" title="Flickr"><img src="@Url.Image("~/img/flickr.png")" alt="Flickr" /></a>
+            </div>*@
+        </div>
+    </div>
 </div>

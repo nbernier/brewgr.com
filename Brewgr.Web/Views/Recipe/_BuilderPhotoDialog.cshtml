@@ -1,7 +1,7 @@
 ﻿@using Brewgr.Web
 @model RecipeViewModel
 
-<h2>@(Model.HasImage ? "Change Photo" : "Add Photo")</h2>
+<h3>@(Model.HasImage ? "Change Photo" : "Add Photo")</h3>
 <p>Select the photo to upload and click the "Save Photo" button. Please use jpg, png, gif and bmp files only. Files will be automatically resized as needed.</p>
 
 @if(Model.HasImage)

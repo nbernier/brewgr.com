@@ -2,29 +2,28 @@
 @model UserSettingsViewModel
 
 @{
-	ViewBag.Title = "Settings";
+    ViewBag.Title = "Edit Profile";
 }
 
-<div id="view-settings" class="content">
-		
-    <div class="tabs">
-        <div class="tab-ainner">
-            <ul class="nav clearfix">
-                <li id="tab1"><a href="#tab-tab-1">Personal Info</a></li>
-                <li id="tab2"><a href="#tab-tab-2">Password</a></li>
-                <li id="tab3"><a href="#tab-tab-3">Notifications</a></li>
+<div id="vw-settings" class="container view">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-tab-1" data-toggle="tab">Personal Info</a></li>
+                <li><a href="#tab-tab-2" data-toggle="tab">Password</a></li>
+                <li><a href="#tab-tab-3" data-toggle="tab">Notifications</a></li>
             </ul>
-            <div id="tab-tab-1" class="tab">
-                @Html.Partial("_PersonalInfo", Model)
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-tab-1">
+                    @Html.Partial("_PersonalInfo", Model)
+                </div>
+                <div class="tab-pane" id="tab-tab-2">
+                    @Html.Partial("_ChangePassword", new ChangePasswordViewModel())
+                </div>
+                <div class="tab-pane" id="tab-tab-3">
+                    @Html.Partial("_Notifications", Model)
+                </div>
             </div>
-            <div id="tab-tab-2" class="tab">
-                @Html.Partial("_ChangePassword", new ChangePasswordViewModel())
-            </div>
-            <div id="tab-tab-3" class="tab">
-                @Html.Partial("_Notifications", Model)
-            </div>
-
         </div>
     </div>
-    <div class="clearall"></div>
 </div>

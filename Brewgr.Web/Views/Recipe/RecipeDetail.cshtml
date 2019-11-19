@@ -1,12 +1,13 @@
 ﻿@using Brewgr.Web
 @using Brewgr.Web.Core.Model
 @using ctorx.Core.Formatting
+@using System.Web.Optimization
 
 @model RecipeDetailViewModel
 
 @{
-	ViewBag.Title = Model.GetTitle();
-	ViewBag.Description = Model.GetDescription();
+    ViewBag.Title = Model.GetTitle();
+    ViewBag.Description = Model.GetDescription();
     ViewBag.Canonical = Url.RecipeDetailUrl(Model.RecipeViewModel.RecipeId, Model.RecipeViewModel.Name, Model.RecipeViewModel.StyleName);
 }
 
@@ -17,103 +18,92 @@
     [data-unit=@Model.RecipeViewModel.UnitType] { display: inline; }
 </style>
 
-<script type="text/javascript">var switchTo5x=true;</script>
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({publisher: "0f7ddcd9-683a-4651-b221-bdfcfc9d1497", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder")
 
-<div id="view-recipedetail" class="content">
-    
-    @if (ViewBag.ActiveUser == null)
-    {
-        <div class="ad-sense" style="width: 728px; margin: 0 auto 18px auto;">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-7257014799686934",
-    enable_page_level_ads: true
-  });
-            </script>
-        </div>
-    }
+<script type="text/javascript">var switchTo5x = true;</script>
 
-    <div class="primary builder" itemscope itemtype="http://schema.org/Recipe">
-        
-        @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
-        {
-            <span class="hidden" itemprop="recipeCuisine">@Model.RecipeViewModel.StyleName</span>    
-        }
-        
-        @* Recipe Info *@
-        @Html.Partial("_RecipeDetailInfo", Model)
-        
-        @* Fermentables *@
-        @Html.Partial("_RecipeDetailFermentables", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+<div id="view-recipedetail" class="content builder-wrapper">
 
-        @* Hops *@
-        @Html.Partial("_RecipeDetailHops", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+    <div class="container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
 
-        @* Yeast *@
-        @Html.Partial("_RecipeDetailYeasts", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+                <div class="primary builder" itemscope itemtype="http://schema.org/Recipe">
 
-        @* Adjuncts *@
-        @Html.Partial("_RecipeDetailAdjuncts", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
- 
-        @* MashSteps *@
-        @Html.Partial("_RecipeDetailMashSteps", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
- 
-        @* Recipe Steps *@
-        @Html.Partial("_RecipeDetailSteps", Model.RecipeViewModel)
-        
-        @* Tasting Notes *@
-        @Html.Partial("_TastingNoteList", Model.TastingNotes ?? new List<TastingNote>())
+                    @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
+                    {
+                        <span class="hidden" itemprop="recipeCuisine">@Model.RecipeViewModel.StyleName</span>
+                    }
 
-        @* Start Comments *@
-        @Html.Partial("_RecipeDetailComments", Model.RecipeViewModel)
-    </div>
+                    @* Recipe Info *@
+                    @Html.Partial("_RecipeDetailInfo", Model)
 
-    @* Nutrition Label *@
-    <div class="compliment">
-		
-        @Html.Partial("_RecipeFacts", Model.RecipeViewModel, new ViewDataDictionary(ViewData) { { "ShowInModal", false } })
-		
-        @if (ViewBag.SendToShopSettings != null)
-        {
-            <a href="@Url.Action("Create", "SendToShop", new { RecipeId = Model.RecipeViewModel.RecipeId })" class="button button_black widebutton margintop10 ">Send to @ViewBag.SendToShopSettings.PartnerName</a>
-        }
+                    @* Fermentables *@
+                    @Html.Partial("_RecipeDetailFermentables", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
 
-        <a href="@Url.RecipeCloneUrl(Model.RecipeViewModel.RecipeId)" rel="nofollow" class="button button_green widebutton margintop10" rel="nofollow">Clone This Recipe</a>
+                    @* Hops *@
+                    @Html.Partial("_RecipeDetailHops", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
 
-        @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
-        {
-            @Html.Partial("_RecipeStyleGuide", Model.RecipeViewModel)
-        }
+                    @* Yeast *@
+                    @Html.Partial("_RecipeDetailYeasts", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
 
-        @* Similar Recipes *@
-        @if (ViewBag.SimilarRecipes.Count > 0)
-        {
-            <div id="similar-recipes">
-                <h3 class="green margintop20">Similar Homebrew Recipes</h3>
-                @foreach (RecipeSummary recipeSummary in ViewBag.SimilarRecipes)
-                {
+                    @* Adjuncts *@
+                    @Html.Partial("_RecipeDetailAdjuncts", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* MashSteps *@
+                    @Html.Partial("_RecipeDetailMashSteps", Model.RecipeViewModel, new ViewDataDictionary(this.ViewData) { { "UnitType", Model.RecipeViewModel.UnitType } })
+
+                    @* Recipe Steps *@
+                    @Html.Partial("_RecipeDetailSteps", Model.RecipeViewModel)
+
+                    @* Tasting Notes *@
+                    @Html.Partial("_TastingNoteList", Model.TastingNotes ?? new List<TastingNote>())
+
+                    @* Start Comments *@
+                    @Html.Partial("_RecipeDetailComments", Model.RecipeViewModel)
+                </div>
+            </section>
+            <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                @* Nutrition Label *@
+                <div class="compliment">
+
+                    @Html.Partial("_RecipeFacts", Model.RecipeViewModel, new ViewDataDictionary(ViewData) { { "ShowInModal", false } })
+
+                    @if (ViewBag.SendToShopSettings != null)
+                    {
+                    <a href="@Url.Action("Create", "SendToShop", new { RecipeId = Model.RecipeViewModel.RecipeId })" class="button button_black widebutton margintop10 ">Send to @ViewBag.SendToShopSettings.PartnerName</a>
+                    }
+
+                    <a href="@Url.RecipeCloneUrl(Model.RecipeViewModel.RecipeId)" rel="nofollow" class="button button_green widebutton margintop10">Clone This Recipe</a>
+
+                    @if (ViewBag.ActiveUser != null && ViewBag.ActiveUser.UserId == Model.RecipeViewModel.CreatedBy)
+                    {
+                    <a href="@Url.RecipeDetailUrl(Model.RecipeViewModel.RecipeId, Model.RecipeViewModel.Name, Model.RecipeViewModel.StyleName)" rel="nofollow" class="button button_green widebutton margintop10">Edit Recipe</a>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.RecipeViewModel.StyleId))
+                    {
+                    @Html.Partial("_RecipeStyleGuide", Model.RecipeViewModel)
+                    }
+
+                    @* Similar Recipes *@
+                    @if (ViewBag.SimilarRecipes.Count > 0)
+                    {
+                    <div id="similar-recipesOOO">
+                    <h3 class="green margintop20">Similar Homebrew Recipes</h3>
+                    @foreach (RecipeSummary recipeSummary in ViewBag.SimilarRecipes)
+                    {
                     @Html.Partial("_RecipeWidget", recipeSummary)
-                }
-            </div>
-        }
+                    }
+                    </div>
+                    }
+                </div>
+                @*</div>*@
 
-        @* Advertisement *@     
-        @if(ViewBag.ActiveUser == null)
-        {
-            <div class="ad-sense" style="width: 200px; margin: 12px auto;">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-7257014799686934",
-    enable_page_level_ads: true
-  });
-                </script>
-            </div>
-        }
-    </div>	  
+            </section>
+        </div>
+    </div>
 </div>
 
 <div id="RecipeJson" class="hidden">@Html.Raw(Model.RecipeViewModel.GetJson())</div>
@@ -121,7 +111,7 @@
 @section Scripts
 {
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             var recipe = getRecipe();
 
             // set up the style chart

@@ -3,310 +3,1131 @@
 @model BrewSessionViewModel
 
 <style type="text/css">
-    .working-dialog {
-        min-width: 225px;
-    }
+    [v-cloak] { display: none; }
+    .working-dialog { min-width: 225px; }
+    #brew-session-form span[data-unit] { display: none; }
+    #brew-session-form span[data-unit].active { display: inline-block; }
+    #brew-session-form .panel-title { font-size: 24px; color: #fff; }
+    #brew-session-form .panel-default { border-color: #888; }
+    #brew-session-form .panel-default > .panel-heading { background-color: #888; border-color: #888; }
+    #brew-session-form .notes { margin-top: 20px; }
+    #brew-session-form .unit-type-select { margin-right: 20px; }
+
+    .hide-form .form-group { margin-bottom: 5px; }
+    .hide-form .control-label { padding-top: 0px; }
 </style>
 
-<div class="brewsession@(@Model.IsNewBrewSession() ? " newbrewsession" : "")">
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>Vue.config.devtools = true;</script>
 
-    <input type="hidden" name="s_BrewSessionId" data-name="s_BrewSessionId" value="@Model.BrewSessionId" />
-    <input type="hidden" name="s_RecipeId" data-name="s_RecipeId" value="@Model.RecipeId" />
+<div id="brew-session-form" class="brewsession" v-bind:class="[Display == 'Form' ? '' : 'hide-form']" v-cloak>
 
-    @* Brew Session Info *@
-    <div class="brewsessiondata info groupbox">
-        <span>
-            <h3>Brew Session Info</h3>
-        </span>
-        <div>
-            <div class="values">
-                <div>
-                    <div class="title">
-                        <label for="unit">Measurement</label>
-                    </div>
-                    <select name="unit" data-name="s_UnitType">
-                        <option value="s" @(Model.UnitTypeId == (int)UnitType.USStandard ? "selected=\"selected\"" : "")>US</option>
-                        <option value="m" @(Model.UnitTypeId == (int)UnitType.Metric ? "selected=\"selected\"" : "")>Metric</option>
+    <input type="hidden" name="s_BrewSessionId" data-name="s_BrewSessionId" v-model="BrewSessionId" />
+    <input type="hidden" name="s_RecipeId" data-name="s_RecipeId" v-model="RecipeId" />
+
+    @*START: Brew Session Info*@
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Brew Session Info</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-inline">
+                <div class="form-group unit-type-select" v-if="Display == 'Form'">
+                    <label for="unit">Measurement</label>
+                    <select v-model="UnitTypeId" class="form-control" name="unit" data-name="s_UnitType" @@change="changeUnitType($event)" >
+                        <option value="10">US</option>
+                        <option value="20">Metric</option>
                     </select>
                 </div>
-                <div>
-                    <div class="title">
-                        <label for="unit">Brew Date</label>
-                    </div>
-                    <input type="text" name="BrewDate" data-name="s_BrewDate" disabled="disabled" class="wc_runoff" value="@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : "")" />
+                <div class="form-group brew-date" v-if="!JustCalculator">
+                    <label for="BrewDate">Brew Date</label>
+                    <span v-if="Display == 'View'">{{BrewDate}}</span>
+                    <input type="text" name="BrewDate" data-name="s_BrewDate" class="datepicker form-control" v-model="BrewDate" v-if="Display == 'Form'" />
                 </div>
-                <div>
-                    <div class="title">
-                        <label for="unit">Est. Final Date</label>
-                    </div>
-                    <input type="text" data-name="s_EstimatedFinalDate" value="@Model.EstimateFinalDate" class="datepicker" />
-                </div>
-
+            </div>
+            <div class="form-group notes" v-if="!JustCalculator">
+                <label for="Notes">Notes</label> (Include any important notes from brew day until tasting)
+                <p v-if="Display == 'View'">
+                    {{Notes}}
+                </p>
+                <textarea name="notes" data-name="s_Notes" class="form-control" v-model="Notes" v-if="Display == 'Form'"></textarea>
             </div>
 
-            <div class="clearall marginbottom20"> </div>
+        </div>
+    </div>
+    @*END: Brew Session Info*@
+
+    @*START: WATER INFUSION*@
+    <div v-if="RecipeSummary.RecipeType == 'AllGrain'" class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Water Infusion</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-6" id="s_waterIn">
+                        <h3>Brew Session Specific</h3>
 
             <h4 class="inline no-margin">Notes</h4> (Include any important notes from brew day until tasting)
             <textarea name="notes" data-name="s_Notes" class="expand2-200">@Model.Notes</textarea>
 
-            <div class="actions">
-                @if (!Model.IsNewBrewSession())
-                {
-                    <a href="#" class="button_small button_black delete-brewsession" data-brewsessionid="@Model.BrewSessionId">Delete</a>
-                }
-                @if (Model.BrewSessionId > 0)
-                {
-                    if (Model.RecipeSummary.BrewSessionCount > 1)
-                    {
-                        <a href="@Url.RecipeBrewSessionsUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name)" class="button button_small button_black">Other Brew Sessions</a>
-                    }
-                    <a href="@Url.RecipeBrewTag(Model.BrewSessionId)" class="button button_small button_gray floatright"><img src="~/img/icons/application_form.png" alt="edit" class="valignmiddle marginright10" /> <span class="valignmiddle">Print Tag</span></a>
-                    <a href="@Url.RecipeEditUrl(Model.RecipeId)" class="button button_small button_gray floatright"><img src="~/img/icons/calculator.png" alt="edit" class="valignmiddle marginright10" /> <span class="valignmiddle">Go To Recipe</span></a>
-                }
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Grain Weight
+                                <span class="helptip" original-title="The amount of grain in that will be added to the mash. Do not include sugars, honey, molasess, etc. as they do not absorb any liquid">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{GrainWeight}}
+                                    <span data-unit="s">lb</span>
+                                    <span data-unit="m">kg</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_GrainWeight" v-model.number="GrainWeight" class="wc_trig wc_grain form-control" data-filter="positiveFloat"  />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">lb</span>
+                                        <span data-unit="m">kg</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Grain Temp
+                                <span class="helptip" original-title="The temperature of the crushed grain that will be mashed">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{GrainTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_GrainTemp" v-model.number="GrainTemp" class="wc_trig wc_grainTemp form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Target Mash Temp
+                                <span class="helptip" original-title="The target temperature for the mash in the mash tun">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{TargetMashTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_TargetMashTemp" v-model.number="TargetMashTemp" class="wc_trig wc_targetMashTemp form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash Thickness
+                                <span class="helptip" original-title="The thickness of the mash, the water to grain ratio in the mash tun. A thick mash would be a low number (i.e. 1.2) and a thin mash would be a high number (i.e. 1.6). An average is 1.33 qt/lb">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashThickness}}
+                                    <span data-unit="s">qt/lb</span><span data-unit="m">l/kg</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashThickness" v-model.number="MashThickness" class="wc_trig wc_mashThickness form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">qt/lb</span><span data-unit="m">l/kg</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Total Boil Time
+                                <span class="helptip" original-title="The total amount of time that the wort will be boiled">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{BoilTime}}
+                                    <span>min.</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BoilTime" v-model.number="BoilTime" class="wc_trig wc_boilTime form-control" data-filter="positiveInt" />
+                                    <span class="input-group-addon measurement">
+                                        <span>min.</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Wort Into Fermenter
+                                <span class="helptip" original-title="The total volume of wort that will be collected in the fermenter">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{FermentVolumeEst}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_FermentVolume" v-model.number="FermentVolumeEst" class="wc_trig wc_fermentVol form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Equipment Profile</h3>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Grain Absorption
+                                <span class="helptip" original-title="The amount of water that is absorbed into the grain during the mash. Average is .1 to .2 gal/lb">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashGrainAbsorption}}
+                                    <span data-unit="s">gals/lb</span>
+                                    <span data-unit="m">liters/kg</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashGrainAbsorption" v-model.number="MashGrainAbsorption" class="wc_trig wc_grainAbsorption form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals/lb</span>
+                                        <span data-unit="m">liters/kg</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Sparge Grain Absorption
+                                <span class="helptip" original-title="The amount of water that is absorbed into the grain when sparging. Average is .01">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{SpargeGrainAbsorption}}
+                                    <span data-unit="s">gals/lb</span>
+                                    <span data-unit="m">liters/kg</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_SpargeGrainAbsorption" v-model.number="SpargeGrainAbsorption" class="wc_trig wc_spargeGrainAbsorption form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals/lb</span>
+                                        <span data-unit="m">liters/kg</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                HLT-MT Heat Loss
+                                <span class="helptip" original-title="Hot Liquor Tank to Mash Tun heat loss. The amount of heat that is lost transfering your water to your mash tun. This is only important if you use a pump.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{HLTMTHeatLoss}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_HLT_MT_HeatLoss" v-model.number="HLTMTHeatLoss" class="wc_trig wc_s_HLT_MT_HeatLoss form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash Tun Loss
+                                <span class="helptip" original-title="Amount of dead space in your mash tun and any liquid that doesn't get into your brew kettle">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashTunLoss}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashTunLoss" v-model.number="MashTunLoss" class="wc_trig wc_mashTunLoss form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Brew Kettle Trub Loss
+                                <span class="helptip" original-title="The amount of dead space in your brew kettle after boil">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{BrewKettleLoss}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BrewKettleLoss" v-model.number="BrewKettleLoss" class="wc_trig wc_kettleLoss form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Boil Loss
+                                <span class="helptip" original-title="The amount of wort lost to evaporation per hour when boiling.  Average is 1 gallon per hour">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{BoilLoss}}
+                                    <span data-unit="s">gals/hour</span>
+                                    <span data-unit="m">liters/hour</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BoilLoss" v-model.number="BoilLoss" class="wc_trig wc_boilLoss form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals/hour</span>
+                                        <span data-unit="m">liters/hour</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Wort Shrinkage
+                                <span class="helptip" original-title="The amount the boiled wort will shrink when cooled.  Average is .2 gals for a 5 gallon batch">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{WortShrinkage}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_WortShrinkage" v-model.number="WortShrinkage" class="wc_trig wc_wortShrinkage form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6" id="s_waterOut">
+
+                        <h3>Calculated Totals</h3>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Total Water Needed
+                                <span class="helptip" original-title="The total amount of water that is needed for your brew day.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateTotalWaterNeeded}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_TotalWaterNeeded" v-model.number="CalculateTotalWaterNeeded" disabled="disabled" class="wc_totalWater form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash Tun Capacity
+                                <span class="helptip" original-title="The size your mash tun will need to be to handle your grain and water.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateMashTunCapacity}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashTunCapacity" v-model.number="CalculateMashTunCapacity" disabled="disabled" class="wc_mashtuncapacity form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash/Strike Volume
+                                <span class="helptip" original-title="The amount of water needed for your initial mash.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateStrikeWaterVolume}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_StrikeWaterVolume" v-model.number="CalculateStrikeWaterVolume" disabled="disabled" class="wc_strikeVol form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                HLT Temperature
+                                <span class="helptip" original-title="The temperature of the water in the Hot Liquor Tank (the vessel you heat your water in).">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateHLTTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_HLTTemp" v-model.number="CalculateHLTTemp" disabled="disabled" class="wc_hltTemp form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Strike Temperature
+                                <span class="helptip" original-title="The temperature of the water in the mash tun, right before you add the grain.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateStrikeWaterTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_StrikeWaterTemp" v-model.number="CalculateStrikeWaterTemp" disabled="disabled" class="wc_strikeTemp form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                1st Runnings
+                                <span class="helptip" original-title="The amount of wort that will come out of the mash after the initial mash.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateFirstRunningsVolume}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_FirstRunningsVolume" v-model.number="CalculateFirstRunningsVolume" disabled="disabled" class="wc_firstRunnings form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Sparge Volume
+                                <span class="helptip" original-title="The amount of water that will be needed for your sparge.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateSpargeWaterVolume}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_SpargeWaterVolume" v-model.number="CalculateSpargeWaterVolume" disabled="disabled" class="wc_spargeVol form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Total Runoff
+                                <span class="helptip" original-title="The total amount of wort that will end up in your boil kettle.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{CalculateTotalRunOff}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BoilVolumeEst" v-model.number="CalculateTotalRunOff" disabled="disabled" class="wc_runoff form-control" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
-    @* Water Infusion *@
-    @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
-    {
-        <div class="groupbox">
-            <span><h3 class="floatleft">Water Infusion</h3></span>
-            @Html.Partial("_WaterInfusionCalculator", Model)
-        </div>
-    }
+    @*END: WATER INFUSION*@
 
-    @* Mash / Boil *@
-    <div class="groupbox">
-        <span><h3 class="floatleft">@(Model.RecipeSummary.GetRecipeType() == RecipeType.Extract ? "Boil" : "Mash / Boil")</h3></span>
-        <div class="padding18">
 
-            @if (Model.RecipeSummary.GetRecipeType() != RecipeType.Extract)
-            {
-                <div class="summary marginbottom20">
-                    <h3>Mash</h3>
-                    <div class="item">
-                        <label>
-                            Mash PH
-                            <span class="helptip" original-title="The measured PH of the mash">&nbsp;</span>
-                        </label>
-                        <span>
-                            <input type="text" data-name="s_MashPH" value="@Model.MashPH" data-filter="positiveFloat" />
-                            <span>PH</span>
-                        </span>
-                    </div>
-                    <div class="item">
-                        <label>
-                            Mash Start Temp
-                            <span class="helptip" original-title="The temperature of the mash at the beginning of the mash">&nbsp;</span>
-                        </label>
-                        <span>
-                            <input type="text" data-name="s_MashStartTemp" value="@Model.MashStartTemp" data-filter="positiveFloat" />
-                            <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
-                        </span>
-                    </div>
-                    <div class="item">
-                        <label>
-                            Mash End Temp
-                            <span class="helptip" original-title="The temperature of the mash once it has finished.  This is used to track heat loss.">&nbsp;</span>
-                        </label>
-                        <span>
-                            <input type="text" data-name="s_MashEndTemp" value="@Model.MashEndTemp" data-filter="positiveFloat" />
-                            <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
-                        </span>
-                    </div>
-                    <div class="item">
-                        <label>
-                            Mash Time
-                            <span class="helptip" original-title="The duration of the mash in minutes">&nbsp;</span>
-                        </label>
-                        <span>
-                            <input type="text" data-name="s_MashTime" value="@Model.MashTime" data-filter="positiveInt" />
-                            <span>minutes</span>
-                        </span>
-                    </div>
-                </div>
-            }
-            <div class="summary">
-                <h3>Boil</h3>
-                <div class="item">
-                    <label>
-                        Pre-Boil Gravity
-                        <span class="helptip" original-title="The specific gravity of the wort before boiling. This can be used to measure mash/lauter efficiency">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_PreBoilGravity" value="@(Model.PreBoilGravity != null ? string.Format("{0:0.000}", Model.PreBoilGravity) : "")" data-filter="positiveFloat" />
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Boil Volume
-                        <span class="helptip" original-title="The volume of wort that was boiled">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_BoilVolumeActual" value="@Model.BoilVolumeActual" data-filter="positiveFloat" />
-                        <span data-unit="s">gallons</span>
-                        <span data-unit="m">liters</span>
-                        <span class="predicted">
-                            <span>(@Model.RecipeSummary.BoilSize.ToString("F2") @(Model.RecipeSummary.UnitType == "s" ? "gallons" : "liters") estimated)</span>
-                        </span>
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Boil Time
-                        <span class="helptip" original-title="The amount of time that the wort was boiled">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_BoilTimeActual" value="@Model.BoilTimeActual" data-filter="positiveInt" />
-                        <span data-unit="s">minutes</span>
-                        <span data-unit="m">minutes</span>
-                        <span class="predicted">
-                            <span>(@Model.RecipeSummary.BoilTime minutes estimated)</span>
-                        </span>
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Post-Boil Volume
-                        <span class="helptip" original-title="The volume of wort after the boil has completed">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_PostBoilVolume" value="@Model.PostBoilVolume" data-filter="positiveFloat" />
-                        <span data-unit="s">gallons</span>
-                        <span data-unit="m">liters</span>
-                    </span>
-                </div>
-            </div>
+    @*START: MASH/BOIL*@
+    <div class="panel panel-default" v-if="!JustCalculator">
+        <div class="panel-heading">
+            <h3 v-if="RecipeSummary.RecipeType === 'AllGrain'" class="panel-title">Mash / Boil</h3>
+            <h3 v-if="RecipeSummary.RecipeType === 'Extract'" class="panel-title">Boil</h3>
         </div>
-    </div>
+        <div class="panel-body">
 
-    @* Fermentation *@
-    <div class="groupbox">
-        <span><h3 class="floatleft">Fermentation</h3></span>
-        <div class="padding18">
-            <div class="summary">
-                <div class="item">
-                    <label>
-                        Volume in Fermenter
-                        <span class="helptip" original-title="The volume of wort that was transferred to the fermenter">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_FermentVolumeActual" value="@Model.FermentVolumeActual" data-filter="positiveFloat" />
-                        <span data-unit="s">gallons</span>
-                        <span data-unit="m">liters</span>
-                        <span class="predicted">
-                            <span>(@Model.RecipeSummary.BatchSize.ToString("F2") @(Model.RecipeSummary.UnitType == "s" ? "gallons" : "liters") estimated)</span>
-                        </span>
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Original Gravity
-                        <span class="helptip" original-title="The specific gravity of the wort at the beginning of fermentation">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_OriginalGravity" value="@(Model.OriginalGravity != null ? string.Format("{0:0.000}", Model.OriginalGravity) : "")" data-filter="positiveFloat" />
-                        <span data-unit="s"></span>
-                        <span data-unit="m"></span>
-                        <span class="predicted">(@string.Format("{0:0.000}", Model.RecipeSummary.Og) predicted)</span>
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Final Gravity
-                        <span class="helptip" original-title="The specific gravity of the wort at the end of fermentation">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_FinalGravity" value="@(Model.FinalGravity != null ? string.Format("{0:0.000}", Model.FinalGravity) : "")" data-filter="positiveFloat" />
-                        <span data-unit="s"></span>
-                        <span data-unit="m"></span>
-                        <span class="predicted">(@string.Format("{0:0.000}", Model.RecipeSummary.Fg) predicted)</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    @* Racking *@
-    <div class="groupbox">
-        <span><h3 class="floatleft">Racking Date</h3></span>
-        <div class="padding18">
-            <div class="summary">
-                <div class="item">
-                    <label>
-                        Racking Date
-                        <span class="helptip" original-title="The date that you transferred the fermented wort from your primary fermenter to the second fermenter">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_RackingDate" value="@(Model.RackingDate.HasValue ? Model.RackingDate.Value.ToShortDateString() : "")" class="datepicker" />
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Racking Gravity
-                        <span class="helptip" original-title="The gravity taken when transferred the fermented wort from your primary fermenter to the second fermenter">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_RackingGravity" value="@(Model.RackingGravity != null ? string.Format("{0:0.000}", Model.RackingGravity) : "")" data-filter="positiveFloat" />
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    @* Conditioning *@
-    <div class="groupbox">
-        <span><h3 class="floatleft">Conditioning</h3></span>
-        <div class="padding18">
-            <div class="summary">
-                <div class="item">
-                    <label>
-                        Condition Date
-                        <span class="helptip" original-title="The date that you transferred the fermented wort from your fermenter to bottles or a keg">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_ConditionDate" value="@(Model.ConditionDate.HasValue ? Model.ConditionDate.Value.ToShortDateString() : "")" class="datepicker" />
-                    </span>
-                </div>
-                <div class="item">
-                    <label>
-                        Bottle/Keg
-                        <span class="helptip" original-title="Where the fermented wort eventually ended up">&nbsp;</span>
-                    </label>
-                    <select data-name="s_ConditionType">
-                        <option value=""></option>
-                        <option value="@((int)ConditionType.Bottle)" @(Model.ConditionTypeId == (int)ConditionType.Bottle ? " selected" : "")>@ConditionType.Bottle</option>
-                        <option value="@((int)ConditionType.Keg)" @(Model.ConditionTypeId == (int)ConditionType.Keg ? " selected" : "")>@ConditionType.Keg</option>
-                    </select>
-                </div>
-                <div class="item bottle-field">
-                    <label>
-                        Priming Sugar Type
-                        <span class="helptip" original-title="The type of priming sugar used (i.e. dextrose)">&nbsp;</span>
-                    </label>
-                    <input type="text" data-name="s_PrimingSugarType" value="@Model.PrimingSugarType" />
-                </div>
-                <div class="item bottle-field">
-                    <label>
-                        Priming Sugar Amount
-                        <span class="helptip" original-title="The amount of priming sugar used">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_PrimingSugarAmount" value="@Model.PrimingSugarAmount" data-filter="positiveFloat" />
-                        <span data-unit="s">oz</span>
-                        <span data-unit="m">g</span>
-                    </span>
-                </div>
-                <div class="item keg-field">
-                    <label>
-                        Keg PSI
-                        <span class="helptip" original-title="The target pounds per square inch (PSI) of c02 used to carbonate the beer in the keg">&nbsp;</span>
-                    </label>
-                    <span>
-                        <input type="text" data-name="s_KegPSI" value="@Model.KegPSI" data-filter="positiveFloat" />
-                        <span>PSI</span>
-                    </span>
+            <div class="form-horizontal" v-if="RecipeSummary.RecipeType !== 'Extract'">
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <h3>Mash</h3>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash PH
+                                <span class="helptip" original-title="The measured PH of the mash">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashPH}}
+                                    <span>PH</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashPH" v-model.number="MashPH" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>PH</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash Start Temp
+                                <span class="helptip" original-title="The temperature of the mash at the beginning of the mash">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashStartTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashStartTemp" v-model.number="MashStartTemp" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash End Temp
+                                <span class="helptip" original-title="The temperature of the mash once it has finished.  This is used to track heat loss.">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashEndTemp}}
+                                    <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashEndTemp" v-model.number="MashEndTemp" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>@Html.Raw("&deg;")<span data-unit="s">F</span><span data-unit="m">C</span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Mash Time
+                                <span class="helptip" original-title="The duration of the mash in minutes">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{MashTime}}
+                                    <span>minutes</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_MashTime" v-model.number="MashTime" class="form-control" data-filter="positiveInt" />
+                                    <span class="input-group-addon measurement">
+                                        <span>minutes</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
                 </div>
             </div>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <h3>Boil</h3>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Pre-Boil Gravity
+                                <span class="helptip" original-title="The specific gravity of the wort before boiling. This can be used to measure mash/lauter efficiency">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{PreBoilGravity}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_PreBoilGravity" v-model.number="PreBoilGravity" class="form-control" data-filter="positiveFloat" />
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>{{CalculateEstPreBoilGravity}} (estimated)</span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Boil Volume
+                                <span class="helptip" original-title="The volume of wort that was boiled">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{BoilVolumeActual}}
+                                    <span data-unit="s">gallons</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BoilVolumeActual" v-model.number="BoilVolumeActual" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gallons</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>{{CalculateTotalRunOff}} (<span data-unit="s">gallons</span><span data-unit="m">liters</span> estimated)</span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Boil Time
+                                <span class="helptip" original-title="The amount of time that the wort was boiled">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{BoilTimeActual}}
+                                    <span data-unit="s">minutes</span>
+                                    <span data-unit="m">minutes</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_BoilTimeActual" v-model.number="BoilTimeActual" class="form-control" data-filter="positiveInt" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">minutes</span>
+                                        <span data-unit="m">minutes</span>
+                                    </span>
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>({{RecipeSummary.BoilTime}} minutes estimated)</span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Post-Boil Volume
+                                <span class="helptip" original-title="The volume of wort after the boil has completed">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{PostBoilVolume}}
+                                    <span data-unit="s">gals</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_PostBoilVolume" v-model.number="PostBoilVolume" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gals</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <h3>Gravity Estimates</h3>
+
+                                <p>
+                                    Based on boiling <b>{{CalculateBoilVolumeDisplay}}</b> <span class="measurement"><span data-unit="s">gallons</span><span data-unit="m">liters</span></span> at <b>{{CalculatePreBoilGravityDisplay}}</b> for <b>{{CalculateBoilTimeDisplay}}</b> minutes, this will decrease your wort by <b>{{CalculateBoilLoss}}</b> <span class="measurement"><span data-unit="s">gallons</span><span data-unit="m">liters</span></span>, bringing your after boil OG to <b>{{CalculateFinalGravityFromPreBoilGravity}}</b>.<br /><br />
+
+                                    <span v-if="parseFloat(this.CalculateFinalGravityFromPreBoilGravity).toFixed(3) == parseFloat(this.RecipeSummary.Og).toFixed(3)">
+                                        You were planning on an OG of <b>{{RecipeSummary.Og}}</b> so you are right on track. Nice job!
+                                    </span>
+                                    <span v-if="parseFloat(this.CalculateFinalGravityFromPreBoilGravity).toFixed(3) > parseFloat(this. RecipeSummary.Og).toFixed(3)">
+                                        You wanted an OG of <b>{{RecipeSummary.Og}}</b>. It looks like it will be over.
+                                    </span>
+                                    <span v-if="parseFloat(this.CalculateFinalGravityFromPreBoilGravity).toFixed(3) < parseFloat(this.RecipeSummary.Og).toFixed(3)">
+                                        You wanted an OG of <b>{{RecipeSummary.Og}}</b>. It looks like it will be under.
+                                    </span>
+                                </p>
+              
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+    @*END: MASH/BOIL*@
+
+
+    @*START: FERMENTATION*@
+    <div class="panel panel-default" v-if="!JustCalculator">
+        <div class="panel-heading">
+            <h3 class="panel-title">Fermentation</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Volume in Fermenter
+                                <span class="helptip" original-title="The volume of wort that was transferred to the fermenter">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{FermentVolumeActual}}
+                                    <span data-unit="s">gallons</span>
+                                    <span data-unit="m">liters</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_FermentVolumeActual" v-model.number="FermentVolumeActual" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">gallons</span>
+                                        <span data-unit="m">liters</span>
+                                    </span>
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>{{RecipeSummary.BatchSize}} (<span data-unit="s">gallons</span><span data-unit="m">liters</span> estimated)</span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Original Gravity
+                                <span class="helptip" original-title="The specific gravity of the wort at the beginning of fermentation">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{OriginalGravity}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_OriginalGravity" v-model.number="OriginalGravity" class="form-control" data-filter="positiveFloat" />
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>({{RecipeSummary.Og}} predicted)</span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Final Gravity
+                                <span class="helptip" original-title="The specific gravity of the wort at the end of fermentation">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{FinalGravity}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_FinalGravity" class="form-control" v-model.number="FinalGravity" data-filter="positiveFloat" />
+                                </div>
+                                <span id="helpBlock" class="help-block predicted"><span>({{RecipeSummary.Fg}} predicted)</span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @*END: FERMENTATION*@
+
+
+    @*START: CONDITIONING*@
+    <div class="panel panel-default"  v-if="!JustCalculator">
+        <div class="panel-heading">
+            <h3 class="panel-title">Conditioning</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Condition Date
+                                <span class="helptip" original-title="The date that you transferred the fermented wort from your fermenter to bottles or a keg">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{ConditionDate}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_ConditionDate" v-model="ConditionDate" class="datepicker form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">
+                                Bottle/Keg
+                                <span class="helptip" original-title="Where the fermented wort eventually ended up">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{ConditionTypeId}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <select v-model="ConditionTypeId" class="form-control" data-name="s_ConditionType">
+                                        <option value=""></option>
+                                        <option value="10">Bottle</option>
+                                        <option value="20">Keg</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="ConditionTypeId === '10'">
+                            <label class="col-sm-6 control-label">
+                                Priming Sugar Type
+                                <span class="helptip" original-title="The type of priming sugar used (i.e. dextrose)">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{PrimingSugarType}}
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_PrimingSugarType" class="form-control" v-model="PrimingSugarType" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="ConditionTypeId === '10'">
+                            <label class="col-sm-6 control-label">
+                                Priming Sugar Amount
+                                <span class="helptip" original-title="The amount of priming sugar used">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{PrimingSugarAmount}}
+                                    <span data-unit="s">oz</span>
+                                    <span data-unit="m">g</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_PrimingSugarAmount" class="form-control" v-model.number="PrimingSugarAmount" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span data-unit="s">oz</span>
+                                        <span data-unit="m">g</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="ConditionTypeId === '20'">
+                            <label class="col-sm-6 control-label">
+                                Keg PSI
+                                <span class="helptip" original-title="The target pounds per square inch (PSI) of c02 used to carbonate the beer in the keg">&nbsp;</span>
+                            </label>
+                            <div class="col-sm-6">
+                                <span class="measurement" v-if="Display == 'View'">
+                                    {{KegPSI}}
+                                    <span>PSI</span>
+                                </span>
+                                <div class="input-group" v-if="Display == 'Form'">
+                                    <input type="text" data-name="s_KegPSI" v-model.number="KegPSI" class="form-control" data-filter="positiveFloat" />
+                                    <span class="input-group-addon measurement">
+                                        <span>PSI</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @*END: CONDITIONING*@
+
 </div>
+
+
+
+
+<script>
+    $(function () {
+        // I couldn't figure out how to hydrate this JSON object via Json.Encode(Model), I was getting
+        //A circular reference was detected while serializing an object of type 'System.Data.Entity.DynamicProxies.User_
+        // The view models vs classes seem to be messed up or at least overly complicated.
+
+        var funcMapToMetric = {
+            'GrainWeight': util.lb_To_kg,
+            'GrainTemp': util.f_To_c,
+            'FermentVolumeEst': util.gal_To_l,
+            'TargetMashTemp': util.f_To_c,
+            'MashThickness': util.qt_per_lb_To_l_per_kg,
+            'BrewKettleLoss': util.gal_To_l,
+            'WortShrinkage': util.gal_To_l,
+            'MashTunLoss': util.gal_To_l,
+            'BoilLoss': util.gal_To_l,
+            'MashGrainAbsorption': util.gal_per_lb_To_l_per_kg,
+            'SpargeGrainAbsorption': util.gal_per_lb_To_l_per_kg,
+            'MashStartTemp': util.f_To_c,
+            'MashEndTemp': util.f_To_c,
+            'BoilVolumeActual': util.gal_To_l,
+            'PostBoilVolume': util.gal_To_l,
+            'FermentVolumeActual': util.gal_To_l,
+            'PrimingSugarAmount': util.oz_To_g
+        };
+
+        var funcMapToStandard = {
+            'GrainWeight': util.kg_To_lb,
+            'GrainTemp': util.c_To_f,
+            'FermentVolumeEst': util.l_To_gal,
+            'TargetMashTemp': util.c_To_f,
+            'MashThickness': util.l_per_kg_To_qt_per_lb,
+            'BrewKettleLoss': util.l_To_gal,
+            'WortShrinkage': util.l_To_gal,
+            'MashTunLoss': util.l_To_gal,
+            'BoilLoss': util.l_To_gal,
+            'MashGrainAbsorption': util.l_per_kg_To_gal_per_lb,
+            'SpargeGrainAbsorption': util.l_per_kg_To_gal_per_lb,
+            'MashStartTemp': util.c_To_f,
+            'MashEndTemp': util.c_To_f,
+            'BoilVolumeActual': util.l_To_gal,
+            'PostBoilVolume': util.l_To_gal,
+            'FermentVolumeActual': util.l_To_gal,
+            'PrimingSugarAmount': util.g_To_oz
+        };
+
+        var app = new Vue({
+            el: '#brew-session-form',
+            data: {
+                'JustCalculator': @((ViewBag.JustCalculator != null) ? "true" : "false"),
+                'Display': '@((ViewBag.BrewSessionView != null) ? "View" : "Form")',
+                'UnitTypeSet': false,
+                'BrewSessionId': '@Model.BrewSessionId',
+                'RecipeId': '@Model.RecipeId',
+                'UnitTypeId': '@Model.UnitTypeId',
+                'BrewDate': '@(Model.BrewDate != DateTime.MinValue ? Model.BrewDate.ToShortDateString() : "")',
+                'Notes': '@HttpUtility.JavaScriptStringEncode(Model.Notes)',
+                'GrainWeight': '@Model.GrainWeight',
+                'GrainTemp': '@Model.GrainTemp',
+                'BoilTime': '@Model.BoilTime',
+                'BoilVolumeEst': '@Model.BoilVolumeEst',
+                'FermentVolumeEst': '@Model.FermentVolumeEst',
+                'TargetMashTemp': '@Model.TargetMashTemp',
+                'MashThickness': '@Model.MashThickness',
+                'BrewKettleLoss': '@Model.BrewKettleLoss',
+                'HLTMTHeatLoss': '@Model.HLTMTHeatLoss',
+                'WortShrinkage': '@Model.WortShrinkage',
+                'MashTunLoss': '@Model.MashTunLoss',
+                'BoilLoss': '@Model.BoilLoss',
+                'MashGrainAbsorption': '@Model.MashGrainAbsorption',
+                'SpargeGrainAbsorption': '@Model.SpargeGrainAbsorption',
+                'MashPH': '@Model.MashPH',
+                'MashStartTemp': '@Model.MashStartTemp',
+                'MashEndTemp': '@Model.MashEndTemp',
+                'MashTime': '@Model.MashTime',
+                'BoilVolumeActual': '@Model.BoilVolumeActual',
+                'PreBoilGravity': '@(Model.PreBoilGravity != null ? string.Format("{0:0.000}", Model.PreBoilGravity) : "")',
+                'BoilTimeActual': '@Model.BoilTimeActual',
+                'PostBoilVolume': '@Model.PostBoilVolume',
+                'FermentVolumeActual': '@Model.FermentVolumeActual',
+                'OriginalGravity': '@(Model.OriginalGravity != null ? string.Format("{0:0.000}", Model.OriginalGravity) : "")',
+                'FinalGravity': '@(Model.FinalGravity != null ? string.Format("{0:0.000}", Model.FinalGravity) : "")',
+                'ConditionDate': '@(Model.ConditionDate.HasValue ? Model.ConditionDate.Value.ToShortDateString() : "")',
+                'ConditionTypeId': '@Model.ConditionTypeId',
+                'PrimingSugarType': '@Model.PrimingSugarType',
+                'PrimingSugarAmount': '@Model.PrimingSugarAmount',
+                'KegPSI': '@Model.KegPSI',
+                'RecipeSummary': {
+                    'BoilSize': '@Model.RecipeSummary.BoilSize.ToString("F2")',
+                    'BoilTime': '@Model.RecipeSummary.BoilTime',
+                    'BatchSize': '@Model.RecipeSummary.BatchSize.ToString("F2")',
+                    'Og': '@string.Format("{0:0.000}", Model.RecipeSummary.Og)',
+                    'Fg': '@string.Format("{0:0.000}", Model.RecipeSummary.Fg)',
+                    'RecipeType': '@Model.RecipeSummary.GetRecipeType()'
+                }
+            },
+            computed: {
+                'UnitTypeName': function () {
+                    return (this.UnitTypeId == 10) ? 's' : 'm'
+                },
+                'CalculateTotalRunOff': function () {
+                    var runoffVol = (this.getValue(this.FermentVolumeEst) + this.getValue(this.BrewKettleLoss) + this.getValue(this.WortShrinkage)) + (this.getValue(this.BoilTime) * this.getValue(this.BoilLoss) / 60);
+                    return this.setValue(runoffVol, util.gal_To_l);
+                },
+                'CalculateStrikeWaterTemp': function () {
+                    var strikeTemp = ((((this.getValue(this.GrainWeight) * .05) + this.getValue(this.CalculateStrikeWaterVolume)) * this.getValue(this.TargetMashTemp)) - ((this.getValue(this.GrainWeight) * .05) * this.getValue(this.GrainTemp))) / this.getValue(this.CalculateStrikeWaterVolume);
+                    return this.setValue(strikeTemp, util.f_To_c);
+                },
+                'CalculateHLTTemp': function () {
+                    var hLTTemp = this.getValue(this.CalculateStrikeWaterTemp) + this.getValue(this.HLTMTHeatLoss);
+                    return parseFloat(hLTTemp).toFixed(2)
+                    return this.setValue(hLTTemp, util.f_To_c);
+                },
+                'CalculateStrikeWaterVolume': function () {
+                    var mashStrikeVol = 0;
+                    if (this.UnitTypeName == 's') {
+                        mashStrikeVol = ((this.getValue(this.MashThickness) * this.getValue(this.GrainWeight)) / 4) + this.getValue(this.MashTunLoss);
+                    }
+                    else {
+                        mashStrikeVol = (this.getValue(this.MashThickness) * this.getValue(this.GrainWeight)) + this.getValue(this.MashTunLoss);
+                    }
+                    return this.setValue(mashStrikeVol, util.qt_per_lb_To_l_per_kg);
+                },
+                'CalculateMashTunCapacity': function () {
+                    var mashTunCapacity = 0;
+                    if (this.UnitTypeName == 's') {
+                        mashTunCapacity = this.getValue(this.GrainWeight) * (.08 + this.getValue(this.MashThickness) / 4);
+                    }
+                    else {
+                        mashTunCapacity = this.getValue(this.GrainWeight) * (.67 + this.getValue(this.MashThickness));
+                    }
+                    return this.setValue(mashTunCapacity, util.gal_To_l);
+                },
+                'CalculateFirstRunningsVolume': function () {
+                    var firstRunnings = this.CalculateStrikeWaterVolume - (this.getValue(this.GrainWeight) * this.getValue(this.MashGrainAbsorption));
+                    return this.setValue(firstRunnings, util.gal_To_l);
+                },
+                'CalculateSpargeWaterVolume': function () {
+                    var spargeVol = (this.getValue(this.CalculateTotalRunOff) - this.getValue(this.CalculateFirstRunningsVolume)) + (this.getValue(this.SpargeGrainAbsorption) * this.getValue(this.GrainWeight));
+                    return this.setValue(spargeVol, util.gal_To_l);
+                },
+                'CalculateTotalWaterNeeded': function () {
+                    var totalWaterNeeded = this.getValue(this.CalculateStrikeWaterVolume) + this.getValue(this.CalculateSpargeWaterVolume);
+                    return this.setValue(totalWaterNeeded, util.gal_To_l);
+                },
+                'CalculateEstPreBoilGravity': function () {
+                    var volumeAfterBoil = this.getValue(this.CalculateTotalRunOff) - this.CalculateBoilLoss;
+                    var estPreBoilGravity = (volumeAfterBoil * ((this.getValue(this.RecipeSummary.Og) - 1) * 1000)) / this.getValue(this.CalculateTotalRunOff);
+                    return ((estPreBoilGravity / 1000) + 1).toFixed(3);
+                },
+                'CalculateBoilLoss': function () {
+                    var time = this.CalculateBoilTimeDisplay;
+                    var boilLoss = (this.getValue(this.BoilLoss) / 60) * time;
+                    return this.setValue(boilLoss, util.gal_To_l);
+                },
+                'CalculateBoilTimeDisplay': function () {
+                    var time = (isNaN(this.getValue(this.BoilTimeActual)) || this.getValue(this.BoilVolumeActual) === 0) ? this.getValue(this.BoilTime) : this.getValue(this.BoilTimeActual);
+                    return time;
+                },
+                'CalculateBoilVolumeDisplay': function () {
+                    var volume = (isNaN(this.getValue(this.BoilVolumeActual)) || this.getValue(this.BoilVolumeActual) === 0) ? this.CalculateTotalRunOff : this.getValue(this.BoilVolumeActual);
+                    return this.setValue(volume, util.gal_To_l);
+                },
+                'CalculatePreBoilGravityDisplay': function () {
+                    var gravity = (isNaN(this.getValue(this.PreBoilGravity)) || this.getValue(this.PreBoilGravity) === 0) ? this.CalculateEstPreBoilGravity : this.getValue(this.PreBoilGravity);
+                    return parseFloat(gravity).toFixed(3);
+                },
+                'CalculateFinalGravityFromPreBoilGravity': function () {
+                    var volumeAfterBoil = this.CalculateBoilVolumeDisplay - this.CalculateBoilLoss;
+                    var percentDecreaseFromBoiling = (this.CalculateBoilVolumeDisplay - volumeAfterBoil) / this.CalculateBoilVolumeDisplay;
+                    var gravityChangePoints = ((this.CalculatePreBoilGravityDisplay - 1) * 1000) * percentDecreaseFromBoiling;
+                    var finalGravityFromPreBoilGravity = ((this.CalculatePreBoilGravityDisplay - 1) * 1000) + gravityChangePoints;
+                    return parseFloat((finalGravityFromPreBoilGravity/1000)+1).toFixed(3);
+                },
+            },
+            methods: {
+                setValue: function (val, convFunc) {
+                    var value = this.UnitTypeName == 'm' ? convFunc(val) : val;
+                    return parseFloat(val).toFixed(2);
+                },
+                getValue: function (val) {
+                    return (val || val !== "") ? parseFloat(val) : 0;
+                },
+                changeUnitType: function (event, changeValues = true) {
+                    this.UnitTypeSet = true;
+                    $('[data-unit].active').removeClass('active');
+                    $('[data-unit="' + this.UnitTypeName + '"]').addClass('active');
+
+                    if (changeValues) {
+                        for (var prop in this) {
+                            if (typeof funcMapToMetric[prop] === 'undefined') { continue; }
+                            if (this.UnitTypeName === 's') {
+                                var newValue = funcMapToStandard[prop](this[prop]);
+                                this[prop] = util.roundToTwo(parseFloat(newValue));
+                            }
+                            else {
+                                var newValue = funcMapToMetric[prop](this[prop]);
+                                this[prop] = util.roundToTwo(parseFloat(newValue));
+                            }
+
+                        }
+                    }
+                }
+            },
+            created() {
+                this.changeUnitType(null, false);
+            }
+
+        });
+    });
+
+</script>
+
+

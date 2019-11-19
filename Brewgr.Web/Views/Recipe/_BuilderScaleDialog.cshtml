@@ -1,16 +1,29 @@
-﻿<div id="ScaleDialog" class="modal">
-    <h2>Scale Recipe</h2>
-    <p>Scaling this recipe will automatically adjust each ingredient to match the target batch size.</p>
-    
-    <div id="ScaleSlider"></div>
+﻿
+<style>
+    /* Scale Dialog */
+    #ScaleDialog div.wrapper { margin-left: auto; margin-right: auto; text-align: center; }
+    #ScaleDialog .wrapper h2 { display: inline-block !important; }
+    #ScaleDialog .wrapper span { padding-left: 4px; color: #666; }
+    #ScaleDialog .form-control { display: inline; width: 50%; }
+</style>
 
-    <div class="wrapper">
-        <input type="text" id="TargetVolume" value="6.5" data-filter="positiveFloat" />
-        <h2>
-            <span data-unit="s"> gallons</span>
-            <span data-unit="m"> liters</span>
-        </h2>
+<div id="ScaleDialog" class="view">
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Scale Recipe</h3>
+            <p>Scaling this recipe will automatically adjust each ingredient to match the target batch size.</p>
+            <div id="ScaleSlider"></div>
+            <div class="wrapper">
+                <div class="form-group">
+                    <input type="text" id="TargetVolume" value="6.5" data-filter="positiveFloat" class="form-control" />
+                    <h2>
+                        <span data-unit="s"> gallons</span>
+                        <span data-unit="m"> liters</span>
+                    </h2>
+                </div>
+                
+            </div>
+            <a href="#" class="btn btn-success btn-lg" id="ApplyScaleButton">Scale Recipe</a>
+        </div>
     </div>
-    
-    <a href="#" class="button button_green margintop20" id="ApplyScaleButton">Scale Recipe</a>
 </div>

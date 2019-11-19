@@ -5,7 +5,7 @@
 }
 
 <style type="text/css">
-	#middle-wrapper { width: 650px; }
+	/*#middle-wrapper { width: 650px; }*/
 </style>
 
 <div id="view-changerecipephoto">
@@ -15,6 +15,11 @@
             .messages { display: none; }
             .messages ul li span { display: inline-block; margin-right: 18px; }
             .messages ul li * { vertical-align: middle; }
+
+            /* Photo Dialog */
+            #view-changerecipephoto #PhotoDialog .photo { float: left; margin-right: 18px; }
+            #view-changerecipephoto .fileuploadwrapper { float: left; width: 380px; }
+            #view-changerecipephoto .photo img { border: solid 1px #ccc; }
         </style>
 
 
@@ -24,7 +29,8 @@
                 @Html.Partial("_BuilderPhotoDialog", Model)
 
                 <input type="hidden" name="RecipeId" value="@Model.RecipeId" />
-                <input type="submit" class="button button_green margintop20" id="SavePhotoButton" value="Upload Photo" />
+                <br /><br />
+                <input type="submit" class="button button_green margintop20 btn btn-success btn-md" id="SavePhotoButton" value="Upload Photo" />
             }
         </div>
 

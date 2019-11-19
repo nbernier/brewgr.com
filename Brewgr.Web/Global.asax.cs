@@ -40,6 +40,8 @@ namespace Brewgr.Web
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BundleConfig.RegisterBuilderBundles(BundleTable.Bundles);
+            BundleConfig.RegisterBuilderBundlesNew(BundleTable.Bundles);
 
 			MvcHandler.DisableMvcResponseHeader = true;
 

@@ -1,0 +1,23 @@
+﻿@{
+    this.Layout = null;
+    //TODO: Need to get this from somewhere else
+    ViewBag.IsVew = false;
+}
+<div data-template="f_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderFermentableRow_V2", new RecipeFermentableViewModel())]-->
+</div>
+<div data-template="h_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderHopRow_V2", new RecipeHopViewModel())]-->
+</div>
+<div data-template="y_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderYeastRow_V2", new RecipeYeastViewModel())]-->
+</div>
+<div data-template="o_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderAdjunctRow_V2", new RecipeOtherViewModel())]-->
+</div>
+<div data-template="m_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderMashStepRow_V2", new RecipeMashStepViewModel())]-->
+</div>
+<div data-template="s_Row" class="hidden">
+    <!--[@Html.Partial("_BuilderStepRow_V2", new RecipeStepViewModel())]-->
+</div>

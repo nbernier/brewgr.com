@@ -5,24 +5,33 @@
 	ViewBag.Subtitle = "Sign Up";
 }
 
-<div id="view-login" class="content">
-	<div class="login floatleft marginright20">
-		
-		<h3>Login</h3>
+<div id="view-login" class="container view">
 
-		@using (Html.BeginForm())
-		{
-			@Html.Partial("_LoginForm")
-		}
-	
-		@* Facebook Login *@
-		@Html.Partial("_FacebookLogin")
-	</div>
-	
-	@using (Html.BeginForm("SignUp", "Auth", FormMethod.Post, null))
-	{
-		@Html.Partial("_SignUpForm", new SignUpViewModel())
-	}
-		
-	<div class="clearall"></div>
+    <div class="row">
+        <div class="col-sm-6">
+
+            @*<div id="view-login" class="content">*@
+            @*<div class="login floatleft marginright20">*@
+
+            <h2>Login</h2>
+            @using (Html.BeginForm())
+            {
+                @Html.Partial("_LoginForm")
+            }
+
+            @* Facebook Login *@
+            @Html.Partial("_FacebookLogin")
+            @*</div>*@
+        </div>
+
+            <div class="col-sm-6">
+                @using (Html.BeginForm("SignUp", "Auth", FormMethod.Post, null))
+                {
+                    @Html.Partial("_SignUpForm", new SignUpViewModel())
+                }
+
+                @*<div class="clearall"></div>
+            </div>*@
+            </div>
+    </div>
 </div>
