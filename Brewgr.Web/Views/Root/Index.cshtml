@@ -120,7 +120,7 @@
             </div>
             <div class="col-sm-4">
                 <h2>Top Weekly Contributors</h2>
-                @foreach (var userSummary in Model.TopContributors)
+                @foreach (var userSummary in Model.TopContributors.Where(x=> x.Username != null))
             {
                 @Html.Partial("_UserWidget", userSummary)
         }
