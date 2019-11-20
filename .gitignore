@@ -197,3 +197,4 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+/Brewgr.Web.Core/Migrations/201911162350405_BrewSession.cs
