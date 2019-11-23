@@ -290,6 +290,8 @@
     <Compile Include="Models\RecipeBrewWaterInfusionViewModel.cs" />
     <Compile Include="Models\PartnerServiceStatusViewModel.cs" />
     <Compile Include="Models\SendToShopOrderViewModel.cs" />
+    <Compile Include="Models\SendToShopSettingsViewModel.cs" />
+    <Compile Include="Models\ServiceStatusViewModel.cs" />
     <Compile Include="Models\SimpleAsyncViewModel.cs" />
     <Compile Include="Ressources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -358,6 +360,7 @@
     <Content Include="img\colorbox\loading.gif" />
     <Content Include="img\colorbox\loading_background.png" />
     <Content Include="img\colorbox\overlay.png" />
+    <Content Include="img\cracked-grain-square.jpg" />
     <Content Include="img\cracked-grain.jpg" />
     <Content Include="img\features\Amount-Selection.jpg" />
     <Content Include="img\features\brew-session-comments.jpg" />
@@ -380,6 +383,7 @@
     <Content Include="img\irish-moss.jpg" />
     <Content Include="img\jqueryui\smoothness\animated-overlay.gif" />
     <Content Include="img\mash2.png" />
+    <Content Include="img\options-btn.gif" />
     <Content Include="img\pliny-the-elder.jpg" />
     <Content Include="img\search-button.png" />
     <Content Include="img\spice-jars.jpg" />
