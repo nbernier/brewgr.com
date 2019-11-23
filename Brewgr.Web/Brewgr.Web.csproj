@@ -2715,6 +2715,9 @@
     <Content Include="Views\Recipe\RecipeDetail_V2.cshtml" />
     <Content Include="Views\Recipe\RecipeEdit_V2.cshtml" />
     <Content Include="Views\Shared\_RecipeFactsNew.cshtml" />
+    <Content Include="Views\BrewSession\BrewSessionLabel.cshtml" />
+    <Content Include="Views\Shared\_RecipeListTable.cshtml" />
+    <Content Include="Views\Shared\_ResponsiveAd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
