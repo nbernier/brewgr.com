@@ -1,23 +1,37 @@
 ﻿@using Brewgr.Web
+@using System.Web.Optimization
 @model RecipeBrewSessionsViewModel
 
 @{
-	ViewBag.Title = Model.RecipeSummary.Name + " Brew Sessions";
+    ViewBag.Title = Model.RecipeSummary.Name + " Brew Sessions";
 }
 
-<div id="view-RecipeBrewSessions" class="content">
-	
-	<div class="primary">
-		<h3>This recipe has been brewed @Model.BrewSessions.Count time(s)</h3>
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder_V2")
 
-		@Html.Partial("_BrewSessionList", Model.BrewSessions)
-	</div>
- 
-	@* Nutrition Label *@
-	<div class="compliment">
-		
-		@Html.Partial("_RecipeFacts", Model.RecipeSummary)
-		
-		<a href="@Url.RecipeDetailUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name, Model.RecipeSummary.StyleName)" class="button button_black margintop20 widebutton">Go To Recipe</a>
-	</div>	  
+<div id="view-RecipeBrewSessions" class="content">
+
+    <div class="container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+
+                    <h3>This recipe has been brewed @Model.BrewSessions.Count time(s)</h3>
+                    @Html.Partial("_BrewSessionList", Model.BrewSessions)
+            
+
+            </section>
+
+            <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+
+                @* Nutrition Label *@
+                <div class="compliment">
+
+                    @Html.Partial("_RecipeFactsNew", Model.RecipeSummary)
+
+                    <a href="@Url.RecipeDetailUrl(Model.RecipeSummary.RecipeId, Model.RecipeSummary.Name, Model.RecipeSummary.StyleName)" class="btn btn-default btn-lg">Go To Recipe</a>
+                </div>
+
+            </section>
+        </div>
+    </div>
 </div>

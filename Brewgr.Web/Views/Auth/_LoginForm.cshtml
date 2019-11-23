@@ -1,23 +1,34 @@
 ﻿@model LoginViewModel
 
-<div class="form-field">
-    @Html.LabelFor(m => m.EmailAddress, "Email Address") 
-    <div class="clearall"></div>
-    <span>@Html.TextBoxFor(m => m.EmailAddress) </span>
-</div>
-<div class="form-field">
-	@Html.LabelFor(m => m.Password, "Password") 
-	<div class="clearall"></div>
-	<span>@Html.TextBoxFor(m => m.Password, new {type = "password"}) </span>
-</div>
 
-<input type="submit" class="button button_green" value="Login" />
-
-@if (ViewBag.LoginViaDialog == true)
-{
-    <a href="@Url.Action("reset-password", "Auth", new {LoginViaDialog = true})">Forgot your password?</a>
-}
-else
-{
-    <a href="@Url.Action("reset-password", "Auth")">Forgot your password?</a>
-}
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmailAddress, "Email", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "Email" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, "Password", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control", placeholder = "Password" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn-success btn-lg" value="Login" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            @if (ViewBag.LoginViaDialog == true)
+            {
+                <a href="@Url.Action("reset-password", "Auth", new {LoginViaDialog = true})">Forgot your password?</a>
+            }
+            else
+            {
+                <a href="@Url.Action("reset-password", "Auth")">Forgot your password?</a>
+            }
+        </div>
+    </div>
+</div>

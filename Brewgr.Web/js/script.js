@@ -9,7 +9,6 @@ $(function () {
     builder_onReady();
     settings_onReady();
     loginRelated_onReady();
-    calculatorHydro_onReady();
     waterinfusion_onReady();
     recipeDetail_onReady();
     misc_onReady();
@@ -26,57 +25,88 @@ function general_onReady() {
     $('<img src="/img/colorbox/loading.gif"/>');
     $('<img src="/img/colorbox/loading_background.png"/>');
     $('<img src="/img/colorbox/overlay.png"/>');
-
+    
     // Tipsy Tool Tips
+    // TODO: won't add to added dom elements
     $('[original-title]').each(function (index, ele) {
         $(ele).tipsy({ gravity: 's' });
     });
 
     // Input Filters
-    $('[data-filter]').each(function() {
+    $('[data-filter]').each(function () {
         util.filterInput($(this), $(this).attr('data-filter'));
     });
-    
+
     // Date Picker
     $('.datepicker').datepicker();
-    
+
     $('.recipe-import').click(function () {
         $.colorbox({ html: '<iframe id="ImportBeerXmlIFrame" src="/ImportBeerXmlDialog" width="525" height="200" scrolling="no" />', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
         return false;
     });
 
-    // Follow Brewer
-    $('.follow-brewer').click(function () {
-        var button = $(this);
-        $.ajax({
-            url: '/ToggleBrewerFollow',
-            async: true,
-            type: 'post',
-            data: { userid: $(this).attr('data-brewerid') },
-            success: function (t) {
-                if (button.text() == "Follow") {
-                    button.text("Following").removeClass('button_green').addClass('button_gray');
-                } else {
-                    button.text("Follow").removeClass('button_gray').removeClass('button_red').addClass('button_green');
-                }
-            },
-            error: function () {
-                alert("uh oh, something went wrong.  Please try again.");
+    // Following Button Toggle
+    $('[data-followid]').on('mouseover mouseout click', function (event) {
+        var btn = $(this);
+        var followed = $(this).data('followed') == "1";
+        var id = $(this).data('followid');
+        var textEle = $(this).children('span:nth-of-type(2)');
+        var iconEle = $(this).children('span:first-of-type');
+
+        if (event.type === 'mouseover') {
+            if (followed) {
+                btn.removeClass().addClass('btn btn-danger');
+                iconEle.removeClass().addClass('glyphicon glyphicon-remove');
+                textEle.text("Stop Following");
+            } else {
+                btn.removeClass().addClass('btn btn-success');
+                iconEle.removeClass().addClass('glyphicon glyphicon-plus');
+                textEle.text("Follow");
             }
-        });
-        return false;
-    }).mouseover(function () {
-        if ($(this).text() == "Following") {
-            $(this).text("Unfollow").removeClass("button_gray").addClass("button_red");
         }
-    }).mouseout(function () {
-        if ($(this).text() == "Unfollow") {
-            $(this).text("Following").removeClass("button_red").addClass("button_gray");
+        else if (event.type === 'mouseout') {
+            if (followed) {
+                btn.removeClass().addClass('btn btn-success');
+                iconEle.removeClass().addClass('glyphicon glyphicon-check');
+                textEle.text("Following");
+            } else {
+                btn.removeClass().addClass('btn btn-default');
+                iconEle.removeClass().addClass('glyphicon glyphicon-plus');
+                textEle.text("Follow");
+            }
+        } else if (event.type === 'click') {
+            event.preventDefault();
+            btn.attr('disabled', 'disabled');
+            $.ajax({
+                url: '/ToggleBrewerFollow/' + id,
+                async: true,
+                type: followed ? "delete" : "post",
+                success: function (t) {
+                    if (followed) {
+                        textEle.text("Follow");
+                        btn.removeClass().addClass('btn btn-default');
+                        iconEle.removeClass().addClass('glyphicon glyphicon-plus');
+                        btn.data('followed', '0');
+                    } else {
+                        textEle.text("Following");
+                        btn.removeClass().addClass('btn btn-success');
+                        iconEle.removeClass().addClass('glyphicon glyphicon-check');
+                        btn.data('followed', '1');
+                    }
+                },
+                error: function () {
+                    alert("uh oh, something went wrong.  Please try again.");
+                },
+                complete: function () {
+                    btn.removeAttr('disabled');
+                }
+            });
         }
+
     });
-    
+
     // Login Links (return Url)
-    $('.login-link').click(function() {
+    $('.login-link').click(function () {
         var url = window.location.toString();
         if (url.indexOf('/login') == -1) {
             if (url.substring(url.indexOf('/')) != "login") {
@@ -84,9 +114,9 @@ function general_onReady() {
             }
         }
     });
-    
+
     // Sign Out Link (go back to where you were)
-    $('.sign-out-link').click(function() {
+    $('.sign-out-link').click(function () {
         $(this).attr('href', $(this).attr('href') + '?ReturnUrl=' + $(this).attr('data-returnurl'));
     });
 
@@ -105,8 +135,7 @@ function general_onReady() {
         $('#tasting-note-form').find('.messages').remove();
 
         // Validate
-        if (!$('#tasting-note-form #taste-date').val().length || !$('#tasting-note-form #Rating').val().length)
-        {
+        if (!$('#tasting-note-form #taste-date').val().length || !$('#tasting-note-form #Rating').val().length) {
             $('#tasting-note-form').prepend($('<div class="messages small"><ul><li class="error">Date Tasted and Overall Rating are required</li></ul></div>'));
             return false;
         }
@@ -138,7 +167,7 @@ function general_onReady() {
                             $('.no-tasting-notes').remove();
 
                             $('.tasting-notes').append(result);
-                            wireRatyStar(result.find('span.rating[data-raty-rating]'));
+                            wireRatyStar(result.find('span.rating[data-rating]'));
 
                             // Increment Count
                             var count = parseInt($('#tasting-note-count').html());
@@ -155,7 +184,7 @@ function general_onReady() {
                 error: function (t) {
                     Message.error('There was a problem saving your brew session.  Please try again.');
                 },
-                complete: function() {
+                complete: function () {
                     $.colorbox.close();
                 }
             });
@@ -170,60 +199,121 @@ function general_onReady() {
         window.open($(this).attr('href'));
         return false;
     });
+
+    // Back To Top Button
+    var pxShow = 300;//height on which the button will show
+    var fadeInTime = 400;//how slow/fast you want the button to show
+    var fadeOutTime = 400;//how slow/fast you want the button to hide
+    var scrollSpeed = 400;//how slow/fast you want the button to scroll to top. can be a value, 'slow', 'normal' or 'fast'
+
+    jQuery(window).scroll(function () {
+        if (jQuery(window).scrollTop() >= pxShow) {
+            jQuery("#backtotop").fadeIn(fadeInTime);
+        } else {
+            jQuery("#backtotop").fadeOut(fadeOutTime);
+        }
+    });
+
+    jQuery('#backtotop a').click(function () {
+        jQuery('html, body').animate({ scrollTop: 0 }, scrollSpeed);
+        return false;
+    });
+
+
+    //////////////////////////////////////////
+
+    // Time Ago
+    $("abbr.timeago").timeago().show();
+
+    // Raty
+    $('[data-rating]').raty({
+        path: '/img/raty/',
+        hints: ['worst beer ever', 'ok', 'good', 'really good', 'best beer ever'],
+        readOnly: function () { return $(this).data('readonly'); },
+        score: function () { return $(this).data('rating'); }
+    });
 }
 
 /* --------------------------------------------------- [ Layout ] ---------------------------------------------------------- */
 function layout_onReady() {
- // Email Signup
-    $('#emailSignUp').submit(function () {
-        $.ajax($(this).attr("action") + '/?emailAddress=' + $('#emailSignUp input:first').val(),
+    // Email Signup
+    $('#newsletterform').submit(function () {
+        $.ajax($(this).attr("action") + '/?emailAddress=' + $('#newsletterform input:first').val(),
 			{
 			    async: true,
 			    cache: false,
 			    success: function (t) {
 			        $.colorbox({ html: '<h1 class="aligncenter">Thank you for signing up!</h1>', opacity: .35, width: 500, height: 70, scrolling: false });
-			        $('#emailSignUp input:first').val('Enter your email adress').trigger('blur');
+			        $('#newsletterform input:first').val('Enter your email adress').trigger('blur');
 			    }
 			});
         return false;
     });
 
     // Recent Recipe Photos
-    if($('#footer .Stream').length > 0) {
+    if ($('footer .photo-stream').length > 0) {
         $.ajax({
             url: '/RecentPhotos',
-            success: function(t) {
-                $(t).each(function(i, e) {
-                    $('#photo-stream .Stream')
+            success: function (t) {
+                $(t).each(function (i, e) {
+                    $('footer .photo-stream')
                         .append($('<a href="' + e.Url + '"><img width="59" height="59" alt="" src="' + e.ImageUrl + '" /></a>'));
                 });
             }
         });
     }
+
+    // Mobile Menu - Hamburger Toggle
+    $('#mobilemenu button.menu').click(function (event) {
+        event.preventDefault();
+        $('#navigation').toggle();
+    });
+
+    // Search Menu Trigger
+    $('.searchtrig').click(function () {
+        $('#navigation').hide();
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+        $('#search').slideDown();
+        $('#SearchTerm').focus();
+    });
+
+    $(window).scroll(function () {
+        if ($('#hamburger a.menu').is(':visible')) {
+            $('#navigation').hide();
+        }
+    });
+
+    // see: https://css-tricks.com/dangers-stopping-event-propagation/
+    $(document).on('click', function (event) {
+        if ($(event.target).closest('#navigation').length) {
+            if ($('.mobile a.menu').is(':visible')) {
+                $('#navigation').toggle();
+            }
+        }
+    });
 }
+
+
 
 /* --------------------------------------------------- [ Common ] ---------------------------------------------------------- */
 function common_onReady() {
-    $('body').on('click', '.delete-brewsession', function (e) {
-        $.colorbox({ html: '<div style="padding: 12px 24px 0 24px;"><h3>Are you sure you want to delete this?</h3><p>Once you delete a brew session there is no way to get it back.<br /><a class="button button_black marginleft20 margintop10" href="/brew/' + $(this).attr("data-brewsessionid") + '/delete">Yes, Delete</a><a class="button button_black marginleft20 margintop10" href="#" onclick="$.colorbox.close()">No, don\'t delete</a><p/></div>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
-        return false;
-    });
     
+
     $('body').on('click', '.delete-recipe', function (e) {
-        $.colorbox({ html: '<div style="padding: 12px 24px 0 24px;"><h3>Are you sure you want to delete this?</h3><p>Once you delete a recipe there is no way to get it back.<br /><a class="button button_black marginleft20 margintop10" href="/recipe/' + $(this).attr("data-recipeid") + '/delete">Yes, Delete</a><a class="button button_black marginleft20 margintop10" href="#" onclick="$.colorbox.close()">No, don\'t delete</a><p/></div>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
+        $.colorbox({ html: '<div style="padding: 12px 24px 0 24px;"><h3>Are you sure you want to delete this?</h3><p>Once you delete a recipe there is no way to get it back.<br /><a class="btn btn-danger btn-md" href="/recipe/' + $(this).attr("data-recipeid") + '/delete">Yes, Delete</a><a class="bbtn btn-default btn-md" href="#" onclick="$.colorbox.close()">No, don\'t delete</a><p/></div>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
         return false;
     });
 
     // Existing Rating Stars
-    if ($('span.rating[data-raty-rating]').length > 0) {
-        $('span.rating[data-raty-rating]').each(function (i, e) {
+    if ($('span.rating[data-rating]').length > 0) {
+        $('span.rating[data-rating]').each(function (i, e) {
             wireRatyStar(e);
         });
     }
 
     // Delete Tasting Notes
     $('#tastingnotes').on('click', 'a[data-tastingnoteid]', function () {
-        $.colorbox({ html: '<div style="padding: 12px 24px 0 24px;"><h3>Are you sure you want to delete this?</h3><p>Once you delete tasting notes there is no way to get them back.<br /><a class="button button_black marginleft20 margintop10" href="#" onclick="deleteTastingNote(' + $(this).attr("data-tastingnoteid") + '); $.colorbox.close(); return false;">Yes, Delete</a><a class="button button_black marginleft20 margintop10" href="#" onclick="$.colorbox.close(); return false;">No, don\'t delete</a><p/></div>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
+        $.colorbox({ html: '<div style="padding: 12px 24px 0 24px;"><h3>Are you sure you want to delete this?</h3><p>Once you delete tasting notes there is no way to get them back.<br /><a class="btn btn-danger btn-md" href="#" onclick="deleteTastingNote(' + $(this).attr("data-tastingnoteid") + '); $.colorbox.close(); return false;">Yes, Delete</a><a class="btn btn-default btn-md" href="#" onclick="$.colorbox.close(); return false;">No, don\'t delete</a><p/></div>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
         return false;
     });
 
@@ -234,15 +324,15 @@ function common_onReady() {
 function feedback_onReady() {
     // Feedback Dialog (dont show on smaller resolutions)
     if ($(window).width() > 1050) {
-        $('#FeedbackTrigger').show().click(function() {
+        $('#FeedbackTrigger').show().click(function () {
             $.colorbox({ html: '<iframe id="ImportBeerXmlIFrame" src="/marketing/feedback" width="650" height="330" scrolling="no" />', opacity: .35, overlayClose: false, escKey: true, scrolling: false });
             return false;
         });
     }
-    
+
     if ($('#Feedback').length > 0) {
         $('#Feedback').limitInput(1000, $('#FeedbackCounter'), true);
-        
+
         $('#suggestion-form a')
         .click(function () {
             $.ajax({
@@ -265,15 +355,15 @@ function feedback_onReady() {
         }
     });
 
-    if ($('#view-feedback').length > 0) {        
+    if ($('#view-feedback').length > 0) {
         $('#Feedback').keypress(function () {
-                if ($(this).hasClass('input-validation-error') && $(this).val()) {
-                    $(this).removeClass('input-validation-error');
-                }
-            });
+            if ($(this).hasClass('input-validation-error') && $(this).val()) {
+                $(this).removeClass('input-validation-error');
+            }
+        });
 
         // Feedback Form Validation
-        $('#view-feedback form').submit(function() {
+        $('#view-feedback form').submit(function () {
             if (!$('#Feedback').val()) {
                 $('#Feedback').addClass('input-validation-error');
                 return false;
@@ -281,10 +371,10 @@ function feedback_onReady() {
             return true;
         });
     }
-    
+
     if ($('#view-feedbackreceived').length > 0) {
         parent.$.colorbox.resize({ width: 650, height: 200 });
-        $('#FeedbackClose').click(function() {
+        $('#FeedbackClose').click(function () {
             parent.$.colorbox.close();
             return false;
         });
@@ -293,18 +383,17 @@ function feedback_onReady() {
 
 function search_onReady() {
     if ($('#searchresults-view').length > 0) {
-        
+
         // Selects the appropriate tab by default
         var tabs = $('li[role=tab]');
         for (var i = 0; i < tabs.length; i++) {
-            if(parseInt($(tabs[i]).attr('data-count')) > 0)
-            {
-                if(i == 0) break;
+            if (parseInt($(tabs[i]).attr('data-count')) > 0) {
+                if (i == 0) break;
                 $(tabs[i]).find('a').click();
                 break;
             }
         }
-    } 
+    }
 }
 
 /* --------------------------------------------------- [ Home ] ---------------------------------------------------------- */
@@ -315,7 +404,7 @@ function home_onReady() {
             if (d.getElementById(id)) return;
             js = d.createElement(s);
             js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=250006512125165";
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=324420670945545";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     }
@@ -354,54 +443,54 @@ function builder_onReady() {
             return false;
         });
 
-        $('#hide-similar-styles').click(function() {
+        $('#hide-similar-styles').click(function () {
             $('#similar-style-chart').empty();
             $('#style-showmore').show();
             $('#style-hidemore').hide();
             return false;
         });
     }
-    
+
     if ($('#view-newrecipe, #view-editrecipe, #view-newbrewsession, #view-editbrewsession').length > 0) {
-        // Make the Recipe Facts Box Move While Scrolling
-        function isScrolledTo(elem) {
-            var docViewTop = $(window).scrollTop(); //num of pixels hidden above current screen
-            //var docViewBottom = docViewTop + $(window).height();
-            var elemTop = $(elem).offset().top; //num of pixels above the elem
-            //var elemBottom = elemTop + $(elem).height();
-            return ((elemTop <= docViewTop || elemTop >= docViewTop));
-        }
+        //// Make the Recipe Facts Box Move While Scrolling
+        //function isScrolledTo(elem) {
+        //    var docViewTop = $(window).scrollTop(); //num of pixels hidden above current screen
+        //    //var docViewBottom = docViewTop + $(window).height();
+        //    var elemTop = $(elem).offset().top; //num of pixels above the elem
+        //    //var elemBottom = elemTop + $(elem).height();
+        //    return ((elemTop <= docViewTop || elemTop >= docViewTop));
+        //}
 
-        var catcher = $('.catcher');
-        var sticky = $('.builder-wrapper .compliment');
-        //var lastStickyTop = sticky.offset().top;
+        //var catcher = $('.catcher');
+        //var sticky = $('.builder-wrapper .compliment');
+        ////var lastStickyTop = sticky.offset().top;
 
-        $(window).scroll(function () {
+        //$(window).scroll(function () {
 
-            var footer = $('#footer');
-            var footTop = footer.offset().top -24;
+        //    var footer = $('#footer');
+        //    var footTop = footer.offset().top - 24;
 
-            sticky.css('margin-left', '700px');
+        //    sticky.css('margin-left', '700px');
 
-            if(isScrolledTo(sticky)) {
-                sticky.css('position','fixed');
-                sticky.css('top','10px');
-            }
-            var stopHeight = catcher.offset().top + catcher.height();
-            var stickyFoot = sticky.offset().top + sticky.height();
-       
-            if(stickyFoot > footTop -10){
-                sticky.css({
-                    position:'absolute',
-                    top: (footTop - 20) - sticky.height()
-                });
-            } else {
-                if ( stopHeight > sticky.offset().top) {
-                    sticky.css('position','absolute');
-                    sticky.css('top',stopHeight);
-                }
-            }
-        });
+        //    if (isScrolledTo(sticky)) {
+        //        sticky.css('position', 'fixed');
+        //        sticky.css('top', '10px');
+        //    }
+        //    var stopHeight = catcher.offset().top + catcher.height();
+        //    var stickyFoot = sticky.offset().top + sticky.height();
+
+        //    if (stickyFoot > footTop - 10) {
+        //        sticky.css({
+        //            position: 'absolute',
+        //            top: (footTop - 20) - sticky.height()
+        //        });
+        //    } else {
+        //        if (stopHeight > sticky.offset().top) {
+        //            sticky.css('position', 'absolute');
+        //            sticky.css('top', stopHeight);
+        //        }
+        //    }
+        //});
 
         // Track Form Changes
         $('.builder input, .builder select, .builder textarea').not('#taste-date').not('#NewTastingNotes').not('.CommentText').change(function () {
@@ -411,16 +500,16 @@ function builder_onReady() {
         });
 
         // Warn of Lost Changes
-        $(window).bind('beforeunload', function() {
+        $(window).bind('beforeunload', function () {
             if ($('.builder[data-formchanged=true]').length > 0) {
                 return 'You have unsaved changes';
             }
         });
-        
+
         // Delete Recipe Event
-        $(".delete-recipe").click(function(e) {
+        $(".delete-recipe").click(function (e) {
             var currentElem = $(this);
-            $.colorbox({ html: '<h3>Are you sure you want to delete this?</h3><p>Once you delete a recipe there is no way to get it back.<br /><a class="button button_black marginleft20 margintop10" onclick="$(\'.builder\').removeAttr(\'data-formchanged\');" href="/recipe/' + $(this).attr("data-recipeid") + '/delete">Yes, Delete</a><a class="button button_black marginleft20 margintop10" href="#" onclick="$.colorbox.close(); return false;">No, don\'t delete</a><p/>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
+            $.colorbox({ html: '<h3>Are you sure you want to delete this?</h3><p>Once you delete a recipe there is no way to get it back.<br /><a class="btn btn-danger btn-md" onclick="$(\'.builder\').removeAttr(\'data-formchanged\');" href="/recipe/' + $(this).attr("data-recipeid") + '/delete">Yes, Delete</a><a class="btn btn-default btn-md" href="#" onclick="$.colorbox.close(); return false;">No, don\'t delete</a><p/>', opacity: .35, overlayClose: false, escKey: false, scrolling: false });
             return false;
         });
     }
@@ -464,7 +553,7 @@ function recipeDetail_onReady() {
             readOnly: true,
             score: $('#recipe-rating').attr('data-rating')
         });
-        
+
         $('#CommentText').autosize();
     }
 }
@@ -472,12 +561,12 @@ function recipeDetail_onReady() {
 
 /* --------------------------------------------------- [ Settings ] ---------------------------------------------------------- */
 function settings_onReady() {
-    if ($('#view-settings').length > 0) {
+    if ($('#vw-settings').length > 0) {
         var usernameTimer = null;
         var emailTimer = null;
 
-        $('#view-settings .tabs').tabs({
-            beforeActivate: function() {
+        $('#vw-settings .tabs').tabs({
+            beforeActivate: function () {
                 Message.clear();
             }
         });
@@ -487,14 +576,14 @@ function settings_onReady() {
         };
 
         Message.useSmall();
-        Message.setParent($('#view-settings form').parents('.tab'));
-
-        $('#view-settings form').ajaxForm({
+        Message.setParent($('#vw-settings form').parents('.tab'));
+        
+        $('#vw-settings form').ajaxForm({
             preSubmitCallback: function (theForm) {
-                Message.clear();                
+                Message.clear();
             },
             successCallback: function (theForm, data) {
-                if(!data.Success && data.Message) {
+                if (!data.Success && data.Message) {
                     Message.error(data.Message);
                 } else {
                     Message.success(data.Message);
@@ -508,7 +597,7 @@ function settings_onReady() {
             }
         });
 
-        $('#view-settings .username').keyup(function() {
+        $('#vw-settings .username').keyup(function () {
 
             clearTimeout(usernameTimer);
 
@@ -521,11 +610,11 @@ function settings_onReady() {
 
             var username = $(this).val();
 
-            usernameTimer = setTimeout(function() {
+            usernameTimer = setTimeout(function () {
                 // Check if Username Exists
                 $.ajax("UsernameExists/" + username.trim() + "?d=" + new Date(),
                     {
-                        success: function(r) {
+                        success: function (r) {
                             if (r == "1") {
                                 $('#username-avail').text("username taken").css('color', 'red');
                                 $('#Username').addClass('input-validation-error');
@@ -542,16 +631,16 @@ function settings_onReady() {
             }, 350);
         });
 
-        $('#view-settings .emailaddress').keyup(function() {
+        $('#vw-settings .emailaddress').keyup(function () {
 
             clearTimeout(emailTimer);
 
             var emailAddress = encodeURIComponent($(this).val());
 
-            emailTimer = setTimeout(function() {
+            emailTimer = setTimeout(function () {
                 $.ajax("EmailAddressInUse/?email=" + emailAddress.trim() + "&d=" + new Date(),
                     {
-                        success: function(r) {
+                        success: function (r) {
                             if (r == "1") {
                                 $('#emailinuse').text("Email Address already in use").css('color', 'red').show();
                                 $('#EmailAddress').addClass('input-validation-error');
@@ -568,7 +657,7 @@ function settings_onReady() {
             }, 350);
         });
 
-        $('#ChooseUsername').click(function() {
+        $('#ChooseUsername').click(function () {
             $('#UsernameFieldToggle').remove();
             $('#Username').val('');
             $('label[for=Username]').addClass('valigntop').addClass('paddingtop6');
@@ -577,37 +666,6 @@ function settings_onReady() {
         });
 
         $('#Bio').limitInput(450, $('#suggest-limit'), true);
-    }
-}
-
-/* --------------------------------------------------- [ Hydrometer Calc ] ---------------------------------------------------------- */
-function calculatorHydro_onReady() {
-    if ($('#view-calculatorHydro').length > 0) {
-        $('#SpecificGravityTempUnit').change(function() {
-            $('#TargetSpecificGravityTempUnit').val($(this).val());
-        });
-
-        $('#TargetSpecificGravityTempUnit').change(function() {
-            $('#SpecificGravityTempUnit').val($(this).val());
-        });
-
-        $('#calculateButton').click(function() {
-            var specificGravtiy = $('#SpecificGravity').val();
-            var measuredTemperature = $('#SpecificGravityTemp').val();
-            var targetTemperature = $('#TargetSpecificGravityTemp').val();
-            var tempScale = $('#SpecificGravityTempUnit').val();
-            var correctedGravity = 0;
-
-            if (tempScale == 'Celcius') {
-                measuredTemperature = ((measuredTemperature * 9 / 5) + 32);
-                targetTemperature = ((targetTemperature * 9 / 5) + 32);
-            }
-
-            correctedGravity = (specificGravtiy * ((1.00130346 - 0.000134722124 * measuredTemperature + 0.00000204052596 * Math.pow(measuredTemperature, 2) - 0.00000000232820948 * Math.pow(measuredTemperature, 3)) / (1.00130346 - 0.000134722124 * targetTemperature + 0.00000204052596 * Math.pow(targetTemperature, 2) - 0.00000000232820948 * Math.pow(targetTemperature, 3))));
-
-            $('#correctedGravity').html(correctedGravity.toFixed(3));
-            $('#results').fadeIn();
-        });
     }
 }
 
@@ -620,7 +678,7 @@ function loginRelated_onReady() {
         var height = $('.messages').is(':visible') ? 375 : 280;
         parent.$.colorbox.resize({ width: 650, height: height });
     }
-    
+
     // Ensure Colorbox Size on LoginViaDialog
     if ($('#view-loginviadialog').length) {
         parent.$.colorbox.resize({ width: 800, height: 525 });
@@ -631,38 +689,38 @@ function loginComplete(editMode) {
     $('.builder').removeAttr('data-isanon');
     parent.$.colorbox.resize({ width: 800, height: 150 });
 
-    if(editMode) {
+    if (editMode) {
         window.setTimeout(function () { $('#SaveRecipeButton').click(); }, 2000);
     } else {
         $('#RecipeJson').val(escape(Builder.getRecipe().getJSON()));
         $('#RecipeForm').submit();
     }
 
-    
+
 }
 
 /* --------------------------------------------------- [ Water Infusion ] ---------------------------------------------------------- */
 function waterinfusion_onReady() {
     if ($('#view-calculatorHydro').length > 0) {
-        
-         $('.optional-equipment-expand').toggle(
-            function () {
-                $('.optional-equipment-expand img').attr('src', '/img/less-up-arrow.png');
-                $('.optional-equipment').show();
-            },
-            function () {
-                $('.optional-equipment-expand img').attr('src', '/img/more-down-arrow.png');
-                $('.optional-equipment').hide();
-            }
-        );
-        
+
+        $('.optional-equipment-expand').toggle(
+           function () {
+               $('.optional-equipment-expand img').attr('src', '/img/less-up-arrow.png');
+               $('.optional-equipment').show();
+           },
+           function () {
+               $('.optional-equipment-expand img').attr('src', '/img/more-down-arrow.png');
+               $('.optional-equipment').hide();
+           }
+       );
+
     }
 }
 
 /* --------------------------------------------------- [ Miscellaneous ] ---------------------------------------------------------- */
 function misc_onReady() {
     // Import Recipe Form Validation (built-in validation doesnt work with file upload)
-    $('input#BeerXmlFile').change(function() {
+    $('input#BeerXmlFile').change(function () {
         $('input#BeerXmlFile').removeClass('input-validation-error');
     });
     $('#ImportRecipeForm').submit(function () {
@@ -687,7 +745,7 @@ function misc_onReady() {
 var WaterCalc =
 {
     // init
-    initialize: function(inputElement, outputElement, unitElement) {
+    initialize: function (inputElement, outputElement, unitElement) {
 
         $('[data-unit="' + $('[data-name=s_UnitType]').val() + '"]').addClass('active');
 
@@ -701,7 +759,7 @@ var WaterCalc =
         return this;
     },
 
-    useUnit: function(unit) {
+    useUnit: function (unit) {
         if ($('[data-name=s_UnitType]') === unit) {
             return;
         }
@@ -716,14 +774,14 @@ var WaterCalc =
         util.convert('[data-name=s_GrainTemp]', prevUnit, util.c_To_f, util.f_To_c);
         util.convert('[data-name=s_FermentVolume]', prevUnit, util.l_To_gal, util.gal_To_l);
         util.convert('[data-name=s_TargetMashTemp]', prevUnit, util.c_To_f, util.f_To_c);
-        util.convert('[data-name=s_MashThickness]', prevUnit, util.l_per_kg_To_qt_per_lb, util.qt_per_lb_To_l_per_kg);
+        util.convert('[data-name=s_MashThickness]', prevUnit, util.l_To_qt, util.qt_To_l);
 
         util.convert('[data-name=s_BrewKettleLoss]', prevUnit, util.l_To_gal, util.gal_To_l);
         util.convert('[data-name=s_WortShrinkage]', prevUnit, util.l_To_gal, util.gal_To_l);
         util.convert('[data-name=s_MashTunLoss]', prevUnit, util.l_To_gal, util.gal_To_l);
         util.convert('[data-name=s_BoilLoss]', prevUnit, util.l_To_gal, util.gal_To_l);
-        util.convert('[data-name=s_MashGrainAbsorption]', prevUnit, util.l_per_kg_To_gal_per_lb, util.gal_per_lb_To_l_per_kg);
-        util.convert('[data-name=s_SpargeGrainAbsorption]', prevUnit, util.l_per_kg_To_gal_per_lb, util.gal_per_lb_To_l_per_kg);
+        util.convert('[data-name=s_MashGrainAbsorption]', prevUnit, util.l_To_gal, util.gal_To_l);
+        util.convert('[data-name=s_SpargeGrainAbsorption]', prevUnit, util.l_To_gal, util.gal_To_l);
 
         $('[data-name=s_GrainWeight]').keyup(); // force re-calc (the easy way)
     },
@@ -738,10 +796,10 @@ var WaterCalc =
             wortShrinkage: this.getValue('.wc_wortShrinkage', util.l_To_gal),
             boilTime: this.getValue('.wc_boilTime'),
             boilLoss: this.getValue('.wc_boilLoss', util.l_To_gal),
-            mashThickness: this.getValue('.wc_mashThickness', util.l_per_kg_To_qt_per_lb),
+            mashThickness: this.getValue('.wc_mashThickness', util.l_To_qt),
             mashTunLoss: this.getValue('.wc_mashTunLoss', util.l_To_gal),
-            mashAbsorp: this.getValue('.wc_grainAbsorption', util.l_per_kg_To_gal_per_lb),
-            spargeAbsorp: this.getValue('.wc_spargeGrainAbsorption', util.l_per_kg_To_gal_per_lb),
+            mashAbsorp: this.getValue('.wc_grainAbsorption', util.l_To_gal),
+            spargeAbsorp: this.getValue('.wc_spargeGrainAbsorption', util.l_To_gal),
             mashTemp: this.getValue('.wc_targetMashTemp', util.c_To_f),
             grainTemp: this.getValue('.wc_grainTemp', util.c_To_f)
         };
@@ -751,15 +809,19 @@ var WaterCalc =
         this.setValue('.wc_runoff', util.gal_To_l, runoffVol);
 
         // Mash Strike Volume
-        var mashStrikeVol = ((input.mashThickness * input.grain) / 4) ;
+        var mashStrikeVol = ((input.mashThickness * input.grain) / 4) + input.mashTunLoss;
         this.setValue('.wc_strikeVol', util.gal_To_l, mashStrikeVol);
 
+        // Mash Tun Capacity
+        var mashTunCapacity = input.grain * (.08 + input.mashThickness / 4);
+        this.setValue('.wc_mashtuncapacity', util.gal_To_l, mashTunCapacity);
+
         // First Runnings 
-        var firstRunnings = mashStrikeVol - (input.grain * input.mashAbsorp);
+        var firstRunnings = mashStrikeVol - (input.grain) * input.mashAbsorp;
         this.setValue('.wc_firstRunnings', util.gal_To_l, firstRunnings);
 
         // Sparge Volume
-        var spargeVol = (runoffVol - firstRunnings) + (input.spargeAbsorp * input.grain) + input.mashTunLoss;
+        var spargeVol = (runoffVol - firstRunnings) + (input.spargeAbsorp * input.grain);
         this.setValue('.wc_spargeVol', util.gal_To_l, spargeVol);
 
         // Strike Temp
@@ -784,7 +846,7 @@ var WaterCalc =
     },
 
     // Sets a value
-    setValue: function(selector, convFunc, val) {
+    setValue: function (selector, convFunc, val) {
         var value = this.unitElement.val() == 'm' ? convFunc(val) : val;
         this.outputElement.find(selector).val(value.toFixed(2));
     }
@@ -792,13 +854,14 @@ var WaterCalc =
 
 /* --------------------------------------------------- [ Comment ] ---------------------------------------------------------- */
 function comment_onReady() {
-    
+
     if ($('.comments-wrapper').length > 0) {
 
         jQuery("abbr.timeago").timeago();
+        $("abbr.timeago").timeago().show();
 
         $('.CommentText').autosize();
-        
+
         $('body').on('keydown', '.CommentText', function (e) {
             if (e.which == 13) {
                 e.preventDefault();
@@ -807,7 +870,7 @@ function comment_onReady() {
         });
 
         $('body').on('click', '.AddComment', function (e) {
-            if (!$(this).prev('.CommentText').val() || $.trim($(this).prev('.CommentText').val()).length == 0 || $.trim($(this).prev('.CommentText').val()) == 'Write a comment...') {
+            if (!$(this).parent().prev('.CommentText').val() || $.trim($(this).parent().prev('.CommentText').val()).length == 0 || $.trim($(this).parent().prev('.CommentText').val()) == 'Write a comment...') {
                 return false;
             }
 
@@ -816,17 +879,18 @@ function comment_onReady() {
             $.ajax({
                 url: '/AddComment',
                 type: 'post',
-                data: { CommentText: $('<div/>').text(self.prev('.CommentText').val()).html(), GenericId: $(this).attr('data-genericid'), CommentType: $(this).attr('data-commenttype') },
+                data: { CommentText: $('<div/>').text(self.parent().prev('.CommentText').val()).html(), GenericId: $(this).attr('data-genericid'), CommentType: $(this).attr('data-commenttype') },
                 success: function (response) {
-                    self.closest('.comments-wrapper').find('.actual-comments').append(response);
+                    self.closest('.comments-wrapper').find('.comment-list').append(response);
 
                     // Recreate autosize to re-adjust size after clearing
                     // Required a modification to the autosize.js library
                     // Could not upgrade at this time -- it is EMCA6 and gets bundled
                     // with all of the JS -- would have to extract and not worth the effort at this time
-                    self.prev('.CommentText').val('').autosize();
+                    self.parent().prev('.CommentText').val('').autosize();
 
                     jQuery("abbr.timeago").timeago();
+                    $("abbr.timeago").timeago().show();
                     return false;
                 }
             });
@@ -837,10 +901,10 @@ function comment_onReady() {
 
 
 function calculations_onReady() {
-    if($('.calculations#water-calc').length) {
+    if ($('.calculations#water-calc').length) {
         WaterCalc.initialize($('#s_waterIn'), $('#s_waterOut'), $('select[data-name=s_UnitType]'));
 
-        $('select[data-name=s_UnitType]').change(function() {
+        $('select[data-name=s_UnitType]').change(function () {
             WaterCalc.useUnit($(this).val());
         });
     }
@@ -849,14 +913,14 @@ function calculations_onReady() {
 /* --------------------------------------------------- [ Dashboard ] ---------------------------------------------------------- */
 function dashboard_onReady() {
     if ($('#dashboard').length > 0) {
-        
+
         function getFormattedPartTime(partTime) {
             if (partTime < 10)
                 return "0" + partTime;
             return partTime;
         }
 
-        function getDefaultDateForDashboard () {
+        function getDefaultDateForDashboard() {
             var d = new Date();
             return d.getFullYear() + '' + getFormattedPartTime(d.getMonth()) + '' + getFormattedPartTime(d.getDate());
         }
@@ -865,8 +929,8 @@ function dashboard_onReady() {
             url: '/dashboard/all',
             type: 'get',
             success: function (response) {
-                $('.spinner-dashboard').html(response);
-                $('[data-raty-rating]').each(function(i, e) { wireRatyStar(e); });
+                $('#tabfeed').html(response);
+                $('[data-rating]').each(function (i, e) { wireRatyStar(e); });
                 comment_onReady();
             }
         });
@@ -881,8 +945,9 @@ function dashboard_onReady() {
                 success: function (response) {
                     $('.dashboard-morespinner').hide();
                     $('#dashboardlist-moreplaceholder').replaceWith(response);
-                    $('[data-raty-rating]').each(function (i, e) { wireRatyStar(e); });
+                    $('[data-rating]').each(function (i, e) { wireRatyStar(e); });
                     jQuery("abbr.timeago").timeago();
+                    $("abbr.timeago").timeago().show();
                     return false;
                 }
             });
@@ -890,50 +955,53 @@ function dashboard_onReady() {
         });
 
 
-        $('#tab-my-recipes').click(function () {
+        $('[aria-controls=tabrecipes]').click(function () {
             $('.dashboard-nomorerecipes').hide();
             $('.dashboard-nomorebrewsessions').hide();
             $.ajax({
                 url: '/dashboard/recipes',
                 type: 'get',
-                success: function(response) {
-                    $('.spinner-recipe').html(response);
+                success: function (response) {
+                    $('#tabrecipes').html(response);
                     if (response.indexOf('NoDashboardItems') > 0) {
                         $('.dashboard-nomore').hide();
                         $('.dashboard-nomorerecipes').show();
+                        $('.dashboard-nomorerecipes').removeClass("hidden")
                     }
 
                     $('#tab-tab-2 .CommentText').autosize();
 
                     $('.spinner-recipe .dashboard-more').hide();
                     jQuery("abbr.timeago").timeago();
+                    $("abbr.timeago").timeago().show();
                     return false;
                 }
             });
-            return false;
         });
 
-        $('#tab-my-brewsessions').click(function () {
+        $('[aria-controls=tabsessions]').click(function () {
             $('.dashboard-nomorerecipes').hide();
             $('.dashboard-nomorebrewsessions').hide();
             $.ajax({
                 url: '/dashboard/sessions',
                 type: 'get',
-                success: function(response) {
-                    $('.spinner-sessions').html(response);
+                success: function (response) {
+                    $('#tabsessions').html(response);
                     if (response.indexOf('NoDashboardItems') > 0) {
                         $('.dashboard-nomore').hide();
                         $('.dashboard-nomorebrewsessions').show();
+                        $('.dashboard-nomorebrewsessions').removeClass("hidden");
+                        
                     }
 
-                    $('#tab-tab-3 .CommentText').autosize();
+                    $('#tabrecipes .CommentText').autosize();
 
-                    $('.spinner-sessions .dashboard-more').hide();
+                    $('#tabrecipes .dashboard-more').hide();
                     jQuery("abbr.timeago").timeago();
+                    $("abbr.timeago").timeago().show();
                     return false;
                 }
             });
-            return false;
         });
 
         // Has Change Event
@@ -978,7 +1046,7 @@ function wireRatyStar(element) {
         path: '/img/raty/',
         hints: ['worst beer ever', 'ok', 'good', 'really good', 'best beer ever'],
         readOnly: true,
-        score: $(element).attr('data-raty-rating')
+        score: $(element).attr('data-rating')
     });
 }
 
@@ -990,7 +1058,7 @@ function deleteTastingNote(tastingNoteId) {
         success: function () {
 
             $('a[data-tastingnoteid=' + tastingNoteId + ']').parents('.tasting-note').remove();
-            
+
             // Set Count
             var count = parseInt($('#tasting-note-count').html());
             $('#tasting-note-count').html(--count);
@@ -1010,7 +1078,7 @@ function deleteTastingNote(tastingNoteId) {
 /* --------------------------------------------------- [ Browser Compatibility ] ---------------------------------------------------------- */
 // Adds trim() function for older browsers like IE8
 if (typeof String.prototype.trim !== 'function') {
-    String.prototype.trim = function() {
+    String.prototype.trim = function () {
         return this.replace(/^\s+|\s+$/g, '');
     };
 }

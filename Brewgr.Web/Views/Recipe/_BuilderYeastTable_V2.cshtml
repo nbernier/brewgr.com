@@ -1,0 +1,67 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+
+@model IList<RecipeYeastViewModel>
+
+@{
+    RecipeCreationOptions options = ViewBag.RecipeCreationOptions;
+}
+
+
+<div class="panel panel-default yeast panel-ingredient-group">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-sm-6"><h3 class="panel-title">Yeast</h3></section>
+            <section class="col-sm-6">
+                @if (!ViewBag.IsVew)
+    {
+            
+
+                <div class="pull-right-sm">
+                    <select id="yeast-list" data-trigger="y" class="ingredient-select form-control">
+                        <option value="" data-image="/img/pixel.gif" data-imagecss="lovibond addfirst">Add Yeast...</option>
+                        <option value="0" data-image="/img/pixel.gif" data-atten=".70" data-imagecss="lovibond addcustom">Add Custom Ingredient</option>
+                        @foreach (IngredientGroup<Yeast> yeastGroup in ViewBag.RecipeCreationOptions.YeastGroups)
+            {
+                <optgroup label="@yeastGroup.Category">
+                    @foreach (var yeast in yeastGroup.Ingredients)
+        {
+            var cssClass = options.SendToShopSettings.IsEnabled ? options.SendToShopSettings.IngredientIsEnabled(yeast) ? "partner-ing-yes" : "partner-ing-no" : "";
+            <option class="@cssClass" value="@yeast.IngredientId" data-atten="@yeast.Attenuation.ToString("F2")">@yeast.Name</option>
+}
+                </optgroup>
+}
+                    </select>
+                </div>
+                }
+            </section>
+        </div>
+    </div>
+    <div data-name="y_table" class="panel-body table-responsive dataTable sort-wrap">
+        @if (!Model.Any())
+    {
+        if (ViewBag.IsVew)
+        {
+            <div class="content">No yeast in this recipe</div>
+    }
+    else
+    {
+            <div class="row introrow">
+                <section class="col-xs-4 col-sm-2"><img src="@Url.Image("~/img/home-brew-yeast.jpg")" width="100" height="100" alt="Homebrew Yeast" /></section>
+                <section class="col-xs-8 col-sm-10">
+                    <h4>Add Yeast to Create Alcohol and Carbon Dioxide</h4>
+                    Yeast is the magic ingredient that turns flat sugary wort into the delicious alcohol filled homebrew we all love to drink. Yeast also plays an important role in the flavor of homebrew.
+                </section>
+            </div>
+}
+    
+}
+else
+{
+foreach (var yeast in Model)
+{
+    @Html.Partial("_BuilderYeastRow_V2", yeast)
+}
+}
+    </div>
+</div>

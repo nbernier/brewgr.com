@@ -137,7 +137,7 @@ function Recipe(obj) {
     };
     
     // Instantiate from passed in object
-    if(obj != null) {
+    if (obj != null) {
         for(var prop in obj) {
             this[prop] = obj[prop];
         }
@@ -187,7 +187,7 @@ var Builder =
             var name = $(this).attr('data-name').replace('r_', '');
             recipe[name] = $(this).val();
         });
-
+        
         // Get Ingredients and Steps
         $('.dataTable').each(function () {
             var type = $(this).attr('data-name').split('_')[0];
@@ -204,7 +204,7 @@ var Builder =
                 list.push(data);
             });
         });
-
+        
         recipe.calculate();
         return recipe;
     },
@@ -264,7 +264,7 @@ var Builder =
             // Not Logged in, Show Login/Register dialog
             if ($('.builder').attr('data-isanon')) {
                 var loginFrameurl = "/loginviadialog" + (parseInt($('[data-name=r_RecipeId').val()) > 0 ? "?editMode=1" : "");
-                $.colorbox({ href: loginFrameurl, iframe: true, width: 800, height: 525, opacity: .35, overlayClose: false, closeButton: false, escKey: false, scrolling: false });
+                $.colorbox({ href: loginFrameurl, iframe: true, width: 900, height: 525, opacity: .35, overlayClose: true, closeButton: true, escKey: false, scrolling: true });
             } else {
                 
                 var recipe = Builder.getRecipe();
@@ -347,7 +347,10 @@ var Builder =
             });
 
             $('#TargetVolume').val(Number(Builder.getRecipe().BatchSize).toFixed(2)).removeClass("input-validation-error");
-            $.colorbox({ inline: true, href: '#ScaleDialog', opacity: .35, width: 600, height: 290, overlayClose: false, escKey: true, scrolling: false });
+            //$.colorbox({ inline: true, href: '#ScaleDialog', opacity: .35, width: 600, height: 290, overlayClose: false, escKey: true, scrolling: false });
+            $.colorbox({ inline: true, href: '#ScaleDialog', opacity: .35, width: "90%", maxWidth: "600px", overlayClose: false, escKey: true, scrolling: false });
+
+            
             return false;
         });
 
@@ -383,14 +386,14 @@ var Builder =
         // Photo Dialog
         if (Builder.isNewRecipe()) {
             $('#PhotoPopupTrigger').click(function () {
-                $.colorbox({ inline: true, href: '#PhotoDialog', opacity: .35, width: 600, height: 285, overlayClose: false, escKey: true, scrolling: false });
+                $.colorbox({ inline: true, href: '#PhotoDialog', opacity: .35, width: "90%", height: "35%", maxWidth: "600px", overlayClose: false, escKey: true, scrolling: false });
             });
             $('#SavePhotoButton').click(function () {
                 $.colorbox.close();
             });            
         } else {
             $('#PhotoPopupTrigger').click(function () {
-                $.colorbox({ iframe: true, href: '/builderchangerecipephoto/' + Builder.getRecipeId(), opacity: .35, width: 600, height: 325, overlayClose: false, escKey: true, scrolling: false });
+                $.colorbox({ iframe: true, href: '/builderchangerecipephoto/' + Builder.getRecipeId(), opacity: .35, width: "90%", height: "35%", maxWidth: "600px", overlayClose: false, escKey: true, scrolling: false });
             });
         }
 
@@ -569,15 +572,17 @@ var Builder =
     wireSorting : function() {
         $('.dataTable').each(function () {
             var dataName = $(this).attr('data-name');
-            $('[data-name=' + dataName + '] tbody').sortable({
+            $('[data-name=' + dataName + '].sort-wrap').sortable({
+                connectWith: ".sort-wrap",
                 containment: '[data-name=' + dataName + ']',
+                tolerance: 'pointer',
                 placeholder: 'placeholder',
                 start: function (event, ui) {
-                    ui.placeholder.html('<td colspan="10" class="placeholder">&nbsp;</td>');
+                    ui.placeholder.html('<div class="panel panel-default"><div class="panel-body"></div>');
                 },
                 update: function (event, ui) {
                     // Re-Rank Table
-                    var type = $(ui.item).parents('table').attr('data-name').split('_')[0];
+                    var type = $(ui.item).parents('.dataTable').attr('data-name').split('_')[0];
                     Builder.reRankTable(type);
                     Builder.refreshTabIndices();
                 }
@@ -606,17 +611,17 @@ var Builder =
 
     /// Re-Ranks a table
     reRankTable: function (type) {
-        $('[data-name=' + type + '_table] tbody tr').each(function (index, ele) {
-            $(ele).find('[data-name=' + type + '_Rank]').val(index + 1).change();
-            $(ele).find('[data-name=' + type + '_RankLabel]').text((index + 1) + '.');
+        $('[data-name=' + type + '_table] .row').each(function (index, ele) {
+                $(ele).find('[data-name=' + type + '_Rank]').val(index + 1).change();
+                $(ele).find('[data-name=' + type + '_RankLabel]').text((index + 1) + '.');
         });
     },
 
     // Pulls down ing row templates and adds them to the DOM
     // We do it this way to benefit from browser caching
-    prepTemplates : function() {
+    prepTemplates: function () {
         $.ajax({
-            url: '/buildertemplates-v2',
+            url: '/buildertemplates-v2-2',
             async: false,
             cache: true,
             success: function (t) {
@@ -751,8 +756,9 @@ var Builder =
         // Append the new Row (show header/footer, hide intro)
         var table = $('[data-name=' + type + '_table]');
         table.find('.introrow').remove();
-        table.find('thead, tfoot').show();        
-        table.find('tbody').append(row);
+           
+        table.next('.panel-footer').show();  
+        table.append(row);
 
         // Refresh Tab Indices
         Builder.refreshTabIndices();
@@ -1015,6 +1021,7 @@ var SessionBuilder =
             TotalWaterNeeded: SessionBuilder.getValue('[data-name=s_TotalWaterNeeded]'),
             StrikeWaterTemp: SessionBuilder.getValue('[data-name=s_StrikeWaterTemp]'),
             StrikeWaterVolume: SessionBuilder.getValue('[data-name=s_StrikeWaterVolume]'),
+            MashTunCapacity: SessionBuilder.getValue('[data-name=s_MashTunCapacity]'),
             FirstRunningsVolume: SessionBuilder.getValue('[data-name=s_FirstRunningsVolume]'),
             SpargeWaterVolume: SessionBuilder.getValue('[data-name=s_SpargeWaterVolume]'),
             BrewKettleLoss: SessionBuilder.getValue('[data-name=s_BrewKettleLoss]'),
@@ -1035,8 +1042,6 @@ var SessionBuilder =
             OriginalGravity: SessionBuilder.getValue('[data-name=s_OriginalGravity]'),
             FinalGravity: SessionBuilder.getValue('[data-name=s_FinalGravity]'),
             ConditionDate: SessionBuilder.getValue('[data-name=s_ConditionDate]'),
-            RackingDate: SessionBuilder.getValue('[data-name=s_RackingDate]'),
-            RackingGravity: SessionBuilder.getValue('[data-name=s_RackingGravity]'),
             ConditionTypeId: SessionBuilder.getValue('[data-name=s_ConditionType]'),
             PrimingSugarType: SessionBuilder.getValue('[data-name=s_PrimingSugarType]'),
             PrimingSugarAmount: SessionBuilder.getValue('[data-name=s_PrimingSugarAmount]'),
@@ -1092,6 +1097,25 @@ var SessionBuilder =
             return false;
         }
 
+        try {
+            var brew_date = new Date($('[data-name=s_BrewDate]').val());
+            var brew_date_today = new Date();
+            if (brew_date > brew_date_today.addDays(14)) {
+                $('[data-name=s_BrewDate]').addClass('field-error');
+                Message.error('Uh oh, something needs your attention. Brew date cannot be that far in the future.');
+                window.scrollTo(0, 1);
+                return false;
+            }
+        }
+        catch (err) {
+            Message.error('Uh oh, something went wrong.');
+            window.scrollTo(0, 1);
+            return false;
+        }
+
+
+        
+
         // Save 
         if(session.BrewSessionId == 0) {
             // New Session Saved via Form POST
@@ -1142,3 +1166,8 @@ var SessionBuilder =
     }
 };
 
+Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}

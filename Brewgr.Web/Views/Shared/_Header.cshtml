@@ -1,56 +1,84 @@
 ﻿@using Brewgr.Web
 @using Brewgr.Web.Core.Model
 
-<div id="header"><a href="@Url.Action("Index", "Root", null)" id="logo"><img src="@Url.Image("~/img/beercanadalogo.png")" alt="" width="198" height="41" /></a>
-	@*  Main Navigartion *@
-			
-	@if (ViewBag.ActiveUser != null)
-	{
-		@Html.Partial("_UserInfo", ViewBag.ActiveUser as UserSummary)
-	}
-	else
-	{
-		<div class="auth-choice">
-			<a href="@Url.Action("login", "auth")" class="button button_green">Create Free Account</a>
-			<a href="@Url.Action("login", "auth")" id="login" class="login-link" data-returnurl="@Server.UrlEncode(Request.Url.PathAndQuery)">Login</a>	
-		</div>
-	}
-	<div id="primary-nav" class="sf-menu-wrapper">
-		<ul class="sf-menu sf-js-enabled">
-			<li><a href="@Url.Action("Index", "Root", null)">Home</a></li>
-            <li class="sf-with-ul">
-                <a href="#">Tools <span class="sf-sub-indicator"> »</span>
-                </a>
-				<ul class="sub-menu">
-					<li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null)"><span>Homebrew Recipe Calculator</span></a> </li>
-					<li><a href="@Url.Action("CalculatorsHydrometerTemp", "content", null)"><span>Hydrometer Correction Calculator</span></a> </li>
-					<li><a href="@Url.Action("CalculatorsMashSpargeWater", "content", null)"><span>Mash/Sparge Water Infusion Calculator</span></a> </li>
-				</ul>
-			</li>
-			<li class="sf-with-ul">
-			    <a href="#">Recipes
-                    <span class="sf-sub-indicator"> »</span>
-			    </a>
-			    <ul class="sub-menu">
-			        <li><a href="@Url.Action("homebrew-recipes", "recipe", null)"><span>Browse Recipes</span></a> </li>
-			        <li><a href="@Url.Action("dashboard", "dashboard", null)/#recipes"><span>My Recipes</span></a> </li>
-			        <li><a href="@Url.Action("dashboard", "dashboard", null)/#brewsessions"><span>My Brew Sessions</span></a> </li>
-			        <li><a href="@Url.Action("homebrew-recipe-calculator", "recipe", null)"><span>Create a New Recipe</span></a></li>
-			        <li><a href="#" class="recipe-import" rel="nofollow"><span>Import Beer Xml</span></a></li>
-			    </ul>
-			</li>
-			<li class="sf-with-ul">
-			    <a href="#">About
-                    <span class="sf-sub-indicator"> »</span>
-			    </a>
-                
-			    <ul class="sub-menu">
-			        <li><a href="@Url.Action("about","root")">About Brewgr</a></li>
-			        <li><a href="@Url.Action("howitworks","root")">How It Works</a></li>
-			        <li><a href="@Url.Action("features","root")">Features</a></li>
-			    </ul>
-			</li>
-			<li><a href="/blog">Blog</a></li>
-		</ul>
-	</div>
-</div>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <a id="logo" href="@Url.Action("Index", "Root")"><img src="@Url.Image("~/img/logo.png")" alt="Brewgr" /></a>
+            </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <ul id="navigation" class="menu">
+                    <li class="hidden-xs hidden-sm"><a href="@Url.Action("Index", "Root")">Home</a></li>
+                    <li>
+                        <a>Recipes</a>
+                        <ul>
+                            @if (ViewBag.ActiveUser != null)
+                            {
+                                <li><a href="@Url.UserProfileUrl((ViewBag.ActiveUser as UserSummary).Username)">My Recipes</a></li>
+                                <li><a href="@Url.UserProfileUrl((ViewBag.ActiveUser as UserSummary).Username)/#sessions">My Brew Sessions</a> </li>
+                            }
+                            <li><a href="@Url.Action("homebrew-recipes", "Recipe")"><span>Homebrew Recipes</span></a></li>
+                            <li><a href="@Url.Action("homebrew-recipe-calculator", "Recipe", null, Url.Https())">Create a New Recipe</a></li>
+                            <li><a href="#" class="recipe-import" rel="nofollow">Import Beer Xml</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>Tools</a>
+                        <ul>
+                            <li><a href="@Url.Action("homebrew-recipe-calculator", "Recipe")">Homebrew Recipe Calculator</a></li>
+                            <li><a href="@Url.Action("Calculators", "Calculators")">All Calculators</a></li>
+                            <li><a href="@Url.Action("CalculatorsHydrometerTemp", "Calculators")">Hydrometer Correction Calculator</a></li>
+                            <li><a href="@Url.Action("CalculatorsMashSpargeWater", "Calculators")">Mash/Sparge Water Infusion Calculator</a></li>
+                            <li><a href="@Url.Action("CalculatorsMashTunCapacity", "Calculators")">Mash Tun Capacity Calculator</a></li>
+                            <li><a href="@Url.Action("Calculations", "Calculations")">How the Calculations are Made</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>About</a>
+                        <ul>
+                            <li><a href="@Url.Action("about", "root")">About Brewgr</a></li>
+                            <li><a href="@Url.Action("howitworks", "root")">How It Works</a></li>
+                            <li><a href="@Url.Action("features", "root")">Features</a></li>
+                        </ul>
+                    </li>
+                    <li class="visible-xs">
+                        @if (ViewBag.ActiveUser != null)
+    {
+
+                    <ul>
+                        <li><a href="@Url.Action("settings", "User", null, Url.Https())">Edit Profile</a></li>
+                    </ul>
+                    <a href="/logout">Sign Out</a>
+}
+else
+{
+                    <a href="/logout">Sign In</a>
+}
+                    </li>
+                </ul>
+
+                @* User Info *@
+                <div class="hidden-xs">
+                    @Html.Partial("_UserInfo")
+                </div>
+
+                @* Mobile Menu *@
+                <div id="mobilemenu" class="visible-xs">
+                    @if (ViewBag.ActiveUser != null)
+                    {
+                        <a href="@Url.UserProfileUrl((ViewBag.ActiveUser as UserSummary).Username)">
+                            <img src="@((ViewBag.ActiveUser as UserSummary).GetAvatar(28))" class="avatar" />
+                        </a>
+                    }
+                    <button class="btn btn-lg searchtrig">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button class="menu btn btn-lg">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

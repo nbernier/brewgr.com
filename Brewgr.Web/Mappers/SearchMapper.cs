@@ -12,6 +12,7 @@ namespace Brewgr.Web.Mappers
 		public void DefineMappings()
 		{
 			Mapper.CreateMap<SearchResult, SearchViewModel>();
+            Mapper.CreateMap<RecipeSearchResults, RecipeSearchResultsViewModel>();
 		}
 	}
 }

@@ -96,12 +96,12 @@ namespace Brewgr.Web
 
 			if(uncategorizedPageCount > 0)
 			{
-				xml.AppendLine(this.CreateUrlString(urlHelper.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null }, "http"), DateTime.Now, "daily", "1.0"));
+				xml.AppendLine(this.CreateUrlString(urlHelper.Action("other-homebrew-recipes", "Recipe", new { page = (int?)null }), DateTime.Now, "daily", "1.0"));
 				if(uncategorizedPageCount > 1)
 				{
 					for(var page = 2; page <= uncategorizedPageCount; page++)
 					{
-						xml.AppendLine(this.CreateUrlString(urlHelper.Action("other-homebrew-recipes", "Recipe", new { page = page }, "http"), DateTime.Now, "daily", "1.0"));
+						xml.AppendLine(this.CreateUrlString(urlHelper.Action("other-homebrew-recipes", "Recipe", new { page = page }), DateTime.Now, "daily", "1.0"));
 					}
 				}
 			}

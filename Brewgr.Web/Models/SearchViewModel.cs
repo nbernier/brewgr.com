@@ -15,7 +15,7 @@ namespace Brewgr.Web.Models
 		/// <summary>
 		/// Gets or sets the Results
 		/// </summary>
-		public IList<RecipeSummary> RecipeSummaries { get; set; }
+		public IList<RecipeSummaryViewModel> RecipeSummaries { get; set; }
 
 		/// <summary>
 		/// Gets or sets the BlogPosts

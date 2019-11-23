@@ -1,68 +1,69 @@
 ﻿@using Brewgr.Web.Core.Model
+@using System.Web.Optimization
 @model RecipeViewModel
 
 @{
-	ViewBag.Title = "Homebrew Recipe Calculator";
+    ViewBag.Title = "Homebrew Recipe Calculator";
     HtmlHelper.ClientValidationEnabled = false;
 }
 
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder")
+
 <div id="view-newrecipe" class="content builder-wrapper">
-    
-    @if(ViewBag.ActiveUser == null)
-    {
-        <div class="ad-sense" style="width: 728px; margin: 0 auto 18px auto;">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-7257014799686934",
-    enable_page_level_ads: true
-  });
-            </script>
+
+    <div class="container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+
+                @* Send To Shop Intro *@
+                @if (ViewBag.RecipeCreationOptions.SendToShopSettings.IsEnabled)
+                {
+                    @Html.Partial("_BuilderSendToShopIntro", ViewBag.RecipeCreationOptions.SendToShopSettings as RecipeCreationSendToShopSettings)
+                }
+
+                @* Recipe Builder *@
+                <div class="builder primary" @(ViewBag.ActiveUser == null ? "data-isanon=true" : "")>
+                    @Html.Partial("_Builder", Model)
+                </div>
+
+            </section>
+            <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                @* Nutrition Label *@
+                <div class="catcher">
+                    <!--catcher-->
+                </div>
+                <div class="compliment">
+                    <div id="recipe-facts">
+                        @Html.Partial("_RecipeFacts", Model)
+                    </div>
+
+                    <input type="submit" id="SaveRecipeButton" class="button button_green save-recipe margintop10" value="Save Recipe" />
+
+                    @Html.Partial("_RecipeStyleGuide", Model)
+                </div>
+                <div class="catcher">
+                    <!--catcher-->
+                </div>
+
+            </section>
         </div>
-    }
-    
-    @* Send To Shop Intro *@
-    @if(ViewBag.RecipeCreationOptions.SendToShopSettings.IsEnabled)
-    {
-        @Html.Partial("_BuilderSendToShopIntro", ViewBag.RecipeCreationOptions.SendToShopSettings as RecipeCreationSendToShopSettings)
-    }
-    
-    @* Recipe Builder *@
-    <div class="builder primary" @(ViewBag.ActiveUser == null ? "data-isanon=true" : "")>
-        @Html.Partial("_Builder", Model)
     </div>
-	 
-    @* Nutrition Label *@
-    <div class="catcher">
-        <!--catcher-->
-    </div>
-    <div class="compliment">
-        <div id="recipe-facts">
-            @Html.Partial("_RecipeFacts", Model)
-        </div>
-		
-        <input type="submit" id="SaveRecipeButton" class="button button_green save-recipe margintop10" value="Save Recipe" />
-     
-        @Html.Partial("_RecipeStyleGuide", Model)
-    </div>	
-    <div class="catcher">
-        <!--catcher-->
-    </div>  
 </div>
 
 <div class="clearall"> </div>
 
 @* Photo Dialog *@
 <div class="hidden">
-    
+
     @using (Html.BeginForm("SaveRecipe", "Recipe", FormMethod.Post, new { id = "RecipeForm", enctype = "multipart/form-data" }))
     {
         <input type="hidden" name="RecipeJson" id="RecipeJson" />
-        <div id="PhotoDialog" class="modal">
+        <div id="PhotoDialog" class="">
             @Html.Partial("_BuilderPhotoDialog", Model)
-            
+
             <a href="#" class="button button_green margintop20" id="SavePhotoButton">Close</a>
-            <span class="fine-print marginleft10">Your photo will be uploaded after you save your recipe.</span>              
+            <span class="fine-print marginleft10">Your photo will be uploaded after you save your recipe.</span>
         </div>
     }
 </div>
@@ -70,7 +71,7 @@
 @section Scripts
 {
     <script type="text/javascript">
-        $(function() {
+        $(function () {
             Builder.initialize();
         });
     </script>

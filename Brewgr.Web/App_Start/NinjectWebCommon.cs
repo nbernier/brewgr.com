@@ -51,7 +51,9 @@ namespace Brewgr.Web.App_Start
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
                 RegisterServices(kernel);
-                KernelPersister.Set(kernel);
+
+	            KernelPersister.Set(kernel);
+
                 return kernel;
             }
             catch
@@ -67,9 +69,10 @@ namespace Brewgr.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Load(new Dependencies());
-            kernel.Load(new AutoMapperModule(Assembly.GetAssembly(typeof(BrewgrController))));
+			kernel.Load(new Dependencies());
+			kernel.Load(new AutoMapperModule(Assembly.GetAssembly(typeof(BrewgrController))));
 
-        }
+
+        }        
     }
 }

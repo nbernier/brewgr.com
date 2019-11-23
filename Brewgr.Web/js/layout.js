@@ -5,9 +5,9 @@ var Layout =
 {
     /// Shows a Status Modal
     statusModal : function(message, onComplete) {
-        var html = '<div class="working-dialog"><img src="/img/colorbox/loading.gif" width="32" height="32" /> <h3>' + message + '</h3></div>';
+        var html = '<div class="working-dialog"><img src="/img/colorbox/loading.gif" width="32" height="32" />' + message + '</div>';
         $.colorbox({ html: html, speed: 100, opacity: .35, height: 75, overlayClose: false, closeButton: false, escKey: false, scrolling: false, onComplete: onComplete});
-        $("#cboxLoadedContent").height(38);        
+        $("#cboxLoadedContent").height(38);    
     }
 };
 
@@ -36,6 +36,7 @@ var Message =
         $('div.messages ul').append('<li class="' + type + '">' + message + '</li>');
         if (!$('.messages').is(':visible')) {
             $('.messages').show();
+            $('.messages').removeClass('hidden');
         }
     },
     

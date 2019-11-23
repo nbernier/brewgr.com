@@ -34,7 +34,7 @@
         #recipeinfo { margin-top: 21pt; }
         #recipeinfo h3 { display: none; }
         .recipe-photo-actions, #recipedata { display: inline-block; }
-        .recipe-photo-actions { width: 107pt; }
+        .recipe-photo-actions { width: 107pt; min-height: 126px; }
         #recipedata { width: 175pt; vertical-align: top; }
         .recipe-title { margin-bottom: 8pt; }
         .groupbox h3 { margin: 0; margin-top: 5pt; font-size: 130%; padding: 4pt; width: 492pt; border-bottom: solid 2pt #666; }
@@ -121,8 +121,8 @@
     @* Scripts Bundle *@
     @Scripts.Render("~/bundles/js")
     
-    <script type="text/javascript">
+    @*<script type="text/javascript">
         window.print();
-    </script>
+    </script>*@
 </body>
 </html>

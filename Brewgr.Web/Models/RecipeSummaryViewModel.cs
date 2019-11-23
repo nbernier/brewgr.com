@@ -38,10 +38,23 @@ namespace Brewgr.Web.Models
 		/// </summary>
 		public string UnitType { get; set; }
 
-		/// <summary>
-		/// Gets or sets the IbuFormula
-		/// </summary>
-		public string IbuFormula { get; set; }
+        /// <summary>
+        /// Gets or sets the UnitTypeId
+        /// </summary>
+        public int UnitTypeId { get; set; }
+
+        /// <summary>
+        /// Gets the Unit Type
+        /// </summary>
+        public UnitType GetUnitType()
+        {
+            return (UnitType)this.UnitTypeId;
+        }
+
+        /// <summary>
+        /// Gets or sets the IbuFormula
+        /// </summary>
+        public string IbuFormula { get; set; }
 
 		/// <summary>
 		/// Gets or sets the RecipeName
@@ -189,13 +202,18 @@ namespace Brewgr.Web.Models
         /// </summary>
         public int BrewSessionCount { get; set; }
 
-		/// <summary>
-		/// Determines if the Recipe has an Image
-		/// </summary>
-		public bool HasImage()
-		{
-			return !string.IsNullOrWhiteSpace(this.ImageUrlRoot);
-		}
+        /// <summary>
+        /// Gets or sets the AverageRating
+        /// </summary>
+        public double AverageRating { get; set; }
+
+        /// <summary>
+        /// Determines if the Recipe has an Image
+        /// </summary>
+        public bool HasImage()
+        {
+            return !string.IsNullOrWhiteSpace(this.ImageUrlRoot);
+        }
 
 		/// <summary>
 		/// Determines if the recipe was created by a specific user

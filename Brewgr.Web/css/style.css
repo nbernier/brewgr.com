@@ -7,7 +7,7 @@ blockquote:before, blockquote:after, q:before, q:after{content:''; content:none}
 table{border-collapse:collapse; border-spacing:0}
 
 /** Base Body Styles **/
-body{background:url(../img/body-bg.jpg); color:#57595d; font:12px tahoma,arial,Helvetica,"Trebuchet MS",sans-serif}
+body{ color:#57595d; font:12px tahoma,arial,Helvetica,"Trebuchet MS",sans-serif}
 
 h1, h3, h4, h5, h6{font-weight:bold; font-family:'Droid Sans',sans-serif;  color:#434853;  text-shadow:0px 1px 0px #fff; letter-spacing:-0.5px}
 h1{font-size:30px}
@@ -87,7 +87,7 @@ p{line-height:20px}
 #title{width:960px; margin:0 auto; font-size:24px; color:#434853; line-height:85px;text-shadow:1px 1px 0 #FFF; letter-spacing:-0.5px}
 #title span{color:#84878c}
 #header{width:960px; margin:0 auto; height:77px}
-a#logo{display:block; float:left; margin-top:18px}
+a#logo{display:block; float:left;}
 
 /********* TOP NAV ********/
 .sf-menu-wrapper {height:25px; float:right; margin:24px 0 0 0; font-family:Tahoma, Arial,Helvetica,sans-serif; font-weight:bold;}

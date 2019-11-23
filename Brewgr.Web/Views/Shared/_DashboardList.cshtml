@@ -1,17 +1,18 @@
 ﻿@using Brewgr.Web
 @using Brewgr.Web.Core.Model
+@using Brewgr.Web.Models
 @{
-	Layout = null;
+    Layout = null;
 }
 @model DashboardViewModel
 
 @foreach (DashboardItem dashboardItem in Model.DashboardItems.OrderByDescending(x => x.DateCreated))
-{ 
-    if (dashboardItem.Item.GetType() == typeof(RecipeSummaryViewModel))  
-    {        
+{
+    if (dashboardItem.Item.GetType() == typeof(RecipeSummaryViewModel))
+    {
         @Html.Partial("_RecipeListSingleRecipe", (RecipeSummaryViewModel)dashboardItem.Item)
     }
-    else if (dashboardItem.Item.GetType() == typeof(BrewSessionSummaryViewModel))  
+    else if (dashboardItem.Item.GetType() == typeof(BrewSessionSummaryViewModel))
     {
         @Html.Partial("_BrewSessionListSingleBrewSession", (BrewSessionSummaryViewModel)dashboardItem.Item)
     }
@@ -21,10 +22,10 @@
     }
 }
 
-@if(Model.DashboardItems.Any())
+@if (Model.DashboardItems.Any() && Model.ShowMore)
 {
     <div class="dashboard-more-holder">
-    <a href="#" class="dashboard-more button button_gray" data-dateoflast="@Url.Encode(Model.DashboardItems.OrderByDescending(x => x.DateCreated).Last().DateCreated.ToString())" data-numbertoreturn="10">More</a>
+        <a href="#" class="btn btn-grey btn-lg dashboard-more" data-dateoflast="@Url.Encode(Model.DashboardItems.OrderByDescending(x => x.DateCreated).Last().DateCreated.ToString())" data-numbertoreturn="10">More</a>
     </div>
 }
 else
@@ -32,9 +33,9 @@ else
     <!-- NoDashboardItems (Used in script.js to know if there are
         records returned or not, don't remove) -->
     <div class="dashboard-nomore">There are no more items.</div>
-    
-    <div class="dashboard-nomorerecipes hidden">There are no more recipes to display. <a href="@Url.Action("homebrew-recipe-calculator", "recipe", null)">Create a new recipe</a></div>
-    
+
+    <div class="dashboard-nomorerecipes hidden">There are no more recipes to display. <a href="@Url.Action("homebrew-recipe-calculator", "Recipe", null, Url.Https())">Create a new recipe</a></div>
+
     <div class="dashboard-nomorebrewsessions hidden">There are no more brew sessions to display.</div>
 }
 <div id="dashboardlist-moreplaceholder"></div>

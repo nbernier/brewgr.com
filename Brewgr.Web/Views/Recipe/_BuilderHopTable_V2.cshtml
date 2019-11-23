@@ -1,0 +1,86 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+
+@model IList<RecipeHopViewModel>
+
+@{
+    RecipeCreationOptions options = ViewBag.RecipeCreationOptions;
+}
+
+<div class="panel panel-default hops panel-ingredient-group">
+    <div class="panel-heading">
+        <div class="row">
+            <section class="col-sm-6"><h3 class="panel-title">Hops</h3></section>
+            <section class="col-sm-6">
+            @if (!ViewBag.IsVew)
+            {
+                <div class="pull-right-sm">
+                <select id="hop-list" data-trigger="h" class="ingredient-select form-control">
+                <option value="" data-image="/img/pixel.gif" data-imagecss="lovibond addfirst">Add Hops...</option>
+                <option value="0" data-image="/img/pixel.gif" data-imagecss="lovibond addcustom" data-aa="0">Add Custom Ingredient</option>
+                @foreach (Hop hop in ViewBag.RecipeCreationOptions.Hops)
+                {
+                var cssClass = options.SendToShopSettings.IsEnabled ? options.SendToShopSettings.IngredientIsEnabled(hop) ? "partner-ing-yes" : "partner-ing-no" : "";
+                <option class="@cssClass" value="@hop.IngredientId" data-aa="@hop.AA.ToString("0.0")">@hop.Name</option>
+                }
+                </select>
+                </div>
+            }
+            </section>
+        </div>
+    </div>
+    <div data-name="h_table" class="panel-body table-responsive dataTable sort-wrap">
+        @if (!Model.Any())
+    {
+        if (ViewBag.IsVew)
+        {
+            <div class="content">No hops in this recipe</div>
+    }
+    else
+    {
+            <div class="row introrow">
+                <section class="col-xs-4 col-sm-2"><img src="@Url.Image("~/img/hop-cones.jpg")" width="100" height="100" alt="Hop Cones" /></section>
+                <section class="col-xs-8 col-sm-10">
+                    <h4>Add Hops for Bittering, Aroma and Freshness</h4>
+                    Hops are the key to balancing the sweetness of your beer. They add pleasant aromas, bitterness and aid in preserving your homebrew.
+                </section>
+            </div>
+}
+    
+}
+else
+{
+foreach (var hop in Model)
+{
+    @Html.Partial("_BuilderHopRow_V2", hop)
+}
+}
+    </div>
+    <div class="@(!Model.Any() ? "builder-hidden" : "") panel-footer">
+        <div class="row">
+            <section class="col-xs-6">
+                <span data-name="h_Total">@Model.Select(x => double.Parse(x.Amt)).Sum()</span>
+                <span data-unit="s">oz</span>
+                <span data-unit="m">g</span>
+                <span> total hops</span>
+            </section>
+            <section class="col-xs-6">
+                <div class="pull-right recipedata">
+
+
+                    
+
+                <label for="r_IbuFormula" class="hidden-xs">IBU Formula:</label>
+                <select name="r_IbuFormula" data-name="r_IbuFormula" class="form-control input-sm ibu-formula" @if (ViewBag.IsVew) { <text>disabled</text> }>
+                    <option value="t" @(ViewData["IbuFormula"] == "t" ? " selected=selected" : "")>Tinseth</option>
+                    <option value="r" @(ViewData["IbuFormula"] == "r" ? " selected=selected" : "")>Rager</option>
+                    <option value="b" @(ViewData["IbuFormula"] == "b" ? " selected=selected" : "")>Brewgr</option>
+                </select>
+
+
+
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

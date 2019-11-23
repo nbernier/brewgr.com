@@ -1,0 +1,61 @@
+﻿@using Brewgr.Web.Core.Model
+@using System.Web.Optimization
+@model RecipeViewModel
+@{
+    ViewBag.Title = "Homebrew Recipe Calculator";
+    HtmlHelper.ClientValidationEnabled = false;
+}
+
+@* Style Bundle *@
+@Styles.Render("~/bundles/css/builder_V2")
+
+@{ViewBag.IsVew = false; }
+
+<div id="view-newrecipe" class="content builder-wrapper">
+    <div class="container">
+        <div class="row">
+            <section class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+                <div class="builder primary" @(ViewBag.ActiveUser == null ? "data-isanon=true" : "")>
+                    @Html.Partial("_Builder_V2", Model)
+                </div>
+            </section>
+            <section class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+                <div class="compliment">
+                    <div id="recipe-facts">
+                        @Html.Partial("_RecipeFactsNew", Model)
+                    </div>
+
+                    <input type="submit" id="SaveRecipeButton" class="btn btn-success btn-lg save-recipe" value="Save Recipe" />
+
+                    @Html.Partial("_RecipeStyleGuide_V2", Model)
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="clearall"> </div>
+
+@* Photo Dialog *@
+<div class="hidden">
+
+    @using (Html.BeginForm("SaveRecipe", "Recipe", FormMethod.Post, new { id = "RecipeForm", enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="RecipeJson" id="RecipeJson" />
+        <div id="PhotoDialog" class="">
+            @Html.Partial("_BuilderPhotoDialog", Model)
+
+            <a href="#" class="button button_green margintop20" id="SavePhotoButton">Close</a>
+            <span class="fine-print marginleft10">Your photo will be uploaded after you save your recipe.</span>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            Builder.initialize();
+        });
+    </script>
+}

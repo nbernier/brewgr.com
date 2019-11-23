@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Web.Mvc;
@@ -19,15 +18,13 @@ using Brewgr.Web.Core.Configuration;
 using Brewgr.Web.Core.Model;
 using Brewgr.Web.Core.Service;
 using Common.Logging;
-using NLog;
-using LogManager = Common.Logging.LogManager;
+using System.Reflection;
 
 namespace Brewgr.Web.Controllers
 {
 	public abstract class BrewgrController : Controller
 	{
-	    protected static ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        protected readonly ILog logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IMessageStore ForwardedMessageStore;
 		readonly IUserResolver UserResolver;
 		readonly IUserService UserService;
@@ -79,7 +76,7 @@ namespace Brewgr.Web.Controllers
 			}
 
             // Site Announcement
-            ViewBag.SiteAnnouncement = null;
+            //ViewBag.SiteAnnouncement = "Brewgr is now open source software!  <a href=\"/open-source-homebrew-software\">Learn more</a>";
             
             return base.BeginExecuteCore(callback, state);
 		}

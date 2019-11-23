@@ -1,0 +1,84 @@
+﻿@using Brewgr.Web
+@using Brewgr.Web.Core.Model
+@using ctorx.Core.Formatting
+@model IList<Brewgr.Web.Models.RecipeSummaryViewModel>
+
+
+<table id="recipe-list" class="display recipe-list-table" style="width:100%">
+    <thead>
+        <tr>
+            <th data-priority="7">Date Added</th>
+            <th data-priority="1">Name</th>
+            <th data-priority="4" class="hidden-xs">Style</th>
+            <th data-priority="5" class="hidden-xs">ABV</th>
+            <th data-priority="6" class="hidden-xs">Amount</th>
+            <th data-priority="2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recipe in Model)
+        {
+            <tr>
+                <td data-sort="@recipe.DateCreated.ToString("o")">@recipe.DateCreated.ToString("d")</td>
+                <td data-sort="@recipe.Name"><a href="@Url.RecipeDetailUrl(recipe.RecipeId, recipe.Name, recipe.StyleName)" class="media-object floatleft"><img src="@Url.RecipeThumbnailUrl(recipe.ImageUrlRoot, recipe.Srm)" alt="@recipe.Name" height="50" width="50" /></a> <a href="@Url.RecipeDetailUrl(recipe.RecipeId, recipe.Name, recipe.StyleName)">@recipe.Name</a></td>
+                <td class="hidden-xs">@(!string.IsNullOrWhiteSpace(recipe.StyleName) ? recipe.StyleName : "Unknown Style")</td>
+                <td class="hidden-xs">@recipe.Abv.ToString("F1") %</td>
+                <td data-sort="@recipe.BatchSize" class="hidden-xs">@recipe.BatchSize @(recipe.GetUnitType() == UnitType.USStandard ? "Gallon" : "Liter")(s)</td>
+                <td>
+                    <div class="menu">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="@Url.RecipeDetailUrl(recipe.RecipeId, recipe.Name, recipe.StyleName)">Details</a></li>
+                            <li><a href="@Url.RecipeCloneUrl(recipe.RecipeId)" rel="nofollow">Clone</a></li>
+                            @if (recipe.BrewSessionCount > 0)
+                            {
+                            <li><a href="@Url.RecipeBrewSessionsUrl(recipe.RecipeId, recipe.Name)">Brew Sessions</a></li>
+                            }
+                            @if (ViewBag.ActiveUser != null && recipe.WasCreatedBy(ViewBag.ActiveUser.UserId))
+                            {
+                            if (recipe.IsPublic)
+                            {
+                                <li><a href="@Url.NewBrewSessionUrl(recipe.RecipeId)">New Brew Session</a></li>
+                            }
+                            <li><a href="@Url.RecipeEditUrl(recipe.RecipeId)">Edit</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#" data-recipeid="@recipe.RecipeId">Delete</a></li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+                </tr>
+                }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Date Added</th>
+            <th>Name</th>
+            <th class="hidden-xs">Style</th>
+            <th class="hidden-xs">ABV</th>
+            <th class="hidden-xs">Amount</th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+    $(document).ready(function () {
+        
+        $('#recipe-list').DataTable({
+            responsive: true,
+            "order": [[0, "desc"]],
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                { "type": "num-fmt" },
+                { "orderable": false },
+            ]
+        });
+
+    });
+</script>

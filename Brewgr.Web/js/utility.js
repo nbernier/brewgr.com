@@ -36,6 +36,10 @@ var util =
         return Math.round(num * multiple) / multiple;
     },
 
+    roundToTwo: function(num) {    
+        return +(Math.round(num + "e+2") + "e-2");
+    },
+
     /// Applies Data to a Template
     applyTemplate: function (id, data) {
         var template;
@@ -206,22 +210,22 @@ var util =
     },
 
     /// Converts qt/lb to l/kg
-    qt_per_lb_To_l_per_kg (qtPerLb) {
+    qt_per_lb_To_l_per_kg: function (qtPerLb) {
         return qtPerLb * 2.08635;
     },
 
     /// Converts l/kg to qt/lb
-    l_per_kg_To_qt_per_lb (lPerKg) {
+    l_per_kg_To_qt_per_lb: function (lPerKg) {
         return lPerKg * 0.47931;
     },
 
     /// Converts gal/lb to l/kg
-    gal_per_lb_To_l_per_kg (galPerLb) {
+    gal_per_lb_To_l_per_kg: function (galPerLb) {
         return galPerLb * 2.08635 * 4;
     },
 
     /// Converts l/kg to gal/lb
-    l_per_kg_To_gal_per_lb (lPerKg) {
+    l_per_kg_To_gal_per_lb: function (lPerKg) {
         return lPerKg * 0.47931 / 4;
     }
 };

@@ -321,6 +321,7 @@
     <Compile Include="Service\DefaultSendToShopService.cs" />
     <Compile Include="Service\DefaultStaticContentService.cs" />
     <Compile Include="Service\DefaultUserLoginService.cs" />
+    <Compile Include="Service\DefaultUserRelationService.cs" />
     <Compile Include="Service\DefaultUserService.cs" />
     <Compile Include="Configuration\IFacebookConnectSettings.cs" />
     <Compile Include="Service\IAdminService.cs" />
@@ -339,6 +340,7 @@
     <Compile Include="Service\ISendToShopService.cs" />
     <Compile Include="Service\IStaticContentService.cs" />
     <Compile Include="Service\IUserLoginService.cs" />
+    <Compile Include="Service\IUserRelationService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Model\SendToShopOrderPartnerNotificationMessage.cs" />
   </ItemGroup>

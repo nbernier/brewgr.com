@@ -1,5 +1,5 @@
 @{
-	Layout = "~/Views/Shared/_CoreLayout.cshtml";
+    Layout = "~/Views/Shared/_CoreLayout.cshtml";
 }
 
 @using Brewgr.Web
@@ -21,16 +21,19 @@
 
 @Html.Partial("~/Views/Shared/_SiteAnnouncement.cshtml")
 
-<!-- Header Start-->
-<div class="header-wrapper1">
-    @Html.Partial("_Header")
-    @Html.Partial("_TitleBar")		
-</div>
+@Html.Partial("_Header")
+
+@*Hide the title bar on the homepage*@
+@if(Request.RawUrl != "/")
+{
+    @Html.Partial("_TitleBar")
+}
+
 @*  Middle Part Start *@
-<div id="middle-wrapper">
-    @Html.Partial("_SiteMessages", ViewBag.Messages as IList<IMessage>)
-    @RenderBody()
-</div>
+@Html.Partial("_SiteMessages", ViewBag.Messages as IList<IMessage>)
+@RenderBody()
+
+<div class="container clearfix spacer"></div>
 
 @*  Footer Part Start *@
 @Html.Partial("_Footer")
